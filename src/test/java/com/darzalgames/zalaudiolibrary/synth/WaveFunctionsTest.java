@@ -141,6 +141,14 @@ public class WaveFunctionsTest {
 		}
 	}
 	
+	@Test
+	void brownianNoise_throwsWithContinuityOutsideOf0_1() throws Exception {
+		assertThrows(IllegalArgumentException.class, () -> WaveFunctions.getBrownianNoiseFunction(-0.1f));
+		assertThrows(IllegalArgumentException.class, () -> WaveFunctions.getBrownianNoiseFunction(-1.1f));
+		assertDoesNotThrow(() -> WaveFunctions.getBrownianNoiseFunction(0f));
+		assertDoesNotThrow(() -> WaveFunctions.getBrownianNoiseFunction(0.5f));
+		assertDoesNotThrow(() -> WaveFunctions.getBrownianNoiseFunction(1f));
+	}
 	
 	@Test
 	void nullWave() throws Exception {

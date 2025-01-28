@@ -21,44 +21,41 @@ public class Synth {
 		return waveFunction.apply(x);
 	}
 
+	
 	public static final Synth sine = new Synth(WaveFunctions.getSinWaveFunction());
 	public static final Synth square = new Synth(WaveFunctions.getSquareWaveFunction());
 	public static final Synth saw = new Synth(WaveFunctions.getSawtoothWaveFunction());
 	public static final Synth triangle = new Synth(WaveFunctions.getTriangleWaveFunction());
 
-	public static Synth bandLimitedSawTooth(int harmonics) {
+	public static final Synth bandLimitedSawTooth(int harmonics) {
 		return new Synth(WaveFunctions.getBandLimitedSawtoothWaveFunction(harmonics));
 	}
 
-	public static Synth pulse(float modulation) {
+	public static final Synth pulse(float modulation) {
 		return new Synth(WaveFunctions.getPulseWaveFunction(modulation));
 	}
 
-	public static Synth sinePower(int power) {
+	public static final Synth sinePower(int power) {
 		return new Synth(WaveFunctions.getSinPowerWaveFunction(power));
 	}
 
 	public static final Synth zero = new Synth(x -> 0f);
 	public static final Synth noise = new Synth(WaveFunctions.getWhiteNoiseFunction());
-	public static Synth brownianNoise(float continuity) {
+	public static final Synth brownianNoise(float continuity) {
 		return new Synth(WaveFunctions.getBrownianNoiseFunction(continuity));
 	}
 
-	public static Synth combineSynths(Synth... synths) {
-		
+	public static final Synth overtone(Synth synth, float overtoneRatio) {
+		return new Synth(WaveFunctions.getOvertoneFunction(synth, overtoneRatio));
+	}
+
+	public static final Synth combineSynths(Synth... synths) {
 		return new Synth(x -> {
-		
 			float y = 0;
-		
 			for (int i = 0; i < synths.length; i++) {
 				y += synths[i].f(x);  
 			}
 			return y / synths.length;
 		});
-	}
-	
-	public static Synth overtone(Synth synth, float overtoneRatio) {
-		return new Synth(WaveFunctions.getOvertoneFunction(synth, overtoneRatio));
-	}
-
+	}	
 }
