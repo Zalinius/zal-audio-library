@@ -27,21 +27,27 @@ public interface TimeSignature {
 	
 	
 	/**
+	 * Obtains the measure corresponding to a beat
 	 * @param beatNumber The current absolute beat
 	 * @return Which measure the beat corresponds to
 	 */
 	public int getMeasure(int beatNumber);
+	
 	/**
+	 * Obtains the number of a beat within the current measure 
 	 * @param beatNumber The current absolute beat
 	 * @return What the number of the beat is in the current measure
 	 */
 	public int getBeatInMeasure(int beatNumber);
+	
 	/**
+	 * Obtains the number of beats per measure
 	 * @return How many beats are in a given measure
 	 */
 	public int getBeatsPerMeasure();
 	
 	/**
+	 * Builds a simple n/4 time signature
 	 * @param beatsPerMeasure How many beats are in a measure for this time signature. Must be positive.
 	 * @return A simple time signature (one with 4 in the denominator) with the specified number of beats per measure
 	 */
