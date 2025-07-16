@@ -11,24 +11,34 @@ public class DigitalSynthesizer {
 	public static void main(String[] args) throws LineUnavailableException {
 
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
+		Pitch p = Pitch.C0;
+		for (int i = 0; i != 8; i++) {
+			System.out.println(p);
+			audioConsumer.writeSamples(makePulse(Synth.overtone(Synth.sine(), 1f), p.getFrequency(), 1f));
+			//			audioConsumer.writeSamples(makePulse(Synth.zero(), Pitch.NONE.getFrequency(), 0.25f));
+			p = p.octaveUp();
+		}
 
-		audioConsumer.writeSamples(makePulse(Synth.sine(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.sinePower(2), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.sinePower(3), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.sinePower(4), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.sinePower(5), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.triangle(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.square(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.saw(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.pulse(0.25f), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.whiteNoise(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
-		audioConsumer.writeSamples(makePulse(Synth.brownianNoise(0.9f), 400f));
+		audioConsumer.writeSamples(makePulse(Synth.sine(), Pitch.C4.getFrequency()));
+		audioConsumer.writeSamples(makePulse(Synth.sine(), Pitch.E4.getFrequency()));
+		audioConsumer.writeSamples(makePulse(Synth.sine(), Pitch.G4.getFrequency()));
+		audioConsumer.writeSamples(makePulse(Synth.sine(), Pitch.C5.getFrequency()));
+		//		audioConsumer.writeSamples(makePulse(Synth.sinePower(2), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.sinePower(3), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.sinePower(4), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.sinePower(5), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.triangle(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.square(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.saw(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.pulse(0.25f), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.whiteNoise(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.zero(), 400f));
+		//		audioConsumer.writeSamples(makePulse(Synth.brownianNoise(0.9f), 400f));
 		audioConsumer.close();
 
 	}
