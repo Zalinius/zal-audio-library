@@ -2,6 +2,8 @@ package com.darzalgames.zalaudiolibrary;
 
 import javax.sound.sampled.*;
 
+import com.darzalgames.zalaudiolibrary.musictheory.Pitch;
+import com.darzalgames.zalaudiolibrary.sampling.TwoByteSampleAdapter;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class DigitalSynthesizer {

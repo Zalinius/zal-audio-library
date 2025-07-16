@@ -1,8 +1,11 @@
-package com.darzalgames.zalaudiolibrary.time;
+package com.darzalgames.zalaudiolibrary.musictheory.time;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import com.darzalgames.zalaudiolibrary.musictheory.time.TimeInstant;
+import com.darzalgames.zalaudiolibrary.musictheory.time.TimeSignature;
 
 public class TimeInstantTest {
 	

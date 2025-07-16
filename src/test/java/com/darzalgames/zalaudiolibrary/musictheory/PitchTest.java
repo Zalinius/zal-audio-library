@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.musictheory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -56,6 +56,25 @@ class PitchTest {
 		assertEquals(Pitch.E2, Pitch.E3.octaveDown());
 	}
 
+	@Test
+	void up_onHighestPitch_returnsNone() {
+		assertEquals(Pitch.NONE, Pitch.C8.up());
+	}
+
+	@Test
+	void octaveUp_onHighestPitch_returnsNone() {
+		assertEquals(Pitch.NONE, Pitch.C8.octaveUp());
+	}
+
+	@Test
+	void down_onLowestPitch_returnsNone() {
+		assertEquals(Pitch.NONE, Pitch.C0.down());
+	}
+
+	@Test
+	void octaveDown_onLowestPitch_returnsNone() {
+		assertEquals(Pitch.NONE, Pitch.C0.octaveDown());
+	}
 
 
 }

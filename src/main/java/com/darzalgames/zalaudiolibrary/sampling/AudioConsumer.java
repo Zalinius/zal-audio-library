@@ -1,0 +1,14 @@
+package com.darzalgames.zalaudiolibrary.sampling;
+
+/**
+ * An interface representing a class that can consume audio samples in the form of float arrays
+ */
+public interface AudioConsumer extends AutoCloseable {
+
+	/**
+	 * Writes a sample buffer to the consumer
+	 * @param samples An array of floats whose values is in [-1, 1]
+	 */
+	void writeSamples(float[] samples);
+
+}

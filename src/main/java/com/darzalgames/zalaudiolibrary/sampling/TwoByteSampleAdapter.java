@@ -1,11 +1,18 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.sampling;
 
 import javax.sound.sampled.SourceDataLine;
 
+/**
+ * An audio consumer that converts its float sample input into two-byte short samples, for use with the Java Sound API
+ */
 public class TwoByteSampleAdapter implements AudioConsumer {
 
 	private final SourceDataLine line;
 
+	/**
+	 * Constructs an adapter with a SourceDataLine to write adapted samples to
+	 * @param line the SourceDataLine to adapt
+	 */
 	public TwoByteSampleAdapter(SourceDataLine line) {
 		this.line = line;
 		this.line.start();
@@ -32,7 +39,6 @@ public class TwoByteSampleAdapter implements AudioConsumer {
 		line.stop();
 		line.close();
 	}
-
 
 
 }

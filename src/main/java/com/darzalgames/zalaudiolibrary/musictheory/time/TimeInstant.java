@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.time;
+package com.darzalgames.zalaudiolibrary.musictheory.time;
 
 import java.util.Objects;
 

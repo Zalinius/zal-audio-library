@@ -1,9 +1,12 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.musictheory;
 
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeSet;
 
+/**
+ * A convenience class containing the natural pitches from western musical theory
+ */
 public class Pitch implements Comparable<Pitch>{
 
 	private final String name;
@@ -91,37 +94,77 @@ public class Pitch implements Comparable<Pitch>{
 		}
 	}
 
+	/**
+	 * Create a custom runtime pitch
+	 * @param name The name of the pitch
+	 * @param frequency the frequency in hertz (hz)
+	 * @return A pitch object with the given name an pitch
+	 */
 	public static Pitch makePitch(String name, float frequency) {
 		return new Pitch(name, frequency, false);
 	}
 
+	/**
+	 * Gets the natural note above this one
+	 * @return the pitch one note above this one, or NONE if the resulting pitch is too high
+	 */
 	public Pitch up() {
 		if(this == NONE) {
 			return NONE;
 		}
-
-		return naturalPitches.higher(this);
+		Pitch higherPitch = naturalPitches.higher(this);
+		if(higherPitch == null) {
+			return NONE;
+		}
+		return higherPitch;
 	}
 
+	/**
+	 * Gets the natural note below this one
+	 * @return the pitch one note below this one, or NONE if the resulting pitch is too low
+	 */
 	public Pitch down() {
 		if(this == NONE) {
 			return NONE;
 		}
-
-		return naturalPitches.lower(this);
+		Pitch lowerPitch = naturalPitches.lower(this);
+		if(lowerPitch == null) {
+			return NONE;
+		}
+		return lowerPitch;
 	}
 
+	/**
+	 * Gets the pitch an octave higher
+	 * @return the pitch one octave above this one, or NONE if the resulting pitch is too high
+	 */
 	public Pitch octaveUp() {
 		return up().up().up().up().up().up().up();
 	}
 
+	/**
+	 * Gets the pitch an octave lower
+	 * @return the pitch one octave below this one, or NONE if the resulting pitch is too low
+	 */
 	public Pitch octaveDown() {
 		return down().down().down().down().down().down().down();
 	}
 
 
+	/**
+	 * The frequency of the pitch
+	 * @return the frequency in hertz (hz)
+	 */
 	public float getFrequency() {
 		return frequency;
+	}
+
+	/**
+	 * The name of the pitch
+	 * @return the name in scientific pitch notation
+	 */
+	public String getName() {
+		return name;
 	}
 
 	@Override

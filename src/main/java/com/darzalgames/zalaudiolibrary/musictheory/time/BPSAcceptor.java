@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.time;
+package com.darzalgames.zalaudiolibrary.musictheory.time;
 
 /**
  * A consumer-style interface for requesting speed changes to a music engine
