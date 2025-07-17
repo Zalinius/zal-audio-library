@@ -6,7 +6,8 @@ import java.util.List;
 
 import com.darzalgames.darzalcommon.data.LoopingIterator;
 import com.darzalgames.darzalcommon.math.Fraction;
-import com.darzalgames.zalaudiolibrary.amplitude.AsrEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.amplitude.ZeroEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
@@ -20,13 +21,13 @@ public abstract class Song implements Iterable<MusicalInstant>{
 		melody = new ArrayList<>();
 	}
 
-	public void addNote(Synth synth, NoteDuration duration, Pitch pitch) {
-		MusicalInstant newInstant = new MusicalInstant(synth, duration, pitch, new AsrEnvelope(0.05f, 1f, 0.05f));
+	public void addNote(Synth synth, NoteDuration duration, Pitch pitch, Envelope envelope) {
+		MusicalInstant newInstant = new MusicalInstant(synth, duration, pitch, envelope);
 		melody.add(newInstant);
 	}
 
 	public void addSilence(NoteDuration duration) {
-		addNote(Synth.zero(), duration, Pitch.NONE);
+		addNote(Synth.zero(), duration, Pitch.NONE, new ZeroEnvelope());
 	}
 
 	public Fraction lengthInBeats() {

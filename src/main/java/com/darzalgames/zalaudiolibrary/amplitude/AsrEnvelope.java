@@ -1,7 +1,8 @@
 package com.darzalgames.zalaudiolibrary.amplitude;
 
 /**
- * A wave envelope with Attack, Sustain and Release phases
+ * A wave envelope with an Attack, Sustain and Release phase
+ * ASR envelopes last for the entire duration of a note
  */
 public class AsrEnvelope implements Envelope {
 

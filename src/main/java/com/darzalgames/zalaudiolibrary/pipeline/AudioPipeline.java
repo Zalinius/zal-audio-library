@@ -28,7 +28,7 @@ public class AudioPipeline extends Thread {
 	private final SampleMaker sampler; //Creates Samples from Simple Sounds
 	private final AudioConsumer audioConsumer; //receives Samples
 
-	private final float bps = 2f;
+	private final float bps = 1f;
 
 	public AudioPipeline(Song song, AudioConsumer audioConsumer) {
 		shouldStop = new AtomicBoolean(false);
