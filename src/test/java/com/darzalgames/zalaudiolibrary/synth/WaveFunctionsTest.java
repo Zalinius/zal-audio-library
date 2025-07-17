@@ -141,9 +141,8 @@ class WaveFunctionsTest {
 		}
 	}
 
-
 	@Test
-	void nullWave() throws Exception {
+	void nullWave_alwaysReturns0() throws Exception {
 		UnaryOperator<Float> nullWave = WaveFunctions.getNullWaveFunction();
 
 		assertEquals(0f, nullWave.apply(0f));
@@ -152,6 +151,5 @@ class WaveFunctionsTest {
 		assertEquals(0f, nullWave.apply(0.75f));
 		assertEquals(0f, nullWave.apply(1f));
 	}
-
 
 }

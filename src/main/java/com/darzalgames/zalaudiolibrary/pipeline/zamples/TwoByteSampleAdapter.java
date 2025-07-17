@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.sampling;
+package com.darzalgames.zalaudiolibrary.pipeline.zamples;
 
 import javax.sound.sampled.SourceDataLine;
 

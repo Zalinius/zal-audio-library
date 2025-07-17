@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.sampling;
+package com.darzalgames.zalaudiolibrary.pipeline.zamples;
 
 /**
  * An interface representing a class that can consume audio samples in the form of float arrays

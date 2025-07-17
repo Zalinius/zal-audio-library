@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.musictheory;
+package com.darzalgames.zalaudiolibrary.composing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

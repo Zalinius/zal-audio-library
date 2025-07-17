@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.musictheory;
+package com.darzalgames.zalaudiolibrary.composing;
 
 import java.util.NavigableSet;
 import java.util.Objects;
