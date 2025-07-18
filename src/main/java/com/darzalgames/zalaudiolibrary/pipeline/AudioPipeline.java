@@ -1,10 +1,13 @@
 package com.darzalgames.zalaudiolibrary.pipeline;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.darzalgames.zalaudiolibrary.AudioConstants;
+import com.darzalgames.zalaudiolibrary.BpsController;
+import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.pipeline.composing.Song;
-import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
+import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
@@ -23,19 +26,30 @@ public class AudioPipeline extends Thread {
 
 	private final AtomicBoolean shouldStop;
 
-	private final Iterator<MusicalInstant> song;
+	private final Song song;
 	private final SimpleSoundMaker simpleSoundMaker;
 	private final SampleMaker sampler; //Creates Samples from Simple Sounds
 	private final AudioConsumer audioConsumer; //receives Samples
 
+	private final BpsController bpsController;
+
+	private final float beatCounter;
+	private final float secondsCounter;
+
 	private final float bps = 1f;
 
-	public AudioPipeline(Song song, AudioConsumer audioConsumer) {
+	public AudioPipeline(Song song, AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
 		shouldStop = new AtomicBoolean(false);
-		this.song = song.iterator();
+		this.song = song;
 		simpleSoundMaker = new SimpleSoundMaker();
-		sampler = new SampleMaker();
+		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
+
+		bpsController = new BpsController(1);
+
+
+		beatCounter = 0f;
+		secondsCounter = 0f;
 
 		setDaemon(true);
 	}
@@ -63,10 +77,21 @@ public class AudioPipeline extends Thread {
 	}
 
 	private void processMusicStep() {
-		MusicalInstant nextMusicalInstant = song.next();
-		SimpleSound nextSimpleSound = simpleSoundMaker.makeSimpleSound(nextMusicalInstant, bps);
-		float[] nextSample = sampler.makeSamples(nextSimpleSound);
+		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
+
+		final int startOfTheBeat = (int) beatCounter;
+		final float beatIncrementDuringMusicStep = AudioConstants.STEP_DURATION_IN_SECONDS * stepBPS;
+
+		Collection<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatOrNextBeat(startOfTheBeat);
+
+		//TODO this is complex, unit test it as you go along and use fractions and remainders
+
+		SimpleSound nextSimpleSound = simpleSoundMaker.makeSimpleSound(nextMusicalInstant, stepBPS);
+		float[] nextSample = sampler.makeSongSamples(nextSimpleSound);
 		audioConsumer.writeSamples(nextSample);
 	}
 
+	public VolumeListener getVolumeListener() {
+		return sampler;
+	}
 }

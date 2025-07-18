@@ -13,7 +13,7 @@ public class DigitalSynthesizer {
 		Song testsong = new TestSong();
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 
-		AudioPipeline audioPipeline = new AudioPipeline(testsong, audioConsumer);
+		AudioPipeline audioPipeline = new AudioPipeline(testsong, audioConsumer, 1f, 1f);
 
 		audioPipeline.start();
 
