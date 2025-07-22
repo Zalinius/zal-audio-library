@@ -1,15 +1,15 @@
 package com.darzalgames.zalaudiolibrary.pipeline;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.BpsController;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
-import com.darzalgames.zalaudiolibrary.pipeline.composing.Song;
+import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
-import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
+import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
 
@@ -33,10 +33,8 @@ public class AudioPipeline extends Thread {
 
 	private final BpsController bpsController;
 
-	private final float beatCounter;
-	private final float secondsCounter;
-
-	private final float bps = 1f;
+	private float beatCounter;
+	private float secondsCounter;
 
 	public AudioPipeline(Song song, AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
 		shouldStop = new AtomicBoolean(false);
@@ -45,7 +43,7 @@ public class AudioPipeline extends Thread {
 		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
 
-		bpsController = new BpsController(1);
+		bpsController = new BpsController(song.getInitialBps());
 
 
 		beatCounter = 0f;
@@ -79,16 +77,18 @@ public class AudioPipeline extends Thread {
 	private void processMusicStep() {
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
 
-		final int startOfTheBeat = (int) beatCounter;
+		final int beatNumber = (int) beatCounter;
 		final float beatIncrementDuringMusicStep = AudioConstants.STEP_DURATION_IN_SECONDS * stepBPS;
+		final float stepIntervalStartInBeats = beatCounter;
 
-		Collection<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatOrNextBeat(startOfTheBeat);
+		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
+		List<TimedSimpleSound> simpleSoundsActive = simpleSoundMaker.makeSimpleSounds(musicalInstantsActive, stepBPS, stepIntervalStartInBeats, secondsCounter);
 
-		//TODO this is complex, unit test it as you go along and use fractions and remainders
-
-		SimpleSound nextSimpleSound = simpleSoundMaker.makeSimpleSound(nextMusicalInstant, stepBPS);
-		float[] nextSample = sampler.makeSongSamples(nextSimpleSound);
+		float[] nextSample = sampler.makeSamples(simpleSoundsActive, AudioConstants.SAMPLES_PER_STEP, secondsCounter);
 		audioConsumer.writeSamples(nextSample);
+
+		beatCounter += beatIncrementDuringMusicStep;
+		secondsCounter += AudioConstants.STEP_DURATION_IN_SECONDS;
 	}
 
 	public VolumeListener getVolumeListener() {

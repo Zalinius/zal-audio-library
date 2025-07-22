@@ -7,7 +7,7 @@ public interface AudioConsumer extends AutoCloseable {
 
 	/**
 	 * Writes a sample buffer to the consumer
-	 * @param samples An array of floats whose values is in [-1, 1]
+	 * @param samples An array of floats whose values are in [-1, 1]
 	 */
 	void writeSamples(float[] samples);
 

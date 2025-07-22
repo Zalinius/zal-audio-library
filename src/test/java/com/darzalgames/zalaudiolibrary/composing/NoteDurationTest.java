@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 class NoteDurationTest {
 
 	@Test
-	void threeThirdNotess_areEqualToAWholeNote() {
+	void threeThirdNotes_areEqualToAWholeNote() {
 		NoteDuration third = NoteDuration.THIRD;
 		NoteDuration whole = NoteDuration.WHOLE;
 
-		assertEquals(whole.getDurationInBeats(), third.getDurationInBeats().scale(3));
+		assertEquals(whole.inBeats(), third.inBeats().scale(3));
 	}
 
 }

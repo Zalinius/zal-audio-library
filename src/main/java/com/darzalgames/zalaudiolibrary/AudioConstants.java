@@ -26,5 +26,6 @@ public class AudioConstants {
 
 
 	public static final float STEP_DURATION_IN_SECONDS = 1f/STEPS_PER_SECOND;
+	public static final float SAMPLE_DURATION = 1 / (float)SAMPLING_RATE;
 
 }
