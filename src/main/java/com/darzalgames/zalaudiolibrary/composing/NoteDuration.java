@@ -2,7 +2,7 @@ package com.darzalgames.zalaudiolibrary.composing;
 
 import com.darzalgames.darzalcommon.math.Fraction;
 
-public class NoteDuration {
+public record NoteDuration(Fraction inBeats) {
 
 	public static final NoteDuration SIXTEENTH = new NoteDuration(new Fraction(1, 4));
 	public static final NoteDuration EIGHTH = new NoteDuration(new Fraction(1, 2));
@@ -18,19 +18,7 @@ public class NoteDuration {
 	public static final NoteDuration SIXTH = new NoteDuration(new Fraction(2, 3));
 	public static final NoteDuration THIRD = new NoteDuration(new Fraction(4, 3));
 
-
-	private final Fraction durationInBeats;
-
 	public NoteDuration(int durationInBeats) {
 		this(new Fraction(durationInBeats));
 	}
-
-	public NoteDuration(Fraction durationInBeats) {
-		this.durationInBeats = durationInBeats;
-	}
-
-	public Fraction inBeats() {
-		return durationInBeats;
-	}
-
 }

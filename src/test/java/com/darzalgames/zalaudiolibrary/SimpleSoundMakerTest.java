@@ -9,9 +9,8 @@ import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 
 class SimpleSoundMakerTest {
 
-
 	@Test
-	void extrapolateStartTime_startTimeIsCurrentTime_returnsCurrentTime() throws Exception {
+	void extrapolateStartTime_startTimeIsCurrentTime_returnsCurrentTime() {
 		Fraction startingBeat = new Fraction(0);
 		float currentBeat = 0f;
 		float currentTime = 0f;
@@ -23,7 +22,7 @@ class SimpleSoundMakerTest {
 	}
 
 	@Test
-	void extrapolateStartTime_startBeatBeforeCurrentBeat_returnsStartBeatTime() throws Exception {
+	void extrapolateStartTime_startBeatBeforeCurrentBeat_returnsStartBeatTime() {
 		Fraction noteStartingBeat = new Fraction(0);
 		float currentBeat = 0.25f;
 		float currentTime = 0.25f;
@@ -35,7 +34,7 @@ class SimpleSoundMakerTest {
 	}
 
 	@Test
-	void extrapolateStartTime_startBeatBeforeCurrentBeatLaterInSong_returnsStartBeatTime() throws Exception {
+	void extrapolateStartTime_startBeatBeforeCurrentBeatLaterInSong_returnsStartBeatTime() {
 		Fraction noteStartingBeat = new Fraction(5, 2);
 		float currentBeat = 2.625f;
 		float currentTime = 2.625f;
@@ -47,7 +46,7 @@ class SimpleSoundMakerTest {
 	}
 
 	@Test
-	void extrapolateStartTime_startBeatBeforeCurrentBeatWithBps2_returnsResultAccountingForBps() throws Exception {
+	void extrapolateStartTime_startBeatBeforeCurrentBeatWithBps2_returnsResultAccountingForBps() {
 		Fraction noteStartingBeat = new Fraction(5, 2);
 		float currentBeat = 2.625f;
 		float currentTime = 2.625f;
