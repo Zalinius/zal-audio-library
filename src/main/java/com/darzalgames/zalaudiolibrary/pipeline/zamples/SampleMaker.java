@@ -28,7 +28,7 @@ public class SampleMaker implements VolumeListener {
 			TimedSimpleSound timedSimpleSound = it.next();
 			SimpleSound simpleSound = timedSimpleSound.simpleSound();
 
-			float phaseAtMinus1 = phaseMap.getOrDefault(simpleSound.getId(), 0f);
+			float phaseAtMinus1 = phaseMap.getOrDefault(simpleSound.id(), 0f);
 			float alpha = phaseAtMinus1;
 			float beta = computeBeta(samplingStartTime, timedSimpleSound);
 			float phi = alpha - beta;
@@ -42,12 +42,12 @@ public class SampleMaker implements VolumeListener {
 				//This is the wave phase, on interval [0,1[
 				float waveProgress = frequency * t + phi;
 				float moduloedWaveProgress = waveProgress - (float) Math.floor(waveProgress);
-				float waveValue = simpleSound.getTimbre().f(moduloedWaveProgress);
+				float waveValue = simpleSound.timbre().f(moduloedWaveProgress);
 
 				sampleBuffer[i] += currentMusicVolume * amplitude * waveValue;
 
 				if(i == sampleCount - 1) {
-					phaseMap.put(simpleSound.getId(), moduloedWaveProgress);
+					phaseMap.put(simpleSound.id(), moduloedWaveProgress);
 				}
 			}
 		}
