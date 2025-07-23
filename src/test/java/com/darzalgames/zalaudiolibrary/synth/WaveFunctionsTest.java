@@ -6,12 +6,12 @@ import java.util.function.UnaryOperator;
 
 import org.junit.jupiter.api.Test;
 
-public class WaveFunctionsTest {
-	
+class WaveFunctionsTest {
+
 	@Test
-	void squareWave() throws Exception {
+	void squareWave() {
 		UnaryOperator<Float> squareWave = WaveFunctions.getSquareWaveFunction();
-		
+
 		assertEquals(1f, squareWave.apply(0f));
 		assertEquals(1f, squareWave.apply(0.49f));
 		assertEquals(-1f, squareWave.apply(0.5f));
@@ -19,9 +19,9 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void pulseWave() throws Exception {
+	void pulseWave() {
 		UnaryOperator<Float> pulseWave = WaveFunctions.getPulseWaveFunction(0.2f);
-		
+
 		assertEquals(1f, pulseWave.apply(0f));
 		assertEquals(1f, pulseWave.apply(0.19f));
 		assertEquals(-1f, pulseWave.apply(0.2f));
@@ -29,7 +29,7 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void pulseWave_throwsForModulationOutsideOf0_1() throws Exception {
+	void pulseWave_throwsForModulationOutsideOf0_1() {
 		assertThrows(IllegalArgumentException.class, () -> WaveFunctions.getPulseWaveFunction(-0.1f));
 		assertDoesNotThrow(() -> WaveFunctions.getPulseWaveFunction(0f));
 		assertDoesNotThrow(() -> WaveFunctions.getPulseWaveFunction(0.5f));
@@ -38,9 +38,9 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void sinWave() throws Exception {
+	void sinWave() {
 		UnaryOperator<Float> sinWave = WaveFunctions.getSinWaveFunction();
-		
+
 		assertEquals(0f, sinWave.apply(0f), 0.001);
 		assertEquals((float)Math.sqrt(2)/2, sinWave.apply(0.125f), 0.001);
 		assertEquals(1f, sinWave.apply(0.25f), 0.001);
@@ -50,9 +50,9 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void triangleWave() throws Exception {
+	void triangleWave() {
 		UnaryOperator<Float> triangleWave = WaveFunctions.getTriangleWaveFunction();
-		
+
 		assertEquals(0f, triangleWave.apply(0f), 0.001);
 		assertEquals(0.5f, triangleWave.apply(0.125f), 0.001);
 		assertEquals(1f, triangleWave.apply(0.25f), 0.001);
@@ -62,9 +62,9 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void sawWave() throws Exception {
+	void sawWave() {
 		UnaryOperator<Float> sawWave = WaveFunctions.getSawtoothWaveFunction();
-		
+
 		assertEquals(0f, sawWave.apply(0f), 0.001);
 		assertEquals(0.5f, sawWave.apply(0.25f), 0.001);
 		assertEquals(1f, sawWave.apply(0.5f), 0.001);
@@ -73,19 +73,19 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void bandLimitedSawWave() throws Exception {
+	void bandLimitedSawWave() {
 		UnaryOperator<Float> sawWave = WaveFunctions.getBandLimitedSawtoothWaveFunction(2);
-		
+
 		assertEquals(0f, sawWave.apply(0f), 0.001);
 		assertEquals(0f, sawWave.apply(0.5f), 0.001);
 		assertEquals(0f, sawWave.apply(1f), 0.001);
 	}
 
 	@Test
-	void bandLimitedSawWave_largeHarmonic_approximatesSawWave() throws Exception {
+	void bandLimitedSawWave_largeHarmonic_approximatesSawWave() {
 		UnaryOperator<Float> bandLimitedSawWave = WaveFunctions.getBandLimitedSawtoothWaveFunction(40000);
 		UnaryOperator<Float> sawWave = WaveFunctions.getSawtoothWaveFunction();
-		
+
 		assertEquals(sawWave.apply(0.0f), bandLimitedSawWave.apply(0.0f), 0.01f);
 		assertEquals(sawWave.apply(0.1f), bandLimitedSawWave.apply(0.1f), 0.01f);
 		assertEquals(sawWave.apply(0.2f), bandLimitedSawWave.apply(0.2f), 0.01f);
@@ -100,13 +100,13 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void bandLimitedSawWave_throwsWhenHarmonicsAreNonPositive() throws Exception {
+	void bandLimitedSawWave_throwsWhenHarmonicsAreNonPositive() {
 		assertThrows(IllegalArgumentException.class, () -> WaveFunctions.getBandLimitedSawtoothWaveFunction(0));
 		assertDoesNotThrow(() -> WaveFunctions.getBandLimitedSawtoothWaveFunction(1));
 	}
-	
+
 	@Test
-	void whiteNoise_isBounded() throws Exception {
+	void whiteNoise_isBounded() {
 		UnaryOperator<Float> whiteNoise = WaveFunctions.getWhiteNoiseFunction();
 		for (int i = 0; i < 100; i++) {
 			float x = i/100f;
@@ -117,7 +117,7 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void brownianNoise_isBounded() throws Exception {
+	void brownianNoise_isBounded() {
 		UnaryOperator<Float> brownianNoise = WaveFunctions.getBrownianNoiseFunction(0.5f);
 		for (int i = 0; i < 100; i++) {
 			float x = i/100f;
@@ -128,30 +128,28 @@ public class WaveFunctionsTest {
 	}
 
 	@Test
-	void brownianNoise_sequentialValuesAreClose() throws Exception {
+	void brownianNoise_sequentialValuesAreClose() {
 		UnaryOperator<Float> brownianNoise = WaveFunctions.getBrownianNoiseFunction(0.5f);
 		float lastResult = brownianNoise.apply(0f);
 		for (int i = 0; i < 100; i++) {
 			float x = i/100f;
 			float result = brownianNoise.apply(x);
-			
+
 			assertTrue(Math.abs(result - lastResult) <= 2*0.5f);
-			
+
 			lastResult = result;
 		}
 	}
-	
-	
+
 	@Test
-	void nullWave() throws Exception {
+	void nullWave_alwaysReturns0() {
 		UnaryOperator<Float> nullWave = WaveFunctions.getNullWaveFunction();
-		
+
 		assertEquals(0f, nullWave.apply(0f));
 		assertEquals(0f, nullWave.apply(0.25f));
 		assertEquals(0f, nullWave.apply(0.5f));
 		assertEquals(0f, nullWave.apply(0.75f));
 		assertEquals(0f, nullWave.apply(1f));
 	}
-
 
 }
