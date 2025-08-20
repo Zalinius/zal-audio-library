@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
+import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 
@@ -20,7 +21,7 @@ public class SampleMaker implements VolumeListener {
 		phaseMap = new HashMap<>();
 	}
 
-	public float[] makeSamples(List<TimedSimpleSound>  simpleSounds, int sampleCount, float samplingStartTime) {
+	public float[] makeSamples(List<TimedSimpleSound>  simpleSounds, int sampleCount, float samplingStartTime, List<SampleEffect> samplingEffects) {
 		float[] sampleBuffer = new float[sampleCount];
 		float currentMusicVolume = musicVolume.get();
 
@@ -50,6 +51,11 @@ public class SampleMaker implements VolumeListener {
 					phaseMap.put(simpleSound.id(), moduloedWaveProgress);
 				}
 			}
+		}
+
+		for (Iterator<SampleEffect> it = samplingEffects.iterator(); it.hasNext();) {
+			SampleEffect sampleEffect = it.next();
+			sampleBuffer = sampleEffect.apply(sampleBuffer);
 		}
 
 		return sampleBuffer;

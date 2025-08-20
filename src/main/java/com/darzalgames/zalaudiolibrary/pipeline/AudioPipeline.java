@@ -84,7 +84,7 @@ public class AudioPipeline extends Thread {
 		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
 		List<TimedSimpleSound> simpleSoundsActive = simpleSoundMaker.makeSimpleSounds(musicalInstantsActive, stepBPS, stepIntervalStartInBeats, secondsCounter);
 
-		float[] nextSample = sampler.makeSamples(simpleSoundsActive, AudioConstants.SAMPLES_PER_STEP, secondsCounter);
+		float[] nextSample = sampler.makeSamples(simpleSoundsActive, AudioConstants.SAMPLES_PER_STEP, secondsCounter, song.getSampleEffects());
 		audioConsumer.writeSamples(nextSample);
 
 		beatCounter += beatIncrementDuringMusicStep;

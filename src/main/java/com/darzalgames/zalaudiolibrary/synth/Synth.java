@@ -33,6 +33,10 @@ public class Synth {
 		return waveFunction.apply(x);
 	}
 
+	public UnaryOperator<Float> getWaveFunction() {
+		return waveFunction;
+	}
+
 
 	/**
 	 * Constructs a sine synth
