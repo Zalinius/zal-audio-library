@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
-import com.darzalgames.zalaudiolibrary.effects.SampleEffect;
+import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 

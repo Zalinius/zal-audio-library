@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.ZeroEnvelope;
-import com.darzalgames.zalaudiolibrary.effects.TrackEffect;
+import com.darzalgames.zalaudiolibrary.effects.tracking.TrackEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;

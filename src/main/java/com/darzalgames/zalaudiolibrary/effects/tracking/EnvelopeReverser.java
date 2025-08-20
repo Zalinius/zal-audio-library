@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.effects;
+package com.darzalgames.zalaudiolibrary.effects.tracking;
 
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;

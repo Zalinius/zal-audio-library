@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.effects;
+package com.darzalgames.zalaudiolibrary.effects.tracking;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

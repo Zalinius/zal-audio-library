@@ -3,7 +3,7 @@ package com.darzalgames.zalaudiolibrary.composing;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.darzalgames.zalaudiolibrary.effects.SampleEffect;
+import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 
 public abstract class Song {

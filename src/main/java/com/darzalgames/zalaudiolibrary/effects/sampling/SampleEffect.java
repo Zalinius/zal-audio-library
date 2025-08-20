@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.effects;
+package com.darzalgames.zalaudiolibrary.effects.sampling;
 
 import java.util.function.UnaryOperator;
 
