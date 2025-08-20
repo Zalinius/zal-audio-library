@@ -14,7 +14,7 @@ class SampleClipperTest {
 	}
 
 	@Test
-	void apply_onNonBelowThreshold_doesNotClip() {
+	void apply_onValuesBelowThreshold_doesNotClip() {
 		float[] samples = {0.2f, 0f, -0.4f};
 		SampleEffect sampleEffect = new SampleClipper(0.5f);
 

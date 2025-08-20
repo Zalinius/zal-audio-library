@@ -30,6 +30,20 @@ class EnvelopeReverserTest {
 	}
 
 	@Test
+	void reverseEnvelope_onNonSymmetricalEnvelope_returnsReversedEnvelope() {
+		AdsrEnvelope originalEnvelope = new AdsrEnvelope(0.01f, 0.05f, 1f, 0.3f);
+
+		Envelope reversedEnvelope = EnvelopeReverser.reverseEnvelope(originalEnvelope);
+
+		assertEquals(reversedEnvelope.getEnvelope(1f, 0.0f), originalEnvelope.getEnvelope(1f, 1.0f));
+		assertEquals(reversedEnvelope.getEnvelope(1f, 0.2f), originalEnvelope.getEnvelope(1f, 0.8f));
+		assertEquals(reversedEnvelope.getEnvelope(1f, 0.4f), originalEnvelope.getEnvelope(1f, 0.6f));
+		assertEquals(reversedEnvelope.getEnvelope(1f, 0.6f), originalEnvelope.getEnvelope(1f, 0.4f));
+		assertEquals(reversedEnvelope.getEnvelope(1f, 0.8f), originalEnvelope.getEnvelope(1f, 0.2f));
+		assertEquals(reversedEnvelope.getEnvelope(1f, 1.0f), originalEnvelope.getEnvelope(1f, 0.0f));
+	}
+
+	@Test
 	void apply_createsInstantWithIdenticalContentsExceptEnvelope() {
 		Envelope original = new AdsrEnvelope(0.01f, 0.09f, 0.5f, 0.9f);
 		MusicalInstant musicalInstant = new MusicalInstant(Synth.sine(), Pitch.C4, NoteDuration.QUARTER, original, 1f, "instant ID");
