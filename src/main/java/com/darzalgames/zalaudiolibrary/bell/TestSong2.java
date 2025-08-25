@@ -3,6 +3,7 @@ package com.darzalgames.zalaudiolibrary.bell;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.effects.tracking.SynthOverflower;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class TestSong2 extends Song {
@@ -11,10 +12,13 @@ public class TestSong2 extends Song {
 
 	public TestSong2() {
 		super("test", 2f);
-		Synth synth = Synth.saw();
-		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .3f);
+		Synth synth = Synth.triangle();
+		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .1f);
 
 		Track mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
+
+		mainTrack.addEffect(new SynthOverflower(0.0f));//?
+
 
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);

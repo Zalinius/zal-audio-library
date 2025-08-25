@@ -1,7 +1,5 @@
 package com.darzalgames.zalaudiolibrary.effects.sampling;
 
-import java.util.Arrays;
-
 public class SampleClipper implements SampleEffect {
 
 	private final float clipAmplitude;
@@ -14,18 +12,13 @@ public class SampleClipper implements SampleEffect {
 	}
 
 	@Override
-	public float[] apply(final float[] samples) {
-		float[] copy = Arrays.copyOf(samples, samples.length);
-		for (int i = 0; i < copy.length; i++) {
-			float sample = copy[i];
-			if(sample < -clipAmplitude) {
-				sample = -clipAmplitude;
-			}
-			else if(sample > clipAmplitude) {
-				sample = clipAmplitude;
-			}
-			copy[i] = sample;
+	public Float apply(Float sample) {
+		if(sample < -clipAmplitude) {
+			sample = -clipAmplitude;
 		}
-		return copy;
+		else if(sample > clipAmplitude) {
+			sample = clipAmplitude;
+		}
+		return sample;
 	}
 }
