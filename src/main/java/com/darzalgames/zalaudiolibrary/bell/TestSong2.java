@@ -1,7 +1,7 @@
 package com.darzalgames.zalaudiolibrary.bell;
 
-import com.darzalgames.zalaudiolibrary.amplitude.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
@@ -11,16 +11,10 @@ public class TestSong2 extends Song {
 
 	public TestSong2() {
 		super("test", 2f);
-		Synth synth = Synth.sine();
-		Envelope envelope = new AdsrEnvelope(.01f, .09f, .3f, .4f);
+		Synth synth = Synth.saw();
+		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .3f);
 
 		Track mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
-		//		mainTrack.addEffect(new EnvelopeReverser());
-		//		mainTrack.addEffect(new SynthClipper(0.7f));
-		//		addSampleEffect(new SampleClipper(0.5f));
-		//		addSampleEffect(new SampleExploder(1f));
-		//		mainTrack.addEffect(new SynthExploder(0.3f));
-
 
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);

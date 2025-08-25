@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.darzalgames.zalaudiolibrary.amplitude.AdsrEnvelope;
-import com.darzalgames.zalaudiolibrary.amplitude.AsrEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.AsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
@@ -17,7 +17,7 @@ class EnvelopeReverserTest {
 
 	@Test
 	void reverseEnvelope_onSymmetricalEnvelope_returnsIdenticalEnvelope() {
-		AsrEnvelope originalEnvelope = new AsrEnvelope(0.1f, 1f, 0.1f);
+		AsrEnvelope originalEnvelope = AsrEnvelope.linear(0.1f, 0.1f);
 
 		Envelope reversedEnvelope = EnvelopeReverser.reverseEnvelope(originalEnvelope);
 
@@ -31,7 +31,7 @@ class EnvelopeReverserTest {
 
 	@Test
 	void reverseEnvelope_onNonSymmetricalEnvelope_returnsReversedEnvelope() {
-		AdsrEnvelope originalEnvelope = new AdsrEnvelope(0.01f, 0.05f, 1f, 0.3f);
+		AdsrEnvelope originalEnvelope = AdsrEnvelope.linear(0.01f, 0.05f, 1f, 0.3f);
 
 		Envelope reversedEnvelope = EnvelopeReverser.reverseEnvelope(originalEnvelope);
 
@@ -45,7 +45,7 @@ class EnvelopeReverserTest {
 
 	@Test
 	void apply_createsInstantWithIdenticalContentsExceptEnvelope() {
-		Envelope original = new AdsrEnvelope(0.01f, 0.09f, 0.5f, 0.9f);
+		Envelope original = AdsrEnvelope.linear(0.01f, 0.09f, 0.5f, 0.9f);
 		MusicalInstant musicalInstant = new MusicalInstant(Synth.sine(), Pitch.C4, NoteDuration.QUARTER, original, 1f, "instant ID");
 
 		MusicalInstant modifiedInstant = new EnvelopeReverser().apply(musicalInstant);
