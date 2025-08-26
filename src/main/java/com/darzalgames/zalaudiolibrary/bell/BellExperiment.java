@@ -3,6 +3,9 @@ package com.darzalgames.zalaudiolibrary.bell;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.percussive.PercussiveEnvelope;
+
 // An attempt to recreate this sound https://en.wikipedia.org/wiki/File:Additive_synthesis_bell.ogg
 public class BellExperiment {
 
@@ -14,12 +17,14 @@ public class BellExperiment {
 		float[] wobbleAmplitudes = {0f, 1f, .1f, .1f, .1f, 1, .1f, .2f, .2f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		float[] wobbleFrequencies = {0, 2.8f, 9.2f, 9.5f, 10f, 4.8f, 9f, 8.8f, 7.1f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		float[] amplitudeScales = {-32f, -34.5f, -39.8f, -50.2f, -45.6f, -35.6f, -35.7f, -36.3f, -38.4f, -45,-45,-45,-45,-45,-45,-45,-45,-50,-50,-50,-50};
-		float[] decayRate = {.85f, .8f, 1, 1, 1, 1, 1.25f, 1.5f, 1.5f, 4, 3.5f, 4, 4, 4, 4, 4, 5, 3.5f, 5, 6, 6};
+		float[] releaseTimes= {3.5f, 3.75f, 3.0f, 3.0f, 3.0f, 3.0f, 2.4f, 2.0f, 2.0f, 0.75f, 0.85f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.6f, 0.85f, 0.6f, 0.5f, 0.5f};
+
+		float[] amplitudes = {0.25f, 0.18f, 0.10f, 0.03f, 0.05f, 0.16f, 0.16f, 0.15f, 0.12f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.03f, 0.03f, 0.03f, 0.03f};
 
 		int partialCount = frequencyMultiples.length;
 
 		for (int i = 0; i < partialCount; i++) {
-			partials.add(new Partial(frequencyMultiples[i], wobbleAmplitudes[i], wobbleFrequencies[i], amplitudeScales[i], decayRate[i]));
+			partials.add(new Partial(frequencyMultiples[i], wobbleAmplitudes[i], wobbleFrequencies[i], amplitudes[i], releaseTimes[i]));
 		}
 
 		return partials;
@@ -33,20 +38,20 @@ public class BellExperiment {
 		private final float amplitudeModulationAmplitude;
 		private final float amplitudeModulationFrequency;
 
-		private final float decayRate;
+		private final PercussiveEnvelope envelope;
 
-		public Partial(float frequencyMultiplier, float wobbleAmplitude, float wobbleFrequency, float amplitudeScale, float decayRate) {
+		public Partial(float frequencyMultiplier, float wobbleAmplitude, float wobbleFrequency, float amplitude, float releaseTime) {
 			this.frequencyMultiplier = frequencyMultiplier;
 			amplitudeModulationAmplitude = wobbleAmplitude;
 			amplitudeModulationFrequency = wobbleFrequency;
-			amplitude = amplitudeScale;
-			this.decayRate = decayRate * 1f; //TODO increasing the decay rate can make a cowbell like sound or other pitched percussion
+			this.amplitude = amplitude;
+			envelope = ArEnvelope.quadratic(0.001f, releaseTime-0.001f);
+			//TODO decreasing the release time can make a cowbell like sound or other pitched percussion
 		}
 
 
 
 		public float computeSample(float t, float fundamentalFrequency) {
-			float baseAmplitude = decibelToAmplitude(amplitude); //compute the base amplitude
 
 			//this is a multiplier, but it only reduces the amplitude, never makes it louder
 			//For example, with amplitudeModulationAmplitude==0, the multiplier will always be 1,
@@ -54,20 +59,12 @@ public class BellExperiment {
 
 			float amplitudeModulationPhase = (float) (2*Math.PI * amplitudeModulationFrequency * t);
 			float amplitudeModulation = (float) Math.sin(amplitudeModulationPhase) * amplitudeModulationAmplitude + (1-amplitudeModulationAmplitude);
-			//after 1 second
-			float envelope;
-			if(t < 1f) {
-				envelope = (float) (Math.exp(-t * decayRate) * (1 - Math.exp(-t * 1000)));
-			}
-			else {
-				envelope = (float) Math.exp(-t * decayRate);
-			}
+
+
 
 			float toneComponent = (float) Math.sin(2*Math.PI * t * frequencyMultiplier * fundamentalFrequency);
 
-			float smartSample = baseAmplitude * amplitudeModulation * envelope * toneComponent;
-
-			return 8 * smartSample; //TODO why multiply by 8? is the original just too quiet??
+			return amplitude * amplitudeModulation * envelope.getEnvelope(t) * toneComponent; //TODO why multiply by 8? is the original just too quiet??
 		}
 
 
@@ -96,10 +93,6 @@ public class BellExperiment {
 		}
 
 
-
-		public float getDecayRate() {
-			return decayRate;
-		}
 
 	}
 
