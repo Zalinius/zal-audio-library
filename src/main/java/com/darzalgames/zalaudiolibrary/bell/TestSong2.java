@@ -18,6 +18,7 @@ public class TestSong2 extends Song {
 
 
 
+
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
 		mainTrack.addSilence(NoteDuration.EIGHTH);

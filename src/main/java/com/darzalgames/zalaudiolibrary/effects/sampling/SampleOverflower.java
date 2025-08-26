@@ -13,14 +13,17 @@ public class SampleOverflower implements SampleEffect {
 
 	@Override
 	public Float apply(Float sample) {
-		if(sample < -overflowAmplitude) {
-			float overflow = sample - overflowAmplitude;
-			sample = overflowAmplitude - overflow;
-		}
-		else if(sample > overflowAmplitude) {
+		boolean originalIsPositive = sample >= 0;
+		sample = Math.abs(sample);
+		if(sample > overflowAmplitude) {
 			float overflow = sample - overflowAmplitude;
 			sample = -overflowAmplitude + overflow;
 		}
+
+		if(!originalIsPositive) {
+			sample = -sample;
+		}
+
 		return sample;
 	}
 

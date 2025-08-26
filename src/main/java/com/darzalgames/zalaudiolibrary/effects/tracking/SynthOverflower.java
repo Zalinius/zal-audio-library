@@ -2,6 +2,7 @@ package com.darzalgames.zalaudiolibrary.effects.tracking;
 
 import java.util.function.UnaryOperator;
 
+import com.darzalgames.zalaudiolibrary.effects.sampling.SampleOverflower;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
@@ -26,17 +27,8 @@ public class SynthOverflower extends SimpleMusicalEffect {
 	public static Synth overflowSynth(Synth original, float overflowAmplitude) {
 		UnaryOperator<Float> originalSynth = original.getWaveFunction();
 		UnaryOperator<Float> overflowedSynth = x -> {
-			float value = originalSynth.apply(x);
-			if(value < -overflowAmplitude) {
-				float overflow = value - overflowAmplitude;
-				value = overflowAmplitude - overflow;
-			}
-			else if(value > overflowAmplitude) {
-				float overflow = value - overflowAmplitude;
-				value = -overflowAmplitude + overflow;
-			}
-
-			return value;
+			SampleOverflower sampleOverflower = new SampleOverflower(overflowAmplitude);
+			return sampleOverflower.apply(originalSynth.apply(x));
 		};
 		return new Synth(overflowedSynth);
 	}
