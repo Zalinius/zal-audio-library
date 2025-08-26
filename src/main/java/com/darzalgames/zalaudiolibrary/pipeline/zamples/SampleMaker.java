@@ -47,15 +47,15 @@ public class SampleMaker implements VolumeListener {
 
 				sampleBuffer[i] += currentMusicVolume * amplitude * waveValue;
 
+				for (Iterator<SampleEffect> effectIt = samplingEffects.iterator(); effectIt.hasNext();) {
+					SampleEffect sampleEffect = effectIt.next();
+					sampleBuffer[i] = sampleEffect.apply(sampleBuffer[i]);
+				}
+
 				if(i == sampleCount - 1) {
 					phaseMap.put(simpleSound.id(), moduloedWaveProgress);
 				}
 			}
-		}
-
-		for (Iterator<SampleEffect> it = samplingEffects.iterator(); it.hasNext();) {
-			SampleEffect sampleEffect = it.next();
-			sampleBuffer = sampleEffect.apply(sampleBuffer);
 		}
 
 		return sampleBuffer;

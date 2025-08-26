@@ -5,7 +5,7 @@ import java.util.function.UnaryOperator;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
-public class SynthClipper implements TrackEffect {
+public class SynthClipper extends SimpleMusicalEffect {
 
 	private final float clipAmplitude;
 
@@ -17,7 +17,7 @@ public class SynthClipper implements TrackEffect {
 	}
 
 	@Override
-	public MusicalInstant apply(MusicalInstant instant) {
+	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
 		Synth clippedSynth = clipSynth(instant.synth(), clipAmplitude);
 
 		return new MusicalInstant(clippedSynth, instant.pitch(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());

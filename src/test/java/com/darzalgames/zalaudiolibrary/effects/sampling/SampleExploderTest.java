@@ -1,8 +1,7 @@
 package com.darzalgames.zalaudiolibrary.effects.sampling;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,25 +14,20 @@ class SampleExploderTest {
 
 	@Test
 	void apply_onValuesAboveThreshold_doesNotExplode() {
-		float[] samples = {0.8f, 1.0f, -0.7f};
 		SampleEffect sampleEffect = new SampleExploder(0.5f);
 
-		float[] exploded = sampleEffect.apply(samples);
-
-		assertArrayEquals(samples, exploded);
+		assertEquals(0.8f, sampleEffect.apply(0.8f));
+		assertEquals(1.0f, sampleEffect.apply(1.0f));
+		assertEquals(-0.7f, sampleEffect.apply(-0.7f));
 	}
 
 	@Test
 	void apply_belowThreshold_explodesPositiveAndNegativeValues() {
-		float[] samples = {0.2f, 0f, -0.4f};
 		SampleEffect sampleEffect = new SampleExploder(0.5f);
 
-		float[] exploded = sampleEffect.apply(samples);
-
-		assertFalse(Arrays.equals(samples, exploded));
-		assertEquals(0.5f, exploded[0]);
-		assertEquals(0.5f, exploded[1]);
-		assertEquals(-0.5f, exploded[2]);
+		assertEquals(0.5f, sampleEffect.apply(0.2f));
+		assertEquals(0.5f, sampleEffect.apply(  0f));
+		assertEquals(-0.5f, sampleEffect.apply(-0.4f));
 	}
 
 }

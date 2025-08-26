@@ -1,7 +1,5 @@
 package com.darzalgames.zalaudiolibrary.effects.sampling;
 
-import java.util.Arrays;
-
 public class SampleExploder implements SampleEffect {
 
 	private final float explodeCutoff;
@@ -14,18 +12,13 @@ public class SampleExploder implements SampleEffect {
 	}
 
 	@Override
-	public float[] apply(float[] samples) {
-		float[] copy = Arrays.copyOf(samples, samples.length);
-		for (int i = 0; i < copy.length; i++) {
-			float sample = copy[i];
-			if(sample >= 0 && sample < explodeCutoff) {
-				sample = explodeCutoff;
-			}
-			else if(sample < 0 && sample > -explodeCutoff) {
-				sample = -explodeCutoff;
-			}
-			copy[i] = sample;
+	public Float apply(Float sample) {
+		if(sample >= 0 && sample < explodeCutoff) {
+			sample = explodeCutoff;
 		}
-		return copy;
+		else if(sample < 0 && sample > -explodeCutoff) {
+			sample = -explodeCutoff;
+		}
+		return sample;
 	}
 }

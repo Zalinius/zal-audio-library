@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.ZeroEnvelope;
-import com.darzalgames.zalaudiolibrary.effects.tracking.TrackEffect;
+import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
@@ -19,7 +19,7 @@ public class Track {
 	private final Instrument instrument;
 	private final float amplitude;
 
-	private final List<TrackEffect> trackEffects;
+	private final List<MusicalEffect> trackEffects;
 
 
 	public Track(String songName, String trackName, Instrument instrument) {
@@ -50,7 +50,7 @@ public class Track {
 		trackMelody.put(newInstantStartBeat, newInstant);
 	}
 
-	public void addEffect(TrackEffect trackEffect) {
+	public void addEffect(MusicalEffect trackEffect) {
 		trackEffects.add(trackEffect);
 	}
 
@@ -78,12 +78,14 @@ public class Track {
 			Entry<Fraction, MusicalInstant> instantAtOrBeforeBeat = trackMelody.floorEntry(beatIndex);
 			int trackRepetitionCounter = Fraction.integerDivision(new Fraction(startBeat), lengthInBeats());
 			Fraction activeInstantAbsoluteStartTime = Fraction.add(lengthInBeats().scale(trackRepetitionCounter), instantAtOrBeforeBeat.getKey());
-			MusicalInstant musicalInstant = instantAtOrBeforeBeat.getValue();
-			for (Iterator<TrackEffect> it = trackEffects.iterator(); it.hasNext();) {
-				TrackEffect trackEffect = it.next();
-				musicalInstant = trackEffect.apply(musicalInstant);
+			Collection<MusicalInstant> musicalInstants = List.of(instantAtOrBeforeBeat.getValue());
+			for (Iterator<MusicalEffect> it = trackEffects.iterator(); it.hasNext();) {
+				MusicalEffect trackEffect = it.next();
+				Collection<MusicalInstant> affectedInstants = new ArrayList<>();
+				musicalInstants.forEach(instant -> affectedInstants.addAll(trackEffect.apply(instant)));
+				musicalInstants = affectedInstants;
 			}
-			allActiveInstants.add(new TimedMusicalInstant(activeInstantAbsoluteStartTime, musicalInstant));
+			musicalInstants.forEach(instant -> allActiveInstants.add(new TimedMusicalInstant(activeInstantAbsoluteStartTime, instant)));
 
 			beatIndex = Fraction.add(beatIndex, instantAtOrBeforeBeat.getValue().duration().inBeats());
 			if(beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
