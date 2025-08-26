@@ -6,10 +6,10 @@ import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 /**
  * A track effect that reverses an envelope of a musical instant, making sounds sound reversed
  */
-public class EnvelopeReverser implements TrackEffect{
+public class EnvelopeReverser extends SimpleMusicalEffect{
 
 	@Override
-	public MusicalInstant apply(MusicalInstant instant) {
+	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
 		Envelope reversedEnvelope = reverseEnvelope(instant.envelope());
 
 		return new MusicalInstant(instant.synth(), instant.pitch(), instant.duration(), reversedEnvelope, instant.amplitude(), instant.id());

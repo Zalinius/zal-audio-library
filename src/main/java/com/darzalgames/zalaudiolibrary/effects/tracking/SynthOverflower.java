@@ -5,7 +5,7 @@ import java.util.function.UnaryOperator;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
-public class SynthOverflower implements TrackEffect {
+public class SynthOverflower extends SimpleMusicalEffect {
 
 	private final float overflowAmplitude;
 
@@ -17,7 +17,7 @@ public class SynthOverflower implements TrackEffect {
 	}
 
 	@Override
-	public MusicalInstant apply(MusicalInstant instant) {
+	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
 		Synth overflowedSynth = overflowSynth(instant.synth(), overflowAmplitude);
 
 		return new MusicalInstant(overflowedSynth, instant.pitch(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());

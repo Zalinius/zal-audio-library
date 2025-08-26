@@ -7,7 +7,6 @@ import java.util.List;
 import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.bell.BellExperiment;
-import com.darzalgames.zalaudiolibrary.bell.TestSong2;
 import com.darzalgames.zalaudiolibrary.bell.BellExperiment.Partial;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
@@ -19,7 +18,7 @@ public class DigitalSynthesizer {
 	public static void main(String[] args) throws LineUnavailableException, InterruptedException {
 
 		Song testsong = new TestSong();
-		testsong = new TestSong2();
+		//		testsong = new TestSong2();
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 
 		int duration = 1;

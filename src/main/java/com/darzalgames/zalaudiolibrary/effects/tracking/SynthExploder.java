@@ -5,7 +5,7 @@ import java.util.function.UnaryOperator;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
-public class SynthExploder implements TrackEffect {
+public class SynthExploder extends SimpleMusicalEffect {
 
 	private final float explodeThreshold;
 
@@ -17,7 +17,7 @@ public class SynthExploder implements TrackEffect {
 	}
 
 	@Override
-	public MusicalInstant apply(MusicalInstant instant) {
+	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
 		Synth explodedSynth = explodeSynth(instant.synth(), explodeThreshold);
 
 		return new MusicalInstant(explodedSynth, instant.pitch(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());

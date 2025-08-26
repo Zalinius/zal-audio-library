@@ -48,7 +48,7 @@ class EnvelopeReverserTest {
 		Envelope original = AdsrEnvelope.linear(0.01f, 0.09f, 0.5f, 0.9f);
 		MusicalInstant musicalInstant = new MusicalInstant(Synth.sine(), Pitch.C4, NoteDuration.QUARTER, original, 1f, "instant ID");
 
-		MusicalInstant modifiedInstant = new EnvelopeReverser().apply(musicalInstant);
+		MusicalInstant modifiedInstant = new EnvelopeReverser().apply(musicalInstant).get(0);
 
 		assertNotEquals(musicalInstant, modifiedInstant);
 		assertEquals(musicalInstant.synth(), modifiedInstant.synth());
