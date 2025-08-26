@@ -14,8 +14,4 @@ public class BitCompressor implements SampleEffect {
 		return (float)(binarySample / (Math.pow(2, bitDepth)));
 	}
 
-	public static void main(String[] args) {
-		System.out.println(new BitCompressor(16).apply(-0.99f));
-	}
-
 }

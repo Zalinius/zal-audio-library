@@ -3,18 +3,16 @@ package com.darzalgames.zalaudiolibrary;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
-import com.darzalgames.zalaudiolibrary.effects.tracking.OvertoneEffect;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class TestSong extends Song {
 
 	public TestSong() {
 		super("test", 2);
-		Synth synth = Synth.saw();
+		Synth synth = Synth.sine();
 		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .4f);
 
-		Track mainTrack = createTrack("main", new Instrument(synth, envelope), 0.5f);
-		mainTrack.addEffect(OvertoneEffect.octaveChord());
+		Track mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
 
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
