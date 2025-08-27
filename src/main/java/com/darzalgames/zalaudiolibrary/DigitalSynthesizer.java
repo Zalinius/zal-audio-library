@@ -10,16 +10,32 @@ import com.darzalgames.zalaudiolibrary.bell.BellExperiment;
 import com.darzalgames.zalaudiolibrary.bell.BellExperiment.Partial;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
+import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
-	public static void main(String[] args) throws LineUnavailableException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 
-		Song testsong = new TestSong();
-		//		testsong = new TestSong2();
+		//		runSong(new TestSong());
+
+		ringBells();
+
+
+	}
+
+	public static void runSong(Song song) throws Exception {
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
+		AudioPipeline audioPipeline = new AudioPipeline(song, audioConsumer, 1f, 1f);
 
+		audioPipeline.start();
+
+		Thread.sleep(20000);
+		audioPipeline.shutdown();
+	}
+
+	public static void ringBells() throws Exception {
+		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 		int duration = 3;
 		float[] bellTest = new float[duration * AudioConstants.SAMPLING_RATE];
 
@@ -50,16 +66,7 @@ public class DigitalSynthesizer {
 			System.out.println("max amplitude: " + max);
 			audioConsumer.writeSamples(bellTest);
 		}
-
-		//		AudioPipeline audioPipeline = new AudioPipeline(testsong, audioConsumer, 1f, 1f);
-		//
-		//		audioPipeline.start();
-		//
-		//		Thread.sleep(20000);
-		//		audioPipeline.shutdown();
-
 	}
-
 
 	public static TwoByteSampleAdapter getJavaAudioConsumer() throws LineUnavailableException {
 		AudioFormat af = new AudioFormat(AudioConstants.SAMPLING_RATE, 16, 1, true, false);
