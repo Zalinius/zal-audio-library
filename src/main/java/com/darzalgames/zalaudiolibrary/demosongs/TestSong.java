@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.demosongs;
 
 import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
@@ -15,7 +15,7 @@ public class TestSong extends Song {
 		AmplitudeModulator amplitudeModulator = new AmplitudeModulator(1f, 2);
 		envelope = amplitudeModulator.modulateEnvelope(envelope);
 
-		Track mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
+		SequentialTrack mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
 
 		//		mainTrack.addEffect(new EnvelopeReverser());
 		//		mainTrack.addEffect(new TransposeEffect(Pitch::down));

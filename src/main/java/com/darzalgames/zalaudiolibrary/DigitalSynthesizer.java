@@ -2,8 +2,8 @@ package com.darzalgames.zalaudiolibrary;
 
 import javax.sound.sampled.*;
 
-import com.darzalgames.zalaudiolibrary.bell.BellSong;
 import com.darzalgames.zalaudiolibrary.composing.Song;
+import com.darzalgames.zalaudiolibrary.demosongs.BellSong;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
