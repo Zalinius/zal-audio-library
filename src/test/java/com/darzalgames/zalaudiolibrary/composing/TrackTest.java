@@ -106,6 +106,23 @@ class TrackTest {
 	}
 
 	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_onQuarterDotNotesAndFirstBeat_returns2Notes() {
+		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C4, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C5, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C6, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C7, new ZeroEnvelope());
+
+		List<TimedMusicalInstant> activeInstantsAt1 = track.getMusicalInstantsActiveThisBeatInclusive(1);
+		assertEquals(2, activeInstantsAt1.size());
+		assertEquals(new Fraction(0), activeInstantsAt1.get(0).startingBeat());
+		assertEquals(Pitch.C4, activeInstantsAt1.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(3,2), activeInstantsAt1.get(1).startingBeat());
+		assertEquals(Pitch.C5, activeInstantsAt1.get(1).musicalInstant().pitch());
+	}
+
+	@Test
 	void getMusicalInstantsActiveThisBeatInclusive_at0With8SequentialSixteenthNotes_returnsFirst5Notes() {
 		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
 

@@ -59,4 +59,8 @@ public abstract class Song {
 		return initialBps;
 	}
 
+	public String getSongName() {
+		return songName;
+	}
+
 }

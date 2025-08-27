@@ -7,16 +7,14 @@ import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.PercussiveEnvelope;
-import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
-import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 // An attempt to recreate this sound https://en.wikipedia.org/wiki/File:Additive_synthesis_bell.ogg
 public class BellExperiment {
 
 
-	public static List<Partial> makePartials(){
+	public static List<Partial> makePartials(float durationMultiplier){
 		List<Partial> partials = new ArrayList<>();
 
 		float[] frequencyMultiples = {1.0f, 1.6766169f, 2.1741292f, 2.2537313f, 2.3830845f, 2.4925373f, 3.3731344f, 4.402985f, 5.437811f, 1.1641791f, 2.7363183f, 6.970149f, 8.40796f, 8.855721f, 9.960199f, 12.184079f, 13.1890545f, 14.373135f, 14.935324f, 16.169155f, 18.40796f};
@@ -29,7 +27,7 @@ public class BellExperiment {
 		int partialCount = frequencyMultiples.length;
 
 		for (int i = 0; i < partialCount; i++) {
-			partials.add(new Partial(frequencyMultiples[i], wobbleAmplitudes[i], wobbleFrequencies[i], amplitudes[i], releaseTimes[i], i));
+			partials.add(new Partial(frequencyMultiples[i], wobbleAmplitudes[i], wobbleFrequencies[i], amplitudes[i], releaseTimes[i] * durationMultiplier, i));
 		}
 
 		return partials;
@@ -40,7 +38,7 @@ public class BellExperiment {
 		private final Synth synth;
 		private final float frequencyMultiplier;
 		private final float amplitude;
-		private final PercussiveEnvelope envelope;
+		private final Envelope envelope;
 
 		private final float amplitudeModulationAmplitude;
 		private final float amplitudeModulationFrequency;
@@ -54,61 +52,42 @@ public class BellExperiment {
 			amplitudeModulationAmplitude = wobbleAmplitude;
 			amplitudeModulationFrequency = wobbleFrequency;
 			this.amplitude = amplitude;
-			envelope = ArEnvelope.quadratic(0.001f, releaseTime-0.001f);
-			this.partialIndex = partialIndex;
-			//TODO decreasing the release time can make a cowbell like sound or other pitched percussion
-		}
-
-		public MusicalInstant makeMusicalInstant(Pitch basePitch, NoteDuration duration, String baseId) {
+			PercussiveEnvelope baseEnvelope = ArEnvelope.quadratic(0.001f, releaseTime-0.001f);
 			AmplitudeModulator amplitudeModulator = new AmplitudeModulator(amplitudeModulationAmplitude, amplitudeModulationFrequency);
-			Envelope modulatedEnvelope = amplitudeModulator.modulateEnvelope(envelope);
-			Pitch pitch = Pitch.makePitch(basePitch.getName() + "inharmonic(x"+frequencyMultiplier+")", basePitch.getFrequency() * frequencyMultiplier);
-			return new MusicalInstant(synth, pitch, duration, modulatedEnvelope, amplitude, baseId + ":" + partialIndex);
+			envelope = amplitudeModulator.modulateEnvelope(baseEnvelope);
+			this.partialIndex = partialIndex;
 		}
 
 		public float computeSample(float t, float fundamentalFrequency) {
-			AmplitudeModulator amplitudeModulator = new AmplitudeModulator(amplitudeModulationAmplitude, amplitudeModulationFrequency);
-
-			float amplitudeModulation = amplitudeModulator.apply(t);
-
 			float toneComponent = synth.f((t * frequencyMultiplier * fundamentalFrequency)%1);
 
-			return amplitude * amplitudeModulation * envelope.getEnvelope(t) * toneComponent;
+			return amplitude * envelope.getEnvelope(t, t) * toneComponent;
 		}
 
 
-
-
-		public float getFrequency() {
-			return frequencyMultiplier;
+		public Synth getSynth() {
+			return synth;
 		}
 
-
-
-		public float getWobbleAmplitude() {
-			return amplitudeModulationAmplitude;
+		public Envelope getEnvelope() {
+			return envelope;
 		}
 
-
-
-		public float getWobbleFrequency() {
-			return amplitudeModulationFrequency;
+		public int getPartialIndex() {
+			return partialIndex;
 		}
 
-
-
-		public float getAmplitudeScale() {
+		public float getAmplitude() {
 			return amplitude;
 		}
 
-
-
+		public Pitch getPartialPitch(Pitch fundamental) {
+			return Pitch.makePitch(fundamental.getName() + "x" + frequencyMultiplier, fundamental.getFrequency() * frequencyMultiplier);
+		}
 	}
 
 	public static float decibelToAmplitude(float decibel) {
 		return (float) Math.pow(10, decibel/20);
 	}
-
-
 
 }

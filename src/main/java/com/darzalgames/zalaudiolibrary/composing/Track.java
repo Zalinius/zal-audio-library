@@ -87,7 +87,7 @@ public class Track {
 			}
 			musicalInstants.forEach(instant -> allActiveInstants.add(new TimedMusicalInstant(activeInstantAbsoluteStartTime, instant)));
 
-			beatIndex = Fraction.add(beatIndex, instantAtOrBeforeBeat.getValue().duration().inBeats());
+			beatIndex = Fraction.add(instantAtOrBeforeBeat.getKey(), instantAtOrBeforeBeat.getValue().duration().inBeats());
 			if(beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
 				beatIndex = Fraction.integerRemainder(beatIndex, lengthInBeats());
 				endBeat = Fraction.integerRemainder(beatIndex, endBeat);
@@ -107,6 +107,13 @@ public class Track {
 
 	public String getIdPrefix() {
 		return songName + " - " + trackName + " - ";
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		trackMelody.forEach((f, mi) -> builder.append(f + ":" + mi + '\n'));
+		return builder.toString();
 	}
 
 }
