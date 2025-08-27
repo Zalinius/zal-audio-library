@@ -9,8 +9,8 @@ import com.darzalgames.zalaudiolibrary.composing.*;
 
 public class BellSong extends Song {
 
-	public static final Pitch F4s = makeSharp(Pitch.F4);
-	public static final Pitch G4s = makeSharp(Pitch.G4);
+	public static final Pitch F4s = Pitch.F4.sharpen();
+	public static final Pitch G4s = Pitch.G4.sharpen();
 
 	private final List<Track> bellTracks;
 	private final List<Partial> bellPartials;
@@ -18,7 +18,7 @@ public class BellSong extends Song {
 	public BellSong() {
 		super("Bell Song", 2f);
 
-		bellPartials = BellExperiment.makePartials(1f);
+		bellPartials = BellExperiment.makePartials(1);
 		bellTracks = new ArrayList<>();
 		for (Iterator<Partial> it = bellPartials.iterator(); it.hasNext();) {
 			Partial bellPartial = it.next();
@@ -97,10 +97,6 @@ public class BellSong extends Song {
 
 	public void silenceBell(NoteDuration duration) {
 		bellTracks.forEach(track -> track.addSilence(duration));
-	}
-
-	public static Pitch makeSharp(Pitch pitch) {
-		return Pitch.makePitch(pitch.getName() + "#", pitch.getFrequency() * (float)Math.pow(2, 1/12f));
 	}
 
 }

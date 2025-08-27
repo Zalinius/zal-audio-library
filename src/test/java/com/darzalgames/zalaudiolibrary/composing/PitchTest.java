@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 class PitchTest {
 
+	private static final float ALLOWED_ERROR = 0.001f;
+
 	@Test
 	void up_onNaturalPitch_returnsNextNaturalNoteUp() {
 		assertEquals(Pitch.D1, Pitch.C1.up());
@@ -76,5 +78,24 @@ class PitchTest {
 		assertEquals(Pitch.NONE, Pitch.C0.octaveDown());
 	}
 
+	@Test
+	void sharpen_raisesPitchByOneSemitone() {
+		Pitch e4Sharp = Pitch.E4.sharpen();
+
+		assertEquals("E4♯", e4Sharp.getName());
+		assertEquals(Pitch.F4.getFrequency(), e4Sharp.getFrequency(), ALLOWED_ERROR);
+		assertEquals("E4♯♯", e4Sharp.sharpen().getName());
+		assertEquals(Pitch.F4.sharpen().getFrequency(), e4Sharp.sharpen().getFrequency(), ALLOWED_ERROR);
+	}
+
+	@Test
+	void flatten_lowersPitchByOneSemitone() {
+		Pitch f4flat = Pitch.F4.flatten();
+
+		assertEquals("F4♭", f4flat.getName());
+		assertEquals(Pitch.E4.getFrequency(), f4flat.getFrequency(), ALLOWED_ERROR);
+		assertEquals("F4♭♭", f4flat.flatten().getName());
+		assertEquals(Pitch.E4.flatten().getFrequency(), f4flat.flatten().getFrequency(), ALLOWED_ERROR);
+	}
 
 }

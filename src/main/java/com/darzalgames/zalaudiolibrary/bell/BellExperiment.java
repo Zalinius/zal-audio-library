@@ -85,9 +85,4 @@ public class BellExperiment {
 			return Pitch.makePitch(fundamental.getName() + "x" + frequencyMultiplier, fundamental.getFrequency() * frequencyMultiplier);
 		}
 	}
-
-	public static float decibelToAmplitude(float decibel) {
-		return (float) Math.pow(10, decibel/20);
-	}
-
 }
