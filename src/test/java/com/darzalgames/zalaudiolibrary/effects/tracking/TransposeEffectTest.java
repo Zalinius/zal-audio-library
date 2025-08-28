@@ -21,7 +21,7 @@ class TransposeEffectTest {
 		MusicalInstant transpose = transposeEffect.applySimpleEffect(original);
 
 		assertNotEquals(original.pitch(), transpose.pitch());
-		assertEquals(Pitch.D4, transpose.pitch());
+		assertEquals(Pitch.D4, transpose.pitch().getBasePitch());
 		assertEquals(original.synth(), transpose.synth());
 		assertEquals(original.duration(), transpose.duration());
 		assertEquals(original.envelope(), transpose.envelope());

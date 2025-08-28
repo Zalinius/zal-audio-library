@@ -22,6 +22,7 @@ public class BellSong extends Song {
 		CompositeTrack bellTrack = new CompositeTrack(bellComplexSynth, getSongName(), "bell");
 		addTrack(bellTrack);
 
+
 		bellTrack.addNote(QUARTER_DOT, E4);
 		bellTrack.addNote(EIGHTH, E4);
 		bellTrack.addNote(QUARTER, A4);

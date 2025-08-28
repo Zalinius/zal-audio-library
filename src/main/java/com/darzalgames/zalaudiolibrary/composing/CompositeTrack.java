@@ -27,7 +27,7 @@ public class CompositeTrack implements Track{
 
 	public void addNote(NoteDuration duration, Pitch pitch) {
 		for (int i = 0; i < tracks.size(); i++) {
-			Pitch partialPitch = partials.get(i).getPartialPitch(pitch);
+			ComplexPitch partialPitch = partials.get(i).getPartialPitch(pitch);
 			tracks.get(i).addNote(duration, partialPitch);
 		}
 	}
