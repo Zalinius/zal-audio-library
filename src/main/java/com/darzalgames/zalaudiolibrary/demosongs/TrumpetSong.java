@@ -25,14 +25,13 @@ public class TrumpetSong extends Song {
 	public TrumpetSong() {
 		super("Trumpet Song", 2f);
 
-		ComplexSynth trumpetComplexSynth = new TrumpetComplexSynth();
+		ComplexSynth trumpetComplexSynth = new TrumpetComplexSynth(1f, true);
 		ComplexSynth tubaComblexSynth = new TrumpetComplexSynth(1f, false);
 
-
-		main = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet", 0.4f);
+		main = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet", 0.34f);
 		addTrack(main);
 
-		mainOctave = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet bright", 0.3f);
+		mainOctave = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet bright", 0.34f);
 		addTrack(mainOctave);
 
 		secondary = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet accompaniment", 0.2f);

@@ -10,6 +10,7 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 public class DigitalSynthesizer {
 
 	public static void main(String[] args) throws Exception {
+		//		runSong(new BellSong());
 		runSong(new TrumpetSong());
 	}
 
@@ -19,7 +20,7 @@ public class DigitalSynthesizer {
 
 		audioPipeline.start();
 
-		Thread.sleep(16500);
+		Thread.sleep(16000);
 		audioPipeline.shutdown();
 	}
 
