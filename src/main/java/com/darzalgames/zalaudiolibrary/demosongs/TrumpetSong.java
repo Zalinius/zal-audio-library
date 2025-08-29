@@ -28,6 +28,7 @@ public class TrumpetSong extends Song {
 		ComplexSynth trumpetComplexSynth = new TrumpetComplexSynth();
 		ComplexSynth tubaComblexSynth = new TrumpetComplexSynth(1f, false);
 
+
 		main = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet", 0.4f);
 		addTrack(main);
 

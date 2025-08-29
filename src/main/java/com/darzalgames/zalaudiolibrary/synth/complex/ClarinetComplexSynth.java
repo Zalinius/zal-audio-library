@@ -10,6 +10,8 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class ClarinetComplexSynth implements ComplexSynth {
 
+	private static final float AMPLITUDE_NORMALIZER = 0.66f;
+
 	private final float durationMultiplier;
 
 	public ClarinetComplexSynth() {
@@ -62,7 +64,7 @@ public class ClarinetComplexSynth implements ComplexSynth {
 
 			Envelope envelope = new ArbitraryEnvelope(envelopeData);
 
-			Partial harmonicPartial = new Partial(Synth.sine(), frequencyMultiple, 0.02f, envelope, i);
+			Partial harmonicPartial = new Partial(Synth.sine(), frequencyMultiple, AMPLITUDE_NORMALIZER, envelope, i);
 			partials.add(harmonicPartial);
 		}
 
