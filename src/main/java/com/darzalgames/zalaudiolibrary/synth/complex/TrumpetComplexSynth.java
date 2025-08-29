@@ -7,11 +7,34 @@ import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment.ArbitraryEnvelope;
 import com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment.ArbitrarySustainedEnvelope;
 
+/**
+ * Objects of this class are immutable
+ */
 public class TrumpetComplexSynth implements ComplexSynth {
 
+	private final float harmonics;
+	private final boolean sustained;
 
+	/**
+	 * Constructs a Trumpet synth with full harmonics and sustained notes
+	 */
+	public TrumpetComplexSynth() {
+		this(1f, true);
+	}
+
+	/**
+	 * Constructs a Trumpet synth with a fraction of the harmonics
+	 * @param harmonics what percentage of the harmonics should be included.<br>
+	 *			1.0 gives a full trumpet, around 0.5f gives a muted trumpet, and further approaching 0 will give a sine synth
+	 * @param sustained True if the trumpet should have sustain, false if it should be percussive
+	 */
+	public TrumpetComplexSynth(float harmonics, boolean sustained) {
+		this.harmonics = harmonics;
+		this.sustained = sustained;
+	}
 
 	@Override
 	public List<Partial>  makePartials() {
@@ -36,17 +59,22 @@ public class TrumpetComplexSynth implements ComplexSynth {
 		List<Integer> sustainIndices = List.of(3, 4, 4, 4, 3, 3, 3, 4, 5, 5, 5, 5);
 
 
-		int harmonics = envelopes.size();
+		int totalHarmonics = envelopes.size();
 		float shortener = 1f;
 
-		for (int i = 0; i < harmonics; i++) {
+		for (int i = 0; i < totalHarmonics * harmonics ; i++) {
 			int frequencyMultiple = i+1;
 
 			List<Tuple<Float, Float>> envelopeData = envelopes.get(i);
 			envelopeData = envelopeData.stream().map(tuple -> new Tuple<>(tuple.e()*shortener, tuple.f())).toList();
 
-			Envelope envelope = new ArbitrarySustainedEnvelope(envelopeData, sustainIndices.get(i));
-			//			envelope = new ArbitraryEnvelope(envelopeData);
+			Envelope envelope;
+			if(sustained) {
+				envelope = new ArbitrarySustainedEnvelope(envelopeData, sustainIndices.get(i));
+			}
+			else {
+				envelope = new ArbitraryEnvelope(envelopeData);
+			}
 
 			Partial harmonicPartial = new Partial(Synth.sine(), frequencyMultiple, 0.05f, envelope, i);
 			partials.add(harmonicPartial);

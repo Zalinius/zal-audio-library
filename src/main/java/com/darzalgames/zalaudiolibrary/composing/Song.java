@@ -1,6 +1,7 @@
 package com.darzalgames.zalaudiolibrary.composing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
@@ -44,6 +45,9 @@ public abstract class Song {
 
 		tracks.forEach(track -> allActiveInstants.addAll(track.getMusicalInstantsActiveThisBeatInclusive(startBeat)));
 
+		for (Iterator<TimedMusicalInstant> it = allActiveInstants.iterator(); it.hasNext();) {
+			TimedMusicalInstant timedMusicalInstant = it.next();
+		}
 		return allActiveInstants;
 	}
 

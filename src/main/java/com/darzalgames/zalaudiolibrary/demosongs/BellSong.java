@@ -19,7 +19,7 @@ public class BellSong extends Song {
 
 		BellComplexSynth bellComplexSynth = new BellComplexSynth(1f, Synth.sine());
 
-		CompositeTrack bellTrack = new CompositeTrack(bellComplexSynth, getSongName(), "bell");
+		CompositeTrack bellTrack = new CompositeTrack(bellComplexSynth, getSongName(), "bell", 1.f);
 		addTrack(bellTrack);
 
 

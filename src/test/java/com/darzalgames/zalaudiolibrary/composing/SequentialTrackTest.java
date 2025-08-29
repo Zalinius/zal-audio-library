@@ -87,7 +87,7 @@ class SequentialTrackTest {
 
 		assertEquals(1, activeInstants.size());
 		assertEquals(new Fraction(0), activeInstants.get(0).startingBeat());
-		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
 	}
 
 	@Test
@@ -100,9 +100,9 @@ class SequentialTrackTest {
 
 		assertEquals(2, activeInstants.size());
 		assertEquals(new Fraction(0), activeInstants.get(0).startingBeat());
-		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
 		assertEquals(new Fraction(1), activeInstants.get(1).startingBeat());
-		assertEquals(Pitch.C5, activeInstants.get(1).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C5, activeInstants.get(1).musicalInstant().pitch());
 	}
 
 	@Test
@@ -117,9 +117,9 @@ class SequentialTrackTest {
 		List<TimedMusicalInstant> activeInstantsAt1 = track.getMusicalInstantsActiveThisBeatInclusive(1);
 		assertEquals(2, activeInstantsAt1.size());
 		assertEquals(new Fraction(0), activeInstantsAt1.get(0).startingBeat());
-		assertEquals(Pitch.C4, activeInstantsAt1.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstantsAt1.get(0).musicalInstant().pitch());
 		assertEquals(new Fraction(3,2), activeInstantsAt1.get(1).startingBeat());
-		assertEquals(Pitch.C5, activeInstantsAt1.get(1).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C5, activeInstantsAt1.get(1).musicalInstant().pitch());
 	}
 
 	@Test
@@ -138,15 +138,15 @@ class SequentialTrackTest {
 
 		assertEquals(5, activeInstants.size());
 		assertEquals(new Fraction(0, 4), activeInstants.get(0).startingBeat());
-		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
 		assertEquals(new Fraction(1, 4), activeInstants.get(1).startingBeat());
-		assertEquals(Pitch.D4, activeInstants.get(1).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.D4, activeInstants.get(1).musicalInstant().pitch());
 		assertEquals(new Fraction(2, 4), activeInstants.get(2).startingBeat());
-		assertEquals(Pitch.E4, activeInstants.get(2).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.E4, activeInstants.get(2).musicalInstant().pitch());
 		assertEquals(new Fraction(3, 4), activeInstants.get(3).startingBeat());
-		assertEquals(Pitch.F4, activeInstants.get(3).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.F4, activeInstants.get(3).musicalInstant().pitch());
 		assertEquals(new Fraction(4, 4), activeInstants.get(4).startingBeat());
-		assertEquals(Pitch.G4, activeInstants.get(4).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.G4, activeInstants.get(4).musicalInstant().pitch());
 	}
 
 	@Test
@@ -159,9 +159,9 @@ class SequentialTrackTest {
 
 		assertEquals(2, activeInstants.size());
 		assertEquals(new Fraction(4), activeInstants.get(0).startingBeat());
-		assertEquals(Pitch.C5, activeInstants.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C5, activeInstants.get(0).musicalInstant().pitch());
 		assertEquals(new Fraction(0), activeInstants.get(1).startingBeat());
-		assertEquals(Pitch.C4, activeInstants.get(1).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstants.get(1).musicalInstant().pitch());
 	}
 
 	@Test
@@ -174,7 +174,7 @@ class SequentialTrackTest {
 
 		assertEquals(1, activeInstants.size());
 		assertEquals(new Fraction(0), activeInstants.get(0).startingBeat());
-		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
 	}
 
 	@Test
@@ -186,7 +186,7 @@ class SequentialTrackTest {
 
 		assertEquals(1, activeInstants.size());
 		assertEquals(new Fraction(4), activeInstants.get(0).startingBeat());
-		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch().getBasePitch());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
 	}
 
 	@Test

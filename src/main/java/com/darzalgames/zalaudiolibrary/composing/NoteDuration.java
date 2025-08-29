@@ -22,4 +22,14 @@ public record NoteDuration(Fraction inBeats) {
 	public NoteDuration(int durationInBeats) {
 		this(new Fraction(durationInBeats));
 	}
+
+	public static NoteDuration tie(NoteDuration... durations) {
+		Fraction totalDuration = new Fraction();
+
+		for (int i = 0; i < durations.length; i++) {
+			totalDuration = Fraction.add(totalDuration, durations[i].inBeats());
+		}
+
+		return new NoteDuration(totalDuration);
+	}
 }

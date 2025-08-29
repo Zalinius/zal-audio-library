@@ -27,14 +27,14 @@ class OvertoneEffectTest {
 		assertEquals(2, overtones.size());
 
 		assertEquals(original.synth(), baseTone.synth());
-		assertEquals(original.pitch().getBasePitch(), baseTone.pitch().getBasePitch());
+		assertEquals(original.pitch(), baseTone.pitch());
 		assertEquals(original.duration(), baseTone.duration());
 		assertEquals(original.envelope(), baseTone.envelope());
 		assertEquals(original.amplitude(), baseTone.amplitude());
 		assertEquals(original.id(), baseTone.id());
 
 		assertEquals(original.synth(), octaveTone.synth());
-		assertNotEquals(original.pitch().getBasePitch(), octaveTone.pitch().getBasePitch());
+		assertNotEquals(original.pitch(), octaveTone.pitch());
 		assertEquals(Pitch.C5, octaveTone.pitch());
 		assertEquals(original.duration(), octaveTone.duration());
 		assertEquals(original.envelope(), octaveTone.envelope());

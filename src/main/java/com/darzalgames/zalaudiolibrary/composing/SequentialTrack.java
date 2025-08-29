@@ -39,19 +39,11 @@ public class SequentialTrack implements Track {
 		addNote(instrument.synth(), duration, pitch, instrument.envelope());
 	}
 
-	public void addNote(NoteDuration duration, ComplexPitch pitch) {
-		addNote(instrument.synth(), duration, pitch, instrument.envelope());
-	}
-
 	public void addSilence(NoteDuration duration) {
 		addNote(Synth.zero(), duration, Pitch.NONE, ConstantEnvelope.zeroEnvelope());
 	}
 
 	public void addNote(Synth synth, NoteDuration duration, Pitch pitch, Envelope envelope) {
-		addNote(synth, duration, new ComplexPitch(pitch), envelope);
-	}
-
-	public void addNote(Synth synth, NoteDuration duration, ComplexPitch pitch, Envelope envelope) {
 		Fraction newInstantStartBeat = lengthInBeats();
 		String instantId = getIdPrefix() + newInstantStartBeat;
 		MusicalInstant newInstant = new MusicalInstant(synth, pitch, duration, envelope, amplitude, instantId);

@@ -15,19 +15,19 @@ public class CompositeTrack implements Track{
 	private final List<SequentialTrack> tracks;
 	private final List<Partial> partials;
 
-	public CompositeTrack(ComplexSynth complexSynth, String songName, String trackName) {
+	public CompositeTrack(ComplexSynth complexSynth, String songName, String trackName, float amplitude) {
 		tracks = new ArrayList<>();
 		partials = complexSynth.makePartials();
 		for (Iterator<Partial> it = partials.iterator(); it.hasNext();) {
 			Partial partial = it.next();
-			SequentialTrack track = new SequentialTrack(songName, trackName + ":" + partial.getPartialIndex(), new Instrument(partial.getSynth(), partial.getEnvelope()), partial.getAmplitude());
+			SequentialTrack track = new SequentialTrack(songName, trackName + ":" + partial.getPartialIndex(), new Instrument(partial.getSynth(), partial.getEnvelope()), partial.getAmplitude() * amplitude);
 			tracks.add(track);
 		}
 	}
 
 	public void addNote(NoteDuration duration, Pitch pitch) {
 		for (int i = 0; i < tracks.size(); i++) {
-			ComplexPitch partialPitch = partials.get(i).getPartialPitch(pitch);
+			Pitch partialPitch = partials.get(i).getPartialPitch(pitch);
 			tracks.get(i).addNote(duration, partialPitch);
 		}
 	}

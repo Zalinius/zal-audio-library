@@ -1,14 +1,14 @@
 package com.darzalgames.zalaudiolibrary.pipeline.sounds;
 
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
-import com.darzalgames.zalaudiolibrary.composing.ComplexPitch;
+import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public record SimpleSound(
 		/** The synth of the sound */
 		Synth timbre,
 		/** The frequency in hertz of the sound*/
-		ComplexPitch frequency,
+		Pitch frequency,
 		/** The duration in seconds of the sound*/
 		float duration,
 		/** The envelope for the sound*/
@@ -34,7 +34,7 @@ public record SimpleSound(
 	 * @return the frequency at that time, in hertz
 	 */
 	public float computeFrequency(float time) {
-		return frequency.getFrequency(duration, time);
+		return frequency.getFrequency();
 	}
 
 }

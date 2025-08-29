@@ -24,7 +24,7 @@ public class OvertoneEffect implements MusicalEffect {
 
 	@Override
 	public List<MusicalInstant> apply(MusicalInstant original) {
-		Pitch originalPitch = original.pitch().getBasePitch();//TODO use this better with new complex pitch system
+		Pitch originalPitch = original.pitch();
 		SortedSet<Pitch> sortedPitches = new TreeSet<>(chordFunction.apply(originalPitch));
 		List<MusicalInstant> modifiedMusicalInstants = new ArrayList<>();
 
