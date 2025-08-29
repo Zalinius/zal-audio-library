@@ -1,5 +1,6 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.demosongs;
 
+import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
@@ -10,9 +11,14 @@ public class TestSong extends Song {
 	public TestSong() {
 		super("test", 2);
 		Synth synth = Synth.sine();
-		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .4f);
+		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .2f);
+		AmplitudeModulator amplitudeModulator = new AmplitudeModulator(1f, 2);
+		envelope = amplitudeModulator.modulateEnvelope(envelope);
 
-		Track mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
+		SequentialTrack mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
+
+		//		mainTrack.addEffect(new EnvelopeReverser());
+		//		mainTrack.addEffect(new TransposeEffect(Pitch::down));
 
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
 		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);

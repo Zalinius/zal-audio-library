@@ -38,6 +38,9 @@ public class AudioPipeline extends Thread {
 
 	public AudioPipeline(Song song, AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
 		shouldStop = new AtomicBoolean(false);
+		if(!song.isValid()) {
+			throw new IllegalArgumentException("song invalid: " + song.getSongName());
+		}
 		this.song = song;
 		simpleSoundMaker = new SimpleSoundMaker();
 		sampler = new SampleMaker(musicVolume, soundVolume);
@@ -69,6 +72,8 @@ public class AudioPipeline extends Thread {
 		shouldStop.set(true);
 		try {
 			join();
+			System.out.println("Music Thread Stopped. Max Peak: " + sampler.getMaxPeak());
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

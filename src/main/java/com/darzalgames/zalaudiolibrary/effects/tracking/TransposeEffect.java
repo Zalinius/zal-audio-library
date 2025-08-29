@@ -1,15 +1,15 @@
 package com.darzalgames.zalaudiolibrary.effects.tracking;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 
 public class TransposeEffect extends SimpleMusicalEffect {
 
-	private final Function<Pitch, Pitch> transposeFunction;
+	private final UnaryOperator<Pitch> transposeFunction;
 
-	public TransposeEffect(Function<Pitch, Pitch> transposeFunction) {
+	public TransposeEffect(UnaryOperator<Pitch> transposeFunction) {
 		this.transposeFunction = transposeFunction;
 	}
 

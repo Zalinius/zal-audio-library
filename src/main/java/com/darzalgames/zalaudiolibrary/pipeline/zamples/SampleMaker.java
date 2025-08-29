@@ -15,6 +15,8 @@ public class SampleMaker implements VolumeListener {
 	private final AtomicReference<Float> soundVolume;
 	private final Map<String, Float> phaseMap;
 
+	private float maxAbsolutePeak;
+
 	public SampleMaker(Float musicVolume, Float soundVolume) {
 		this.musicVolume = new AtomicReference<>(musicVolume);
 		this.soundVolume = new AtomicReference<>(soundVolume);
@@ -58,6 +60,10 @@ public class SampleMaker implements VolumeListener {
 			}
 		}
 
+		for (int i = 0; i < sampleBuffer.length; i++) {
+			maxAbsolutePeak = Math.max(maxAbsolutePeak, Math.abs(sampleBuffer[i]));
+		}
+
 		return sampleBuffer;
 	}
 
@@ -85,4 +91,9 @@ public class SampleMaker implements VolumeListener {
 	public void setSoundEffectVolume(float volume) {
 		soundVolume.set(volume);
 	}
+
+	public float getMaxPeak() {
+		return maxAbsolutePeak;
+	}
+
 }

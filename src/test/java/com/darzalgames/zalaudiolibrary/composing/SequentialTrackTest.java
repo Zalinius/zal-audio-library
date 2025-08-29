@@ -9,22 +9,22 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.darzalgames.darzalcommon.math.Fraction;
-import com.darzalgames.zalaudiolibrary.amplitude.ZeroEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
-class TrackTest {
+class SequentialTrackTest {
 
 	@Test
 	void lengthInBeats_onEmptyTrack_returns0() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		assertEquals(new Fraction(0), track.lengthInBeats());
 	}
 
 	@Test
 	void lengthInBeats_onTrackWithQuarterNote_returns1() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		track.addSilence(NoteDuration.QUARTER);
 
@@ -33,7 +33,7 @@ class TrackTest {
 
 	@Test
 	void lengthInBeats_onTrackWithWholeNote_returns4() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		track.addSilence(NoteDuration.WHOLE);
 
@@ -42,7 +42,7 @@ class TrackTest {
 
 	@Test
 	void lengthInBeats_onTrackWithQuarterAndHalfNote_returns3() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		track.addSilence(NoteDuration.QUARTER);
 		track.addSilence(NoteDuration.HALF);
@@ -52,7 +52,7 @@ class TrackTest {
 
 	@Test
 	void lengthInBeats_onTrackWithSixteenthNote_returnsOneQuarter() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		track.addSilence(NoteDuration.SIXTEENTH);
 
@@ -61,7 +61,7 @@ class TrackTest {
 
 	@Test
 	void lengthInBeats_onTrackWithThirdNote_returnsFourThirds() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		track.addSilence(NoteDuration.THIRD);
 
@@ -70,7 +70,7 @@ class TrackTest {
 
 	@Test
 	void lengthInBeats_onTrackWithSixteenthAndThirdNote_returnsNineteedTwelths() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
 		track.addSilence(NoteDuration.SIXTEENTH);
 		track.addSilence(NoteDuration.THIRD);
@@ -80,9 +80,9 @@ class TrackTest {
 
 	@Test
 	void getMusicalInstantsActiveThisBeatInclusive_on0AndWholeNote_returnsSingleInstant() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
-		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, ConstantEnvelope.zeroEnvelope());
 		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(0);
 
 		assertEquals(1, activeInstants.size());
@@ -92,10 +92,10 @@ class TrackTest {
 
 	@Test
 	void getMusicalInstantsActiveThisBeatInclusive_on0AndTwoSequentialQuarterNotes_returnsBothNotes() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
-		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C5, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C5, ConstantEnvelope.zeroEnvelope());
 		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(0);
 
 		assertEquals(2, activeInstants.size());
@@ -106,17 +106,34 @@ class TrackTest {
 	}
 
 	@Test
-	void getMusicalInstantsActiveThisBeatInclusive_at0With8SequentialSixteenthNotes_returnsFirst5Notes() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+	void getMusicalInstantsActiveThisBeatInclusive_onQuarterDotNotesAndFirstBeat_returns2Notes() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.C4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.D4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.E4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.F4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.G4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.A4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.B4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.C5, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C5, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C6, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER_DOT, Pitch.C7, ConstantEnvelope.zeroEnvelope());
+
+		List<TimedMusicalInstant> activeInstantsAt1 = track.getMusicalInstantsActiveThisBeatInclusive(1);
+		assertEquals(2, activeInstantsAt1.size());
+		assertEquals(new Fraction(0), activeInstantsAt1.get(0).startingBeat());
+		assertEquals(Pitch.C4, activeInstantsAt1.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(3,2), activeInstantsAt1.get(1).startingBeat());
+		assertEquals(Pitch.C5, activeInstantsAt1.get(1).musicalInstant().pitch());
+	}
+
+	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_at0With8SequentialSixteenthNotes_returnsFirst5Notes() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
+
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.D4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.E4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.F4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.G4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.A4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.B4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.SIXTEENTH, Pitch.C5, ConstantEnvelope.zeroEnvelope());
 		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(0);
 
 		assertEquals(5, activeInstants.size());
@@ -134,10 +151,10 @@ class TrackTest {
 
 	@Test
 	void getMusicalInstantsActiveThisBeatInclusive_on7AndTwoWholeNotes_returnsSecondAndThenFirstByWrappingAroundTrack() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
-		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C5, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C5, ConstantEnvelope.zeroEnvelope());
 		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(7);
 
 		assertEquals(2, activeInstants.size());
@@ -149,10 +166,10 @@ class TrackTest {
 
 	@Test
 	void getMusicalInstantsActiveThisBeatInclusive_inMiddleOfWholeNote_returnsThatNote() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
-		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, new ZeroEnvelope());
-		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C5, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C5, ConstantEnvelope.zeroEnvelope());
 		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(1);
 
 		assertEquals(1, activeInstants.size());
@@ -162,9 +179,9 @@ class TrackTest {
 
 	@Test
 	void getMusicalInstantsActiveThisBeatInclusive_with4BeatTrackAnd6BeatsIn_returnsLoopedNoteWith4AsStartBeat() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 
-		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, new ZeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.WHOLE, Pitch.C4, ConstantEnvelope.zeroEnvelope());
 		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(6);
 
 		assertEquals(1, activeInstants.size());
@@ -174,12 +191,12 @@ class TrackTest {
 
 	@Test
 	void isTrackLengthValid_onEmptyTrack_returnsFalse() {
-		assertFalse(new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope())).isValid());
+		assertFalse(new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope())).isValid());
 	}
 
 	@Test
 	void isTrackLengthValid_onTrackWithFractionalNumberOfBeats_returnsFalse() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 		track.addSilence(NoteDuration.THIRD);
 
 		assertFalse(track.isValid());
@@ -187,7 +204,7 @@ class TrackTest {
 
 	@Test
 	void isTrackLengthValid_onTrackWithIntegerNumberOfBeats_returnsTrue() {
-		Track track = new Track("song", "track", new Instrument(Synth.zero(), new ZeroEnvelope()));
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
 		track.addSilence(NoteDuration.THIRD);
 		track.addSilence(NoteDuration.THIRD);
 		track.addSilence(NoteDuration.THIRD);

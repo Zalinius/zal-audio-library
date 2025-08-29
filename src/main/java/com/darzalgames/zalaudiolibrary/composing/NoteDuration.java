@@ -15,10 +15,21 @@ public record NoteDuration(Fraction inBeats) {
 	public static final NoteDuration HALF_DOT = new NoteDuration(3);
 	public static final NoteDuration WHOLE_DOT = new NoteDuration(6);
 
+	public static final NoteDuration TWELTH = new NoteDuration(new Fraction(1, 3));
 	public static final NoteDuration SIXTH = new NoteDuration(new Fraction(2, 3));
 	public static final NoteDuration THIRD = new NoteDuration(new Fraction(4, 3));
 
 	public NoteDuration(int durationInBeats) {
 		this(new Fraction(durationInBeats));
+	}
+
+	public static NoteDuration tie(NoteDuration... durations) {
+		Fraction totalDuration = new Fraction();
+
+		for (int i = 0; i < durations.length; i++) {
+			totalDuration = Fraction.add(totalDuration, durations[i].inBeats());
+		}
+
+		return new NoteDuration(totalDuration);
 	}
 }

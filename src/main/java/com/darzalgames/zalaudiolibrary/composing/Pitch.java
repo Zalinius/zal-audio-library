@@ -150,6 +150,21 @@ public class Pitch implements Comparable<Pitch>{
 		return down().down().down().down().down().down().down();
 	}
 
+	/**
+	 * Gets the pitch a semitone higher, a sharp version of the pitch
+	 * @return the pitch one semitone higher
+	 */
+	public Pitch sharpen() {
+		return makePitch(getName() + "♯", getFrequency() * (float)Math.pow(2, 1/12f));
+	}
+
+	/**
+	 * Gets the pitch a semitone lower, a flat version of the pitch
+	 * @return the pitch one semitone lower
+	 */
+	public Pitch flatten() {
+		return makePitch(getName() + "♭", getFrequency() / (float)Math.pow(2, 1/12f));
+	}
 
 	/**
 	 * The frequency of the pitch
@@ -166,6 +181,7 @@ public class Pitch implements Comparable<Pitch>{
 	public String getName() {
 		return name;
 	}
+
 
 	@Override
 	public String toString() {

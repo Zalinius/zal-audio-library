@@ -1,71 +1,28 @@
 package com.darzalgames.zalaudiolibrary;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.sound.sampled.*;
 
-import com.darzalgames.zalaudiolibrary.bell.BellExperiment;
-import com.darzalgames.zalaudiolibrary.bell.BellExperiment.Partial;
-import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
+import com.darzalgames.zalaudiolibrary.demosongs.TrumpetSong;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
-	public static void main(String[] args) throws LineUnavailableException, InterruptedException {
+	public static void main(String[] args) throws Exception {
+		//		runSong(new BellSong());
+		runSong(new TrumpetSong());
+	}
 
-		Song testsong = new TestSong();
-		//		testsong = new TestSong2();
+	public static void runSong(Song song) throws Exception {
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
-
-		int duration = 1;
-		float[] bellTest = new float[duration * AudioConstants.SAMPLING_RATE];
-
-		List<Pitch> pitches = Arrays.asList(Pitch.C4, Pitch.E4, Pitch.G4, Pitch.C5, Pitch.C5, Pitch.E5, Pitch.G5, Pitch.C6);
-
-		List<Partial> partials = BellExperiment.makePartials();
-
-		for (Iterator<Pitch> pitchIt = pitches.iterator(); pitchIt.hasNext();) {
-			Pitch pitch = pitchIt.next();
-
-
-			float max = 0;
-			for (int i = 0; i < bellTest.length; i++) {
-				bellTest[i] = 0;
-				float t = i / (float) AudioConstants.SAMPLING_RATE;
-				for (Iterator<Partial> it = partials.iterator(); it.hasNext();) {
-					Partial partial = it.next();
-
-					//advance wobble
-
-					bellTest[i] += partial.computeSample(t, pitch.getFrequency());
-					max = Math.max(max, bellTest[i]);
-
-				}
-
-			}
-
-			//			float[] backwardsBell = Arrays.copyOf(bellTest, bellTest.length);
-			//			for (int i = 0; i < backwardsBell.length; i++) {
-			//				//			bellTest[i] = backwardsBell[backwardsBell.length - i - 1];
-			//			}
-			//
-			//			System.out.println("max amplitude: " + max);
-			//			audioConsumer.writeSamples(bellTest);
-		}
-
-		AudioPipeline audioPipeline = new AudioPipeline(testsong, audioConsumer, 1f, 1f);
+		AudioPipeline audioPipeline = new AudioPipeline(song, audioConsumer, 1f, 1f);
 
 		audioPipeline.start();
 
-		Thread.sleep(20000);
+		Thread.sleep(16000);
 		audioPipeline.shutdown();
-
 	}
-
 
 	public static TwoByteSampleAdapter getJavaAudioConsumer() throws LineUnavailableException {
 		AudioFormat af = new AudioFormat(AudioConstants.SAMPLING_RATE, 16, 1, true, false);

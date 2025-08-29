@@ -29,7 +29,7 @@ public class SimpleSoundMaker {
 
 			SimpleSound simpleSound = new SimpleSound(
 					musicalInstant.synth(),
-					musicalInstant.pitch().getFrequency(),
+					musicalInstant.pitch(),
 					musicalInstant.duration().inBeats().toFloat() / bps,
 					musicalInstant.envelope(),
 					musicalInstant.amplitude(),

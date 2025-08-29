@@ -1,6 +1,7 @@
 package com.darzalgames.zalaudiolibrary.composing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
@@ -25,14 +26,18 @@ public abstract class Song {
 		sampleEffects = new ArrayList<>();
 	}
 
-	public Track createTrack(String trackName, Instrument instrument) {
+	public SequentialTrack createTrack(String trackName, Instrument instrument) {
 		return createTrack(trackName, instrument, 1f);
 	}
 
-	public Track createTrack(String trackName, Instrument instrument, float amplitude) {
-		Track track = new Track(songName, trackName, instrument, amplitude);
+	public SequentialTrack createTrack(String trackName, Instrument instrument, float amplitude) {
+		SequentialTrack track = new SequentialTrack(songName, trackName, instrument, amplitude);
 		tracks.add(track);
 		return track;
+	}
+
+	public void addTrack(Track track) {
+		tracks.add(track);
 	}
 
 	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat){
@@ -40,6 +45,9 @@ public abstract class Song {
 
 		tracks.forEach(track -> allActiveInstants.addAll(track.getMusicalInstantsActiveThisBeatInclusive(startBeat)));
 
+		for (Iterator<TimedMusicalInstant> it = allActiveInstants.iterator(); it.hasNext();) {
+			TimedMusicalInstant timedMusicalInstant = it.next();
+		}
 		return allActiveInstants;
 	}
 
@@ -52,11 +60,15 @@ public abstract class Song {
 	}
 
 	public boolean isValid() {
-		return tracks.stream().allMatch(Track::isValid);
+		return !tracks.isEmpty() && tracks.stream().allMatch(Track::isValid);
 	}
 
 	public float getInitialBps() {
 		return initialBps;
+	}
+
+	public String getSongName() {
+		return songName;
 	}
 
 }
