@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.amplitude.percussive;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,10 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.darzalgames.darzalcommon.data.Tuple;
-import com.darzalgames.zalaudiolibrary.amplitude.percussive.PercussiveEnvelope;
-import com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment.ArbitraryEnvelope;
 
-class ArbitraryEnvelopeTestMOVEAANDRENAME {
+class ArbitraryEnvelopeTest {
 
 	private final static float ALLOWED_ERROR = 0.0001f;
 

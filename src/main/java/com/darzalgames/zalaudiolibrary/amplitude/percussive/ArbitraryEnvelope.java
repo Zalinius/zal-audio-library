@@ -1,11 +1,10 @@
-package com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment;
+package com.darzalgames.zalaudiolibrary.amplitude.percussive;
 
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import com.darzalgames.darzalcommon.data.Tuple;
-import com.darzalgames.zalaudiolibrary.amplitude.percussive.PercussiveEnvelope;
 
 public class ArbitraryEnvelope implements PercussiveEnvelope {
 

@@ -10,9 +10,7 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 public class DigitalSynthesizer {
 
 	public static void main(String[] args) throws Exception {
-
 		runSong(new TrumpetSong());
-
 	}
 
 	public static void runSong(Song song) throws Exception {

@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArbitraryEnvelope;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
-import com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment.ArbitraryEnvelope;
 
 public class ClarinetComplexSynth implements ComplexSynth {
 

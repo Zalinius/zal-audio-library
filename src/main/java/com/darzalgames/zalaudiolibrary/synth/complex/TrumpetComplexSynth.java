@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArbitraryEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.ArbitrarySustainedEnvelope;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
-import com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment.ArbitraryEnvelope;
-import com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment.ArbitrarySustainedEnvelope;
 
 /**
  * Objects of this class are immutable

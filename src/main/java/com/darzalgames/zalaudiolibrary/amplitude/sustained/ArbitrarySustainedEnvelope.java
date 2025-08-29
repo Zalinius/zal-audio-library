@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.synth.complex.trumpetExperiment;
+package com.darzalgames.zalaudiolibrary.amplitude.sustained;
 
 import java.util.List;
 import java.util.NavigableMap;
@@ -10,7 +10,6 @@ import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 public class ArbitrarySustainedEnvelope implements Envelope {
 
 	private final NavigableMap<Float, Float> points;
-	private final int sustainIndex;
 	private final float preSustainDuration;
 	private final float postSustainDuration;
 	private final float sustainLevel;
@@ -22,7 +21,6 @@ public class ArbitrarySustainedEnvelope implements Envelope {
 	public ArbitrarySustainedEnvelope(List<Tuple<Float, Float>> envelopePoints, int sustainIndex) {
 		points = new TreeMap<>();
 		envelopePoints.forEach(point -> points.put(point.e(), point.f()));
-		this.sustainIndex = sustainIndex;
 		preSustainDuration = envelopePoints.get(sustainIndex).e();
 		postSustainDuration = envelopePoints.getLast().e() - preSustainDuration;
 		sustainLevel = envelopePoints.get(sustainIndex).f();
