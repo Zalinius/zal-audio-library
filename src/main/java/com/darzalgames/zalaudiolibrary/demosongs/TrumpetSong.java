@@ -7,6 +7,7 @@ import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
 import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.complex.ComplexSynth;
 import com.darzalgames.zalaudiolibrary.synth.complex.TrumpetComplexSynth;
 
 public class TrumpetSong extends Song {
@@ -25,25 +26,45 @@ public class TrumpetSong extends Song {
 	public TrumpetSong() {
 		super("Trumpet Song", 2f);
 
-		TrumpetComplexSynth trumpetComplexSynth = new TrumpetComplexSynth();
+		ComplexSynth trumpetComplexSynth = new TrumpetComplexSynth();
+		ComplexSynth tubaComblexSynth = new TrumpetComplexSynth(1f, false);
 
-		main = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet", 0.5f);
+
+		main = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet", 0.4f);
 		addTrack(main);
-		mainOctave = new CompositeTrack(new TrumpetComplexSynth(), getSongName(), "trumpet bright", 0.2f);
+		mainOctave = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet bright", 0.3f);
 		addTrack(mainOctave);
 
-		secondary = new CompositeTrack(new TrumpetComplexSynth(), getSongName(), "trumpet accompaniment", 0.3f);
+		secondary = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet accompaniment", 0.3f);
 		addTrack(secondary);
-		tuba = new CompositeTrack(new TrumpetComplexSynth(1f, false), getSongName(), "tuba", 0.2f);
+		tuba = new CompositeTrack(tubaComblexSynth, getSongName(), "tuba", 0.2f);
 		addTrack(tuba);
 		tuba.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 
-		SequentialTrack perc = new SequentialTrack(getSongName(), "perc", new Instrument(Synth.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.01f);
-		perc.addNote(SIXTEENTH, Pitch.C4);
-		perc.addSilence(SIXTEENTH);
-		perc.addNote(SIXTEENTH, Pitch.C4);
-		perc.addNote(SIXTEENTH, Pitch.C4);
-		addTrack(perc);
+		SequentialTrack percLow = new SequentialTrack(getSongName(), "perc", new Instrument(Synth.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.01f);
+		SequentialTrack percHi = new SequentialTrack(getSongName(), "perc", new Instrument(Synth.brownianNoise(0.5f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.01f);
+		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addSilence(SIXTEENTH);
+		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addSilence(SIXTEENTH);
+
+		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addSilence(SIXTEENTH);
+		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addSilence(SIXTEENTH);
+		addTrack(percLow);
+
+		percHi.addNote(SIXTEENTH, Pitch.C4);
+		percHi.addSilence(SIXTEENTH);
+		percHi.addSilence(SIXTEENTH);
+		percHi.addSilence(SIXTEENTH);
+
+		percHi.addSilence(SIXTEENTH);
+		percHi.addSilence(SIXTEENTH);
+		percHi.addSilence(SIXTEENTH);
+		percHi.addSilence(SIXTEENTH);
+
+		addTrack(percHi);
 
 
 
@@ -107,7 +128,9 @@ public class TrumpetSong extends Song {
 
 		addNote(EIGHTH_DOT, F4, C4);
 		addNote(EIGHTH_DOT, E4, B3);
-		addNote(HALF_EIGHTH, C4, E3);
+		addNote(QUARTER_DOT, C4, E3);
+		addNote(EIGHTH, C4, E3);
+		addSilence(EIGHTH);
 
 		addSilence(HALF_DOT);
 
