@@ -12,6 +12,8 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
 // An attempt to recreate this sound https://en.wikipedia.org/wiki/File:Additive_synthesis_bell.ogg
 public class BellComplexSynth implements ComplexSynth {
 
+	private static final float AMPLITUDE_NORMALIZER = 0.54f;
+
 	private final float releaseMultiplier;
 	private final Synth synth;
 
@@ -47,7 +49,7 @@ public class BellComplexSynth implements ComplexSynth {
 			AmplitudeModulator amplitudeModulator = new AmplitudeModulator(wobbleAmplitudes[i], wobbleFrequencies[i]);
 			Envelope envelope = amplitudeModulator.modulateEnvelope(baseEnvelope);
 
-			partials.add(new Partial(synth, frequencyMultiples[i], amplitudes[i], envelope, i));
+			partials.add(new Partial(synth, frequencyMultiples[i], amplitudes[i] * AMPLITUDE_NORMALIZER, envelope, i));
 		}
 
 		return partials;

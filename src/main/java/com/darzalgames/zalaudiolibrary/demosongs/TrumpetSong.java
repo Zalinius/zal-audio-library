@@ -5,7 +5,6 @@ import static com.darzalgames.zalaudiolibrary.composing.Pitch.*;
 
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
-import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 import com.darzalgames.zalaudiolibrary.synth.complex.ComplexSynth;
 import com.darzalgames.zalaudiolibrary.synth.complex.TrumpetComplexSynth;
@@ -40,7 +39,6 @@ public class TrumpetSong extends Song {
 
 		tuba = new CompositeTrack(tubaComblexSynth, getSongName(), "tuba", 0.2f);
 		addTrack(tuba);
-		tuba.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 
 		SequentialTrack percLow = new SequentialTrack(getSongName(), "perc Low", new Instrument(Synth.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.1f);
 		SequentialTrack percHi = new SequentialTrack(getSongName(), "perc Hi", new Instrument(Synth.brownianNoise(0.5f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.15f);
@@ -155,7 +153,7 @@ public class TrumpetSong extends Song {
 		main.addNote(duration, mainPitch);
 		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency()*2));
 		secondary.addNote(duration, secondaryPitch);
-		tuba.addNote(duration, secondaryPitch);
+		tuba.addNote(duration, secondaryPitch.octaveDown());
 	}
 
 }
