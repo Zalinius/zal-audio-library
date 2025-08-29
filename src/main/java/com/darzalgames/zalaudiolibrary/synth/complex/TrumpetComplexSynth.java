@@ -14,6 +14,8 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
  */
 public class TrumpetComplexSynth implements ComplexSynth {
 
+	private static final float AMPLITUDE_NORMALIZER = 0.84f;
+
 	private final float harmonics;
 	private final boolean sustained;
 
@@ -75,7 +77,7 @@ public class TrumpetComplexSynth implements ComplexSynth {
 				envelope = new ArbitraryEnvelope(envelopeData);
 			}
 
-			Partial harmonicPartial = new Partial(Synth.sine(), frequencyMultiple, 0.05f, envelope, i);
+			Partial harmonicPartial = new Partial(Synth.sine(), frequencyMultiple, AMPLITUDE_NORMALIZER, envelope, i);
 			partials.add(harmonicPartial);
 		}
 

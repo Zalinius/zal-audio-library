@@ -29,20 +29,24 @@ public class TrumpetSong extends Song {
 		ComplexSynth trumpetComplexSynth = new TrumpetComplexSynth();
 		ComplexSynth tubaComblexSynth = new TrumpetComplexSynth(1f, false);
 
-
 		main = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet", 0.4f);
 		addTrack(main);
+
 		mainOctave = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet bright", 0.3f);
 		addTrack(mainOctave);
 
-		secondary = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet accompaniment", 0.3f);
+		secondary = new CompositeTrack(trumpetComplexSynth, getSongName(), "trumpet accompaniment", 0.2f);
 		addTrack(secondary);
+
 		tuba = new CompositeTrack(tubaComblexSynth, getSongName(), "tuba", 0.2f);
 		addTrack(tuba);
 		tuba.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 
-		SequentialTrack percLow = new SequentialTrack(getSongName(), "perc", new Instrument(Synth.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.01f);
-		SequentialTrack percHi = new SequentialTrack(getSongName(), "perc", new Instrument(Synth.brownianNoise(0.5f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.01f);
+		SequentialTrack percLow = new SequentialTrack(getSongName(), "perc Low", new Instrument(Synth.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.1f);
+		SequentialTrack percHi = new SequentialTrack(getSongName(), "perc Hi", new Instrument(Synth.brownianNoise(0.5f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.15f);
+		addTrack(percLow);
+		addTrack(percHi);
+
 		percLow.addNote(SIXTEENTH, Pitch.C4);
 		percLow.addSilence(SIXTEENTH);
 		percLow.addNote(SIXTEENTH, Pitch.C4);
@@ -52,7 +56,7 @@ public class TrumpetSong extends Song {
 		percLow.addSilence(SIXTEENTH);
 		percLow.addNote(SIXTEENTH, Pitch.C4);
 		percLow.addSilence(SIXTEENTH);
-		addTrack(percLow);
+
 
 		percHi.addNote(SIXTEENTH, Pitch.C4);
 		percHi.addSilence(SIXTEENTH);
@@ -63,9 +67,6 @@ public class TrumpetSong extends Song {
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
-
-		addTrack(percHi);
-
 
 
 		addNote(SIXTEENTH, E4);

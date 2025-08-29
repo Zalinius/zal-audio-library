@@ -19,7 +19,7 @@ public class DigitalSynthesizer {
 
 		audioPipeline.start();
 
-		Thread.sleep(25000);
+		Thread.sleep(16500);
 		audioPipeline.shutdown();
 	}
 

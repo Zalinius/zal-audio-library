@@ -72,6 +72,8 @@ public class AudioPipeline extends Thread {
 		shouldStop.set(true);
 		try {
 			join();
+			System.out.println("Music Thread Stopped. Max Peak: " + sampler.getMaxPeak());
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
