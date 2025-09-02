@@ -3,15 +3,15 @@ package com.darzalgames.zalaudiolibrary;
 import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.TrumpetSong;
+import com.darzalgames.zalaudiolibrary.demosongs.BellSong;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
 	public static void main(String[] args) throws Exception {
-		//		runSong(new BellSong());
-		runSong(new TrumpetSong());
+		runSong(new BellSong());
+		//		runSong(new TrumpetSong());
 	}
 
 	public static void runSong(Song song) throws Exception {
