@@ -3,6 +3,7 @@ package com.darzalgames.zalaudiolibrary.composing;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.IntFunction;
 
 import com.darzalgames.darzalcommon.data.ListFactory;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
@@ -39,6 +40,13 @@ public class CompositeTrack implements Track{
 	@Override
 	public void addMusicalEffect(MusicalEffect musicalEffect) {
 		tracks.forEach(track -> track.addMusicalEffect(musicalEffect));
+	}
+
+	public void addMusicalEffect(IntFunction<MusicalEffect> indexedMusicalEffect) {
+		for (int i = 0; i < partials.size(); i++) {
+			MusicalEffect musicalEffect = indexedMusicalEffect.apply(i);
+			tracks.get(i).addMusicalEffect(musicalEffect);
+		}
 	}
 
 	@Override

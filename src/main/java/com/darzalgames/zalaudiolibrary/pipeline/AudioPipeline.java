@@ -79,7 +79,7 @@ public class AudioPipeline extends Thread {
 		}
 	}
 
-	private void processMusicStep() {
+	public void processMusicStep() {
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
 
 		final int beatNumber = (int) beatCounter;
@@ -94,6 +94,10 @@ public class AudioPipeline extends Thread {
 
 		beatCounter += beatIncrementDuringMusicStep;
 		secondsCounter += AudioConstants.STEP_DURATION_IN_SECONDS;
+	}
+
+	public float getBeatCounter() {
+		return beatCounter;
 	}
 
 	public VolumeListener getVolumeListener() {
