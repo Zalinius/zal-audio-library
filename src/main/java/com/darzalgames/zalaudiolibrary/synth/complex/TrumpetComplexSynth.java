@@ -62,6 +62,7 @@ public class TrumpetComplexSynth implements ComplexSynth {
 
 		int totalHarmonics = envelopes.size();
 		float shortener = 1f; //TODO incorporate in constructor?
+		//		totalHarmonics = 1;
 
 		for (int i = 0; i < totalHarmonics * harmonics ; i++) {
 			int frequencyMultiple = i+1;

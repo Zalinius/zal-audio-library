@@ -3,15 +3,20 @@ package com.darzalgames.zalaudiolibrary;
 import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.BellSong;
+import com.darzalgames.zalaudiolibrary.demosongs.DemoAlbum;
+import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
+import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
 	public static void main(String[] args) throws Exception {
-		runSong(new BellSong());
+		//		runSong(new BellSong());
 		//		runSong(new TrumpetSong());
+
+		exportDemoAlbum();
+
 	}
 
 	public static void runSong(Song song) throws Exception {
@@ -22,6 +27,14 @@ public class DigitalSynthesizer {
 
 		Thread.sleep(16000);
 		audioPipeline.shutdown();
+	}
+
+	public static void exportDemoAlbum() {
+		AlbumExportingInformation album = new DemoAlbum();
+		SongExporter songExporter = new SongExporter();
+
+		songExporter.export(album);
+
 	}
 
 	public static TwoByteSampleAdapter getJavaAudioConsumer() throws LineUnavailableException {

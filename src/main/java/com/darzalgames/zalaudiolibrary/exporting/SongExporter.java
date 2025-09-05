@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.BellSong;
 import com.darzalgames.zalaudiolibrary.exporting.wav.WavEncoderOutputStream;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 
@@ -14,7 +13,7 @@ public class SongExporter {
 	public void export(AlbumExportingInformation album) {
 		List<SongExportingInformation> songs = album.getSongs();
 
-		System.out.println("Exporting album (" + songs.size() + " songs)");
+		System.out.println("Exporting album " + album.toString());
 		for (Iterator<SongExportingInformation> it = songs.iterator(); it.hasNext();) {
 			SongExportingInformation songInfo = it.next();
 			SongOrchestrator orchestrator = songInfo.getOrchestrator();
@@ -34,46 +33,8 @@ public class SongExporter {
 			System.out.println("done!");
 
 		}
+		System.out.println("Exporting complete for album " + album.toString());
 	}
-
-	public static void main(String[] args) {
-		AlbumExportingInformation album = new AlbumExportingInformation("Test Album", 2025);
-		BellSong bellSong = new BellSong();
-
-		SongOrchestrator bellOrchestrator = new SongOrchestrator(4) {
-
-			@Override
-			public void orchestrateSong() {
-				processMeasures(2);
-
-				bellSong.backwards1();
-				processMeasures(2);
-
-				bellSong.backwards1();
-				bellSong.backwards2();
-				processMeasures(2);
-
-				bellSong.backwards1();
-				bellSong.backwards2();
-				processMeasures(2);
-
-				bellSong.backwards1();
-				processMeasures(2);
-
-				bellSong.makeSquare();
-				processMeasures(1);
-			}
-		};
-
-		album.addSong(bellSong, bellOrchestrator);
-
-		SongExporter songExporter = new SongExporter();
-
-		songExporter.export(album);
-		System.out.println("done");
-
-	}
-
 
 
 }
