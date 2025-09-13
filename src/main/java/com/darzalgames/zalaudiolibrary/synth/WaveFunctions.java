@@ -181,7 +181,27 @@ public class WaveFunctions {
 			}
 
 		};
+	}
 
+	/**
+	 * Constructs a root of sine wave
+	 * @param root The degree of the root to take.<br>
+	 * Even degrees still creates negative values for x within [0.5,1[
+	 * @return A sine wave function raised to a power. It starts at 0 and is increasing
+	 */
+	//TODO unit test and make a synth
+	public static UnaryOperator<Float> getSinRootWaveFunction(int root) {
+		UnaryOperator<Float> sin = getSinWaveFunction();
+		return x -> {
+			float sinValue = sin.apply(x);
+
+			if (sinValue > 0f) {
+				return (float) Math.pow(sinValue, 1.0/root);
+			} else {
+				return (float) -Math.pow(Math.abs(sinValue), 1.0/root);
+			}
+
+		};
 	}
 
 	/**
