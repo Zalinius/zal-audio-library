@@ -21,7 +21,6 @@ public class SequentialTrack implements Track {
 
 	private final List<MusicalEffect> trackEffects;
 
-
 	public SequentialTrack(String songName, String trackName, Instrument instrument) {
 		this(songName, trackName, instrument, 0.1f);
 	}
@@ -55,16 +54,21 @@ public class SequentialTrack implements Track {
 		trackEffects.add(trackEffect);
 	}
 
+	@Override
+	public void padWithSilence(Fraction beats) {
+		addSilence(new NoteDuration(beats));
+	}
+
 	public Fraction lengthInBeats() {
-		if(trackMelody.isEmpty()) {
+		if (trackMelody.isEmpty()) {
 			return new Fraction();
 		}
 		return Fraction.add(trackMelody.lastKey(), trackMelody.lastEntry().getValue().duration().inBeats());
 	}
 
 	@Override
-	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat){
-		if(trackMelody.isEmpty()) {
+	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat) {
+		if (trackMelody.isEmpty()) {
 			throw new IllegalStateException("Can't call getMusicalInstantsActiveThisBeatInclusive when Track melody empty");
 		}
 		Fraction beatIndex = Fraction.integerRemainder(new Fraction(startBeat), lengthInBeats());
@@ -85,7 +89,7 @@ public class SequentialTrack implements Track {
 			musicalInstants.forEach(instant -> allActiveInstants.add(new TimedMusicalInstant(activeInstantAbsoluteStartTime, instant)));
 
 			beatIndex = Fraction.add(instantAtOrBeforeBeat.getKey(), instantAtOrBeforeBeat.getValue().duration().inBeats());
-			if(beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
+			if (beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
 				beatIndex = Fraction.integerRemainder(beatIndex, lengthInBeats());
 				endBeat = Fraction.integerRemainder(beatIndex, endBeat);
 			}
@@ -100,7 +104,7 @@ public class SequentialTrack implements Track {
 		Fraction trackLength = lengthInBeats();
 
 		return !trackLength.isZero() && trackLength.isInteger();
-		//TODO check track length works with the song's time signature
+		// TODO check track length works with the song's time signature
 	}
 
 	public String getIdPrefix() {

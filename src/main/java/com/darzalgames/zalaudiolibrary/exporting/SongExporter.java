@@ -1,5 +1,6 @@
 package com.darzalgames.zalaudiolibrary.exporting;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,10 @@ public class SongExporter {
 
 			System.out.print("Exporting: " + song.getSongName() + " . . . ");
 
-			try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(song.getSongName() + ".wav"), songInfo.getMetadata())){
+			String relativeExportPath = album.getAlbumTitle() + File.separator + song.getSongName() + ".wav";
+			File file = new File(album.getAlbumTitle());
+			file.mkdir();
+			try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(relativeExportPath), songInfo.getMetadata())) {
 				AudioPipeline audioPipeline = new AudioPipeline(song, wavEncoderOutputStream, 1f, 0f);
 				orchestrator.setAudioPipeline(audioPipeline);
 				orchestrator.orchestrateSong();
@@ -35,6 +39,5 @@ public class SongExporter {
 		}
 		System.out.println("Exporting complete for album " + album.toString());
 	}
-
 
 }

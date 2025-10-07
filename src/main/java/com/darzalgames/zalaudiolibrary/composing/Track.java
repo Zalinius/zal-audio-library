@@ -2,6 +2,7 @@ package com.darzalgames.zalaudiolibrary.composing;
 
 import java.util.List;
 
+import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 
@@ -13,6 +14,8 @@ public interface Track {
 	 * @return An ordered list of TimedMusicalInstants which are active on the inclusive interval [startBeat, startBeat+1]
 	 */
 	List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat);
+
+	void padWithSilence(Fraction beats);
 
 	void addMusicalEffect(MusicalEffect musicalEffect);
 

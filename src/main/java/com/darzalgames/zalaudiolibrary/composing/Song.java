@@ -42,7 +42,7 @@ public abstract class Song {
 		tracks.add(track);
 	}
 
-	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat){
+	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat) {
 		List<TimedMusicalInstant> allActiveInstants = new ArrayList<>();
 
 		tracks.forEach(track -> allActiveInstants.addAll(track.getMusicalInstantsActiveThisBeatInclusive(startBeat)));
@@ -59,7 +59,9 @@ public abstract class Song {
 	}
 
 	public boolean isValid() {
-		return !tracks.isEmpty() && tracks.stream().allMatch(Track::isValid);
+		boolean tracksExist = !tracks.isEmpty();
+		boolean tracksAreValid = tracks.stream().allMatch(Track::isValid);
+		return tracksExist && tracksAreValid;
 	}
 
 	public float getInitialBps() {

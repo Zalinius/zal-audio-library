@@ -38,6 +38,10 @@ public class AlbumExportingInformation {
 		return songs;
 	}
 
+	public String getAlbumTitle() {
+		return albumTitle;
+	}
+
 	@Override
 	public String toString() {
 		return albumTitle + " - " + artist + ": " + songs.size() + " tracks";

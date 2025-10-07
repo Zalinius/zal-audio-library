@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.function.IntFunction;
 
 import com.darzalgames.darzalcommon.data.ListFactory;
+import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.complex.ComplexSynth;
 import com.darzalgames.zalaudiolibrary.synth.complex.Partial;
 
-public class CompositeTrack implements Track{
+public class CompositeTrack implements Track {
 
 	private final List<SequentialTrack> tracks;
 	private final List<Partial> partials;
@@ -35,6 +36,11 @@ public class CompositeTrack implements Track{
 
 	public void addSilence(NoteDuration duration) {
 		tracks.forEach(track -> track.addSilence(duration));
+	}
+
+	@Override
+	public void padWithSilence(Fraction beats) {
+		addSilence(new NoteDuration(beats));
 	}
 
 	@Override
