@@ -11,14 +11,11 @@ public class TrumpetSongOrchestrator extends SongOrchestrator {
 		this.trumpetSong = trumpetSong;
 	}
 
-
 	@Override
 	public void orchestrateSong() {
-		trumpetSong.makeSad();
 		processBeats(1);
 
 		processMeasures(8);
-
 
 		processMeasures(8);
 		processMeasures(1);
