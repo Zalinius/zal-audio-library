@@ -11,15 +11,15 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
-	public static void main(String[] args) throws Exception {
-		//		runSong(new BellSong());
-		//		runSong(new TrumpetSong());
+	public static void main(String[] args) {
+		// runSong(new BellSong());
+		// runSong(new TrumpetSong());
 
 		exportDemoAlbum();
 
 	}
 
-	public static void runSong(Song song) throws Exception {
+	public static void runSong(Song song) throws LineUnavailableException, InterruptedException {
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 		AudioPipeline audioPipeline = new AudioPipeline(song, audioConsumer, 1f, 1f);
 

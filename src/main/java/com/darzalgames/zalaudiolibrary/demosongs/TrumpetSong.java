@@ -56,7 +56,6 @@ public class TrumpetSong extends Song {
 		percLow.addNote(SIXTEENTH, Pitch.C4);
 		percLow.addSilence(SIXTEENTH);
 
-
 		percHi.addNote(SIXTEENTH, Pitch.C4);
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
@@ -67,12 +66,10 @@ public class TrumpetSong extends Song {
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
 
-
 		addNote(SIXTEENTH, E4);
 		addNote(SIXTEENTH, F4);
 		addNote(SIXTEENTH, G4);
 		addNote(SIXTEENTH, G4s);
-
 
 		addNote(QUARTER_SIXTEENTH, A4, C4);
 		addSilence(SIXTEENTH);
@@ -88,7 +85,6 @@ public class TrumpetSong extends Song {
 		addNote(SIXTEENTH, F4);
 		addNote(SIXTEENTH, G4);
 		addNote(SIXTEENTH, G4s);
-
 
 		addNote(QUARTER_DOT, A4, C4);
 		addNote(EIGHTH, G4s);
@@ -107,7 +103,6 @@ public class TrumpetSong extends Song {
 		addNote(EIGHTH, G4, C4);
 		addNote(EIGHTH, F4s, C4);
 		addNote(EIGHTH, F4s, C4);
-
 
 		addNote(EIGHTH_DOT, F4, C4);
 		addNote(EIGHTH_DOT, G4, B3);
@@ -141,24 +136,24 @@ public class TrumpetSong extends Song {
 
 	private void addNote(NoteDuration duration, Pitch mainPitch) {
 		main.addNote(duration, mainPitch);
-		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency()*2));
+		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2));
 		secondary.addSilence(duration);
 		tuba.addSilence(duration);
 	}
 
 	private void addNote(NoteDuration duration, Pitch mainPitch, Pitch secondaryPitch) {
 		main.addNote(duration, mainPitch);
-		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency()*2));
+		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2));
 		secondary.addNote(duration, secondaryPitch);
 		tuba.addNote(duration, secondaryPitch.octaveDown());
 	}
 
 	public void makeSad() {
+		// TODO Somehow this sounds like a bad organ? to be investigated (as in, make a good organ synth
 		main.addMusicalEffect(new TransposeEffect(p -> p.down().up()));
 		mainOctave.addMusicalEffect(new TransposeEffect(p -> p.down().up()));
 		secondary.addMusicalEffect(new TransposeEffect(p -> p.down().up()));
-		tuba.addMusicalEffect(new TransposeEffect(p -> p.down().up()	));
-		//		changeBPSGradually(getInitialBps()/2f, 2f);
+		tuba.addMusicalEffect(new TransposeEffect(p -> p.down().up()));
 	}
 
 }

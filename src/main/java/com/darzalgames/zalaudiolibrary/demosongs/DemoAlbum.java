@@ -11,6 +11,6 @@ public class DemoAlbum extends AlbumExportingInformation {
 		addSong(bellSong, new BellSongCreepyOrchestrator(bellSong));
 
 		TrumpetSong trumpetSong = new TrumpetSong();
-		addSong(trumpetSong, new TrumpetSongOrchestrator(trumpetSong));
+		addSong(trumpetSong, new TrumpetSongOrchestrator());
 	}
 }
