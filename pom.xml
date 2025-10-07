@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.darzalgames</groupId>
 	<artifactId>zal-audio-library</artifactId>
-	<version>0.4.0</version>
+	<version>0.5.0</version>
 	<name>Zal's Audio Library</name>
 	<description>A realtime generated audio libary</description>
 
