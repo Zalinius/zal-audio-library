@@ -1,9 +1,9 @@
 package com.darzalgames.zalaudiolibrary.composing;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import com.darzalgames.zalaudiolibrary.composing.time.BPSAcceptor;
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 
@@ -14,6 +14,8 @@ public abstract class Song {
 	private final List<Track> tracks;
 
 	private final List<SampleEffect> sampleEffects;
+
+	private BPSAcceptor bpsAcceptor;
 
 	public Song(String songName) {
 		this(songName, 1f);
@@ -26,8 +28,8 @@ public abstract class Song {
 		sampleEffects = new ArrayList<>();
 	}
 
-	public SequentialTrack createTrack(String trackName, Instrument instrument) {
-		return createTrack(trackName, instrument, 1f);
+	public void setBpsAcceptor(BPSAcceptor bpsAcceptor) {
+		this.bpsAcceptor = bpsAcceptor;
 	}
 
 	public SequentialTrack createTrack(String trackName, Instrument instrument, float amplitude) {
@@ -45,9 +47,6 @@ public abstract class Song {
 
 		tracks.forEach(track -> allActiveInstants.addAll(track.getMusicalInstantsActiveThisBeatInclusive(startBeat)));
 
-		for (Iterator<TimedMusicalInstant> it = allActiveInstants.iterator(); it.hasNext();) {
-			TimedMusicalInstant timedMusicalInstant = it.next();
-		}
 		return allActiveInstants;
 	}
 
@@ -69,6 +68,14 @@ public abstract class Song {
 
 	public String getSongName() {
 		return songName;
+	}
+
+	public void changeBPSGradually(float newBPS, float transitionTime) {
+		bpsAcceptor.setTargetBPS(newBPS, transitionTime);
+	}
+
+	public void changeBPSNow(float newBPS) {
+		bpsAcceptor.setTargetBPS(newBPS, 0f);
 	}
 
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.darzalgames.zalaudiolibrary.AudioConstants;
-import com.darzalgames.zalaudiolibrary.BpsController;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
@@ -26,13 +25,12 @@ public class AudioPipeline extends Thread {
 
 	private final AtomicBoolean shouldStop;
 
-	private final Song song;
 	private final SimpleSoundMaker simpleSoundMaker;
 	private final SampleMaker sampler; //Creates Samples from Simple Sounds
 	private final AudioConsumer audioConsumer; //receives Samples
-
 	private final BpsController bpsController;
 
+	private Song song;
 	private float beatCounter;
 	private float secondsCounter;
 
@@ -41,12 +39,12 @@ public class AudioPipeline extends Thread {
 		if(!song.isValid()) {
 			throw new IllegalArgumentException("song invalid: " + song.getSongName());
 		}
-		this.song = song;
+		bpsController = new BpsController(song.getInitialBps());
+		changeSong(song);
 		simpleSoundMaker = new SimpleSoundMaker();
 		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
 
-		bpsController = new BpsController(song.getInitialBps());
 
 
 		beatCounter = 0f;
@@ -79,7 +77,7 @@ public class AudioPipeline extends Thread {
 		}
 	}
 
-	private void processMusicStep() {
+	public void processMusicStep() {
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
 
 		final int beatNumber = (int) beatCounter;
@@ -94,6 +92,15 @@ public class AudioPipeline extends Thread {
 
 		beatCounter += beatIncrementDuringMusicStep;
 		secondsCounter += AudioConstants.STEP_DURATION_IN_SECONDS;
+	}
+
+	private void changeSong(Song newSong) {
+		newSong.setBpsAcceptor(bpsController);
+		song = newSong;
+	}
+
+	public float getBeatCounter() {
+		return beatCounter;
 	}
 
 	public VolumeListener getVolumeListener() {

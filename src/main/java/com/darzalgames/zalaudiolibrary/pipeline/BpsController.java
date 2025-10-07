@@ -1,6 +1,8 @@
-package com.darzalgames.zalaudiolibrary;
+package com.darzalgames.zalaudiolibrary.pipeline;
 
-public class BpsController {
+import com.darzalgames.zalaudiolibrary.composing.time.BPSAcceptor;
+
+public class BpsController implements BPSAcceptor {
 
 	private float targetBps;
 
@@ -15,6 +17,7 @@ public class BpsController {
 		timeInTransition = 0f;
 	}
 
+	@Override
 	public synchronized void setTargetBPS(float newTargetBps, float transitionTime) {
 		lastBps = targetBps;
 		targetBps = newTargetBps;
