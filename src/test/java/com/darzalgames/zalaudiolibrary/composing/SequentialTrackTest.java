@@ -118,7 +118,7 @@ class SequentialTrackTest {
 		assertEquals(2, activeInstantsAt1.size());
 		assertEquals(new Fraction(0), activeInstantsAt1.get(0).startingBeat());
 		assertEquals(Pitch.C4, activeInstantsAt1.get(0).musicalInstant().pitch());
-		assertEquals(new Fraction(3,2), activeInstantsAt1.get(1).startingBeat());
+		assertEquals(new Fraction(3, 2), activeInstantsAt1.get(1).startingBeat());
 		assertEquals(Pitch.C5, activeInstantsAt1.get(1).musicalInstant().pitch());
 	}
 
@@ -211,6 +211,114 @@ class SequentialTrackTest {
 		track.addSilence(NoteDuration.QUARTER);
 
 		assertTrue(track.isValid());
+	}
+
+	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_on4AndFourSequentialQuarterNotes_loopsCorrectlyAndreturnsTwoNotes() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
+
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C5, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C6, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C7, ConstantEnvelope.zeroEnvelope());
+		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(4);
+
+		assertEquals(2, activeInstants.size());
+		assertEquals(new Fraction(4), activeInstants.get(0).startingBeat());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(5), activeInstants.get(1).startingBeat());
+		assertEquals(Pitch.C5, activeInstants.get(1).musicalInstant().pitch());
+	}
+
+	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_on8AndFourSequentialQuarterNotes_loopsCorrectlyAndreturnsTwoNotes() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
+
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C5, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C6, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C7, ConstantEnvelope.zeroEnvelope());
+		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(8);
+
+		assertEquals(2, activeInstants.size());
+		assertEquals(new Fraction(8), activeInstants.get(0).startingBeat());
+		assertEquals(Pitch.C4, activeInstants.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(9), activeInstants.get(1).startingBeat());
+		assertEquals(Pitch.C5, activeInstants.get(1).musicalInstant().pitch());
+	}
+
+	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_withNonZeroRepetitionPoint_loopsCorrectly() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
+
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C5, ConstantEnvelope.zeroEnvelope());
+		track.setRepetitionPoint();
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C6, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C7, ConstantEnvelope.zeroEnvelope());
+		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(8);
+
+		assertEquals(2, activeInstants.size());
+		assertEquals(new Fraction(8), activeInstants.get(0).startingBeat());
+		assertEquals(Pitch.C6, activeInstants.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(9), activeInstants.get(1).startingBeat());
+		assertEquals(Pitch.C7, activeInstants.get(1).musicalInstant().pitch());
+	}
+
+	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_withNonZeroRepetitionPointAndLongIntro_loopsCorrectlyAtMultiplePoints() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
+		track.addSilence(NoteDuration.HALF);
+		track.addSilence(NoteDuration.HALF);
+		track.addSilence(NoteDuration.HALF);
+		track.addSilence(NoteDuration.HALF);
+		track.setRepetitionPoint();
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C5, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C6, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.C7, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.D4, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.D5, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.D6, ConstantEnvelope.zeroEnvelope());
+		track.addNote(Synth.zero(), NoteDuration.QUARTER, Pitch.D7, ConstantEnvelope.zeroEnvelope());
+
+		List<TimedMusicalInstant> activeInstantsAt16 = track.getMusicalInstantsActiveThisBeatInclusive(16);
+		List<TimedMusicalInstant> activeInstantsAt24 = track.getMusicalInstantsActiveThisBeatInclusive(24);
+		List<TimedMusicalInstant> activeInstantsAt27 = track.getMusicalInstantsActiveThisBeatInclusive(27);
+
+		assertEquals(2, activeInstantsAt16.size());
+		assertEquals(new Fraction(16), activeInstantsAt16.get(0).startingBeat());
+		assertEquals(Pitch.C4, activeInstantsAt16.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(17), activeInstantsAt16.get(1).startingBeat());
+		assertEquals(Pitch.C5, activeInstantsAt16.get(1).musicalInstant().pitch());
+
+		assertEquals(2, activeInstantsAt24.size());
+		assertEquals(new Fraction(24), activeInstantsAt24.get(0).startingBeat());
+		assertEquals(Pitch.C4, activeInstantsAt24.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(25), activeInstantsAt24.get(1).startingBeat());
+		assertEquals(Pitch.C5, activeInstantsAt24.get(1).musicalInstant().pitch());
+
+		assertEquals(2, activeInstantsAt27.size());
+		assertEquals(new Fraction(27), activeInstantsAt27.get(0).startingBeat());
+		assertEquals(Pitch.C7, activeInstantsAt27.get(0).musicalInstant().pitch());
+		assertEquals(new Fraction(28), activeInstantsAt27.get(1).startingBeat());
+		assertEquals(Pitch.D4, activeInstantsAt27.get(1).musicalInstant().pitch());
+	}
+
+	@Test
+	void getMusicalInstantsActiveThisBeatInclusive_withUnusualNoteSizesAndNonZeroRepetitionPoint_getsCorrectValuesBeforeLoop() {
+		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()));
+
+		track.addNote(NoteDuration.WHOLE_DOT, Pitch.C3);
+		track.addNote(NoteDuration.WHOLE_DOT, Pitch.E3);
+		track.setRepetitionPoint();
+		track.addNote(NoteDuration.WHOLE_DOT, Pitch.G3);
+		track.addNote(NoteDuration.WHOLE_DOT, Pitch.C4);
+		List<TimedMusicalInstant> activeInstants = track.getMusicalInstantsActiveThisBeatInclusive(0);
+
+		assertEquals(1, activeInstants.size());
+		assertEquals(new Fraction(0), activeInstants.get(0).startingBeat());
+		assertEquals(Pitch.C3, activeInstants.get(0).musicalInstant().pitch());
 	}
 
 }

@@ -18,8 +18,9 @@ public class SequentialTrack implements Track {
 	private final String trackName;
 	private final Instrument instrument;
 	private final float amplitude;
-
 	private final List<MusicalEffect> trackEffects;
+
+	private Fraction repetitionPoint;
 
 	public SequentialTrack(String songName, String trackName, Instrument instrument) {
 		this(songName, trackName, instrument, 0.1f);
@@ -32,6 +33,7 @@ public class SequentialTrack implements Track {
 		this.instrument = instrument;
 		this.amplitude = amplitude;
 		trackEffects = new ArrayList<>();
+		repetitionPoint = new Fraction();
 	}
 
 	public void addNote(NoteDuration duration, Pitch pitch) {
@@ -49,6 +51,10 @@ public class SequentialTrack implements Track {
 		trackMelody.put(newInstantStartBeat, newInstant);
 	}
 
+	public void setRepetitionPoint() {
+		repetitionPoint = lengthInBeats();
+	}
+
 	@Override
 	public void addMusicalEffect(MusicalEffect trackEffect) {
 		trackEffects.add(trackEffect);
@@ -59,6 +65,10 @@ public class SequentialTrack implements Track {
 		addSilence(new NoteDuration(beats));
 	}
 
+	public Fraction introductionLengthInBeats() {
+		return repetitionPoint;
+	}
+
 	public Fraction lengthInBeats() {
 		if (trackMelody.isEmpty()) {
 			return new Fraction();
@@ -66,19 +76,23 @@ public class SequentialTrack implements Track {
 		return Fraction.add(trackMelody.lastKey(), trackMelody.lastEntry().getValue().duration().inBeats());
 	}
 
+	public Fraction loopingLengthInBeats() {
+		return Fraction.subtract(lengthInBeats(), repetitionPoint);
+	}
+
 	@Override
 	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat) {
 		if (trackMelody.isEmpty()) {
 			throw new IllegalStateException("Can't call getMusicalInstantsActiveThisBeatInclusive when Track melody empty");
 		}
-		Fraction beatIndex = Fraction.integerRemainder(new Fraction(startBeat), lengthInBeats());
-		List<TimedMusicalInstant> allActiveInstants = new ArrayList<>();
+		Fraction beatIndex = computeRelativeBeatIndex(new Fraction(startBeat));
 		Fraction endBeat = Fraction.add(beatIndex, new Fraction(1));
+		List<TimedMusicalInstant> allActiveInstants = new ArrayList<>();
 
 		do {
 			Entry<Fraction, MusicalInstant> instantAtOrBeforeBeat = trackMelody.floorEntry(beatIndex);
-			int trackRepetitionCounter = Fraction.integerDivision(new Fraction(startBeat), lengthInBeats());
-			Fraction activeInstantAbsoluteStartTime = Fraction.add(lengthInBeats().scale(trackRepetitionCounter), instantAtOrBeforeBeat.getKey());
+			int trackRepetitionCounter = computeLoopIteration(new Fraction(startBeat));
+			Fraction activeInstantAbsoluteStartTime = Fraction.add(loopingLengthInBeats().scale(trackRepetitionCounter), instantAtOrBeforeBeat.getKey());
 			Collection<MusicalInstant> musicalInstants = List.of(instantAtOrBeforeBeat.getValue());
 			for (Iterator<MusicalEffect> it = trackEffects.iterator(); it.hasNext();) {
 				MusicalEffect trackEffect = it.next();
@@ -90,13 +104,34 @@ public class SequentialTrack implements Track {
 
 			beatIndex = Fraction.add(instantAtOrBeforeBeat.getKey(), instantAtOrBeforeBeat.getValue().duration().inBeats());
 			if (beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
-				beatIndex = Fraction.integerRemainder(beatIndex, lengthInBeats());
+				beatIndex = computeRelativeBeatIndex(beatIndex);
 				endBeat = Fraction.integerRemainder(beatIndex, endBeat);
 			}
 
 		} while (beatIndex.isLessThanOrEqual(endBeat));
 
 		return allActiveInstants;
+	}
+
+	private Fraction computeRelativeBeatIndex(Fraction absoluteBeat) {
+		if (absoluteBeat.isGreaterThanOrEqual(repetitionPoint)) {
+			Fraction loopingLength = loopingLengthInBeats();
+			Fraction progressInLoop = Fraction.subtract(absoluteBeat, repetitionPoint);
+			Fraction remainderInLoop = Fraction.integerRemainder(progressInLoop, loopingLength);
+			return Fraction.add(remainderInLoop, repetitionPoint);
+		} else {
+			return absoluteBeat;
+		}
+	}
+
+	private int computeLoopIteration(Fraction absoluteBeat) {
+		if (absoluteBeat.isGreaterThanOrEqual(repetitionPoint)) {
+			Fraction loopingLength = loopingLengthInBeats();
+			Fraction progressInLoop = Fraction.subtract(absoluteBeat, repetitionPoint);
+			return Fraction.integerDivision(progressInLoop, loopingLength);
+		} else {
+			return 0;
+		}
 	}
 
 	@Override

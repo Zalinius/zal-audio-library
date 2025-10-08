@@ -18,7 +18,7 @@ public class Sbig2025Album extends AlbumExportingInformation {
 		super("Demon Lord's Demise : ~Rebirth~", 2025);
 
 		addSong(new A_ThemeSong(), new SimpleOrchestrator(15));
-		addSong(new B_MenuSong(), new SimpleOrchestrator(6));
+		addSong(new B_MenuSong(), new SimpleOrchestrator(6 * 4));
 	}
 
 	private static class SimpleOrchestrator extends SongOrchestrator {
