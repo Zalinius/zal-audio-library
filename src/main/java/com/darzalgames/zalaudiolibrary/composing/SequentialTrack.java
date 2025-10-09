@@ -13,7 +13,7 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class SequentialTrack implements Track {
 
-	private final NavigableMap<Fraction, MusicalInstant> trackMelody;
+	private final NavigableMap<Fraction, List<MusicalInstant>> trackMelody;
 	private final String songName;
 	private final String trackName;
 	private final Instrument instrument;
@@ -36,19 +36,29 @@ public class SequentialTrack implements Track {
 		repetitionPoint = new Fraction();
 	}
 
-	public void addNote(NoteDuration duration, Pitch pitch) {
-		addNote(instrument.synth(), duration, pitch, instrument.envelope());
+	public void addNote(NoteDuration duration, Pitch pitch, Pitch... chord) {
+		addNote(instrument.synth(), instrument.envelope(), duration, pitch, chord);
 	}
 
 	public void addSilence(NoteDuration duration) {
-		addNote(Synth.zero(), duration, Pitch.NONE, ConstantEnvelope.zeroEnvelope());
+		addNote(Synth.zero(), ConstantEnvelope.zeroEnvelope(), duration, Pitch.NONE);
 	}
 
-	public void addNote(Synth synth, NoteDuration duration, Pitch pitch, Envelope envelope) {
+	private void addNote(Synth synth, Envelope envelope, NoteDuration duration, Pitch pitch, Pitch... chord) {
+		List<MusicalInstant> chordedInstants = new ArrayList<>();
+
 		Fraction newInstantStartBeat = lengthInBeats();
 		String instantId = getIdPrefix() + newInstantStartBeat;
-		MusicalInstant newInstant = new MusicalInstant(synth, pitch, duration, envelope, amplitude, instantId);
-		trackMelody.put(newInstantStartBeat, newInstant);
+		MusicalInstant mainInstant = new MusicalInstant(synth, pitch, duration, envelope, amplitude, instantId);
+		chordedInstants.add(mainInstant);
+
+		for (int i = 0; i < chord.length; i++) {
+			String chordId = instantId + "-" + (i + 1);
+			MusicalInstant chordInstant = new MusicalInstant(synth, chord[i], duration, envelope, amplitude, chordId);
+			chordedInstants.add(chordInstant);
+		}
+
+		trackMelody.put(newInstantStartBeat, chordedInstants);
 	}
 
 	public void setRepetitionPoint() {
@@ -73,7 +83,7 @@ public class SequentialTrack implements Track {
 		if (trackMelody.isEmpty()) {
 			return new Fraction();
 		}
-		return Fraction.add(trackMelody.lastKey(), trackMelody.lastEntry().getValue().duration().inBeats());
+		return Fraction.add(trackMelody.lastKey(), trackMelody.lastEntry().getValue().get(0).duration().inBeats());
 	}
 
 	public Fraction loopingLengthInBeats() {
@@ -90,10 +100,10 @@ public class SequentialTrack implements Track {
 		List<TimedMusicalInstant> allActiveInstants = new ArrayList<>();
 
 		do {
-			Entry<Fraction, MusicalInstant> instantAtOrBeforeBeat = trackMelody.floorEntry(beatIndex);
+			Entry<Fraction, List<MusicalInstant>> instantAtOrBeforeBeat = trackMelody.floorEntry(beatIndex);
 			int trackRepetitionCounter = computeLoopIteration(new Fraction(startBeat));
 			Fraction activeInstantAbsoluteStartTime = Fraction.add(loopingLengthInBeats().scale(trackRepetitionCounter), instantAtOrBeforeBeat.getKey());
-			Collection<MusicalInstant> musicalInstants = List.of(instantAtOrBeforeBeat.getValue());
+			Collection<MusicalInstant> musicalInstants = instantAtOrBeforeBeat.getValue();
 			for (Iterator<MusicalEffect> it = trackEffects.iterator(); it.hasNext();) {
 				MusicalEffect trackEffect = it.next();
 				Collection<MusicalInstant> affectedInstants = new ArrayList<>();
@@ -102,7 +112,7 @@ public class SequentialTrack implements Track {
 			}
 			musicalInstants.forEach(instant -> allActiveInstants.add(new TimedMusicalInstant(activeInstantAbsoluteStartTime, instant)));
 
-			beatIndex = Fraction.add(instantAtOrBeforeBeat.getKey(), instantAtOrBeforeBeat.getValue().duration().inBeats());
+			beatIndex = Fraction.add(instantAtOrBeforeBeat.getKey(), instantAtOrBeforeBeat.getValue().get(0).duration().inBeats());
 			if (beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
 				beatIndex = computeRelativeBeatIndex(beatIndex);
 				endBeat = Fraction.integerRemainder(beatIndex, endBeat);

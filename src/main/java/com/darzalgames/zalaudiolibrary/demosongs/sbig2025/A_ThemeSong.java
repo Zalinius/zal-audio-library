@@ -7,7 +7,7 @@ public class A_ThemeSong extends Song {
 	public A_ThemeSong() {
 		super("Ancient Legend");
 
-		ChordTrack mainTrack = new ChordTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
 		addTrack(mainTrack);
 
 		// RepeatingTrack bassTrack = createTrack(Instruments.BASS_DRONE, "bass");

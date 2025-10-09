@@ -22,7 +22,7 @@ public class SongExporter {
 
 			System.out.print("Exporting: " + song.getSongName() + " . . . ");
 
-			String relativeExportPath = album.getAlbumTitle() + File.separator + song.getSongName() + ".wav";
+			String relativeExportPath = album.getAlbumTitle() + File.separator + songInfo.getIndexedName() + ".wav";
 			File file = new File(album.getAlbumTitle());
 			file.mkdir();
 			try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(relativeExportPath), songInfo.getMetadata())) {

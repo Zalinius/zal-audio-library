@@ -7,7 +7,7 @@ public class B_MenuSong extends Song {
 	public B_MenuSong() {
 		super("Adventure Awaits", 3f);
 
-		ChordTrack mainTrack = new ChordTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
 		addTrack(mainTrack);
 		SequentialTrack bassTrack = createTrack("bass", Sbig2025Album.BASS_DRONE, 0.3f);
 
