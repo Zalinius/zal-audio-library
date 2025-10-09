@@ -11,6 +11,8 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
 public class Sbig2025Album extends AlbumExportingInformation {
 
 	public static final Instrument MAIN = new Instrument(Synth.pulse(.15f), AdsrEnvelope.linear(.01f, .1f, .5f, .1f));
+	public static final Instrument GUITAR = new Instrument(Synth.pulse(.3f), AdsrEnvelope.linear(.01f, .09f, .3f, .9f));
+	public static final Instrument FLUTE = new Instrument(Synth.overtone(Synth.sine(), 0.5f), GUITAR.envelope());
 	public static final Instrument RHYTHM = new Instrument(Synth.pulse(.15f), ArEnvelope.linear(.02f, .1f));
 	public static final Instrument BASS_DRONE = new Instrument(Synth.pulse(.2f), AsrEnvelope.linear(.05f, .1f));
 
@@ -19,6 +21,8 @@ public class Sbig2025Album extends AlbumExportingInformation {
 
 		addSong(new A_ThemeSong(), new SimpleOrchestrator(15));
 		addSong(new B_MenuSong(), new SimpleOrchestrator(6 * 4));
+		addSong(new C_HomeSong(), new SimpleOrchestrator(8 * 2));
+		addSong(new D_OverworldSong(), new SimpleOrchestrator(16));
 	}
 
 	private static class SimpleOrchestrator extends SongOrchestrator {

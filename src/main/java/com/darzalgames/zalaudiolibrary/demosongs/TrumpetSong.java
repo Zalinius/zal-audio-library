@@ -5,6 +5,8 @@ import static com.darzalgames.zalaudiolibrary.composing.Pitch.*;
 
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.tracks.CompositeTrack;
+import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 import com.darzalgames.zalaudiolibrary.synth.complex.ComplexSynth;

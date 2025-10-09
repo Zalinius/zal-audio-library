@@ -4,6 +4,7 @@ import static com.darzalgames.zalaudiolibrary.composing.NoteDuration.*;
 import static com.darzalgames.zalaudiolibrary.composing.Pitch.*;
 
 import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.tracks.CompositeTrack;
 import com.darzalgames.zalaudiolibrary.effects.tracking.EnvelopeReverser;
 import com.darzalgames.zalaudiolibrary.effects.tracking.SynthChanger;
 import com.darzalgames.zalaudiolibrary.synth.Synth;

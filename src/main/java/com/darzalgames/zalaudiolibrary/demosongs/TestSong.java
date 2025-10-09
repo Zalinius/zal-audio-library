@@ -4,6 +4,7 @@ import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class TestSong extends Song {

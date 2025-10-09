@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.composing.time.BPSAcceptor;
+import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
+import com.darzalgames.zalaudiolibrary.composing.tracks.Track;
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 

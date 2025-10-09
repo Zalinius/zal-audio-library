@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.composing;
+package com.darzalgames.zalaudiolibrary.composing.tracks;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -6,6 +6,9 @@ import java.util.Map.Entry;
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.composing.Instrument;
+import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
+import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
@@ -21,10 +24,6 @@ public class SequentialTrack implements Track {
 	private final List<MusicalEffect> trackEffects;
 
 	private Fraction repetitionPoint;
-
-	public SequentialTrack(String songName, String trackName, Instrument instrument) {
-		this(songName, trackName, instrument, 0.1f);
-	}
 
 	public SequentialTrack(String songName, String trackName, Instrument instrument, float amplitude) {
 		trackMelody = new TreeMap<>();
