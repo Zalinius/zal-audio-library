@@ -9,6 +9,7 @@ import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
+import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
@@ -21,8 +22,8 @@ public class SixteenthRhythmTrack implements Track {
 	private final float amplitude;
 	private final Pitch pitch;
 
-	private final Function<Integer, Boolean> rhythm;
-	private final int rhythmLength;
+	private Function<Integer, Boolean> rhythm;
+	private int rhythmLength;
 
 	public SixteenthRhythmTrack(String songName, String trackName, Instrument instrument, float amplitude, List<Boolean> rhythm, Pitch pitch) {
 		this.songName = songName;
@@ -31,6 +32,12 @@ public class SixteenthRhythmTrack implements Track {
 		this.amplitude = amplitude;
 		this.pitch = pitch;
 
+		Tuple<Integer, Function<Integer, Boolean>> rhythmTuple = makeSixteenthRhythm(rhythm);
+		rhythmLength = rhythmTuple.e();
+		this.rhythm = rhythmTuple.f();
+	}
+
+	public void setRhythm(boolean... rhythm) {
 		Tuple<Integer, Function<Integer, Boolean>> rhythmTuple = makeSixteenthRhythm(rhythm);
 		rhythmLength = rhythmTuple.e();
 		this.rhythm = rhythmTuple.f();
@@ -77,13 +84,18 @@ public class SixteenthRhythmTrack implements Track {
 	}
 
 	@Override
-	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return true;
+	public List<CompositionError> validate() {
+		// TODO verify against time signature
+		return List.of();
 	}
 
 	public String getIdPrefix() {
 		return songName + " - " + trackName + " - ";
+	}
+
+	@Override
+	public String getTrackName() {
+		return trackName;
 	}
 
 }

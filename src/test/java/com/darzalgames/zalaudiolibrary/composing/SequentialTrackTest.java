@@ -1,7 +1,6 @@
 package com.darzalgames.zalaudiolibrary.composing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -11,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
+import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
+import com.darzalgames.zalaudiolibrary.composing.validation.TrackEmptyError;
+import com.darzalgames.zalaudiolibrary.composing.validation.TrackFractionalError;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
@@ -192,7 +194,12 @@ class SequentialTrackTest {
 
 	@Test
 	void isTrackLengthValid_onEmptyTrack_returnsFalse() {
-		assertFalse(new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()), 1f).isValid());
+		SequentialTrack sequentialTrack = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()), 1f);
+
+		List<CompositionError> errors = sequentialTrack.validate();
+
+		assertEquals(1, errors.size());
+		assertEquals(TrackEmptyError.class, errors.get(0).getClass());
 	}
 
 	@Test
@@ -200,7 +207,10 @@ class SequentialTrackTest {
 		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()), 1f);
 		track.addSilence(NoteDuration.THIRD);
 
-		assertFalse(track.isValid());
+		List<CompositionError> errors = track.validate();
+
+		assertEquals(1, errors.size());
+		assertEquals(TrackFractionalError.class, errors.get(0).getClass());
 	}
 
 	@Test
@@ -211,7 +221,9 @@ class SequentialTrackTest {
 		track.addSilence(NoteDuration.THIRD);
 		track.addSilence(NoteDuration.QUARTER);
 
-		assertTrue(track.isValid());
+		List<CompositionError> errors = track.validate();
+
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test

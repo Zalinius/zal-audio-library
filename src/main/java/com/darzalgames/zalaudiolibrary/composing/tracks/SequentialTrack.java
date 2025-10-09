@@ -9,6 +9,9 @@ import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
+import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
+import com.darzalgames.zalaudiolibrary.composing.validation.TrackEmptyError;
+import com.darzalgames.zalaudiolibrary.composing.validation.TrackFractionalError;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
@@ -144,11 +147,23 @@ public class SequentialTrack implements Track {
 	}
 
 	@Override
-	public boolean isValid() {
+	public List<CompositionError> validate() {
+		List<CompositionError> errors = new ArrayList<>();
 		Fraction trackLength = lengthInBeats();
 
-		return !trackLength.isZero() && trackLength.isInteger();
+		if (trackLength.isZero()) {
+			errors.add(new TrackEmptyError(this));
+		}
+		if (!trackLength.isInteger()) {
+			errors.add(new TrackFractionalError(this));
+		}
+
+		return errors;
 		// TODO check track length works with the song's time signature
+	}
+
+	public String getTrackName() {
+		return trackName;
 	}
 
 	public String getIdPrefix() {

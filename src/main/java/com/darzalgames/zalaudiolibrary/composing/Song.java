@@ -6,6 +6,8 @@ import java.util.List;
 import com.darzalgames.zalaudiolibrary.composing.time.BPSAcceptor;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.composing.tracks.Track;
+import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
+import com.darzalgames.zalaudiolibrary.composing.validation.SongEmptyError;
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 
@@ -60,10 +62,14 @@ public abstract class Song {
 		return sampleEffects;
 	}
 
-	public boolean isValid() {
-		boolean tracksExist = !tracks.isEmpty();
-		boolean tracksAreValid = tracks.stream().allMatch(Track::isValid);
-		return tracksExist && tracksAreValid;
+	public List<CompositionError> validate() {
+		List<CompositionError> errors = new ArrayList<>();
+		if (tracks.isEmpty()) {
+			errors.add(new SongEmptyError(this));
+		}
+		tracks.forEach(track -> errors.addAll(track.validate()));
+
+		return errors;
 	}
 
 	public float getInitialBps() {

@@ -9,29 +9,29 @@ import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SixteenthRhythmTrack;
 import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
 
-public class D_OverworldSong extends Song {
+public class G_DecaratingTime extends Song {
 
 	private final SixteenthRhythmTrack rhythmTrack;
 	private final TransposeEffect mainTranspose;
 	private final TransposeEffect rhythmTranspose;
 	private final TransposeEffect fluteTranspose;
 
-	public D_OverworldSong() {
-		super("Village", 1.5f);
+	public G_DecaratingTime() {
+		super("Decarating Time", 2f);
 
 		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.GUITAR, 0.7f);
 		addTrack(mainTrack);
-		mainTranspose = new TransposeEffect(p -> p);
+		mainTranspose = new TransposeEffect(p -> p.up().up().up());
 		mainTrack.addMusicalEffect(mainTranspose);
 
-		rhythmTrack = new SixteenthRhythmTrack(getSongName(), "rhythm", Sbig2025Album.RHYTHM, 0.2f, List.of(true, true, true, false), Pitch.C3);
+		rhythmTrack = new SixteenthRhythmTrack(getSongName(), "rhythm", Sbig2025Album.RHYTHM, 0.2f, List.of(true, false, true, false), Pitch.C3);
 		addTrack(rhythmTrack);
-		rhythmTranspose = new TransposeEffect(p -> p);
+		rhythmTranspose = new TransposeEffect(p -> p.down().down().down().down());
 		rhythmTrack.addMusicalEffect(rhythmTranspose);
 
 		SequentialTrack fluteTrack = new SequentialTrack(getSongName(), "flute", Sbig2025Album.FLUTE, 1f);
 		addTrack(fluteTrack);
-		fluteTranspose = new TransposeEffect(p -> p);
+		fluteTranspose = new TransposeEffect(p -> p.down().down().down().down());
 		fluteTrack.addMusicalEffect(fluteTranspose);
 
 		fluteTrack.addSilence(NoteDuration.WHOLE);

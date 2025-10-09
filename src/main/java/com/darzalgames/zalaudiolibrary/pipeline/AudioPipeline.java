@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.composing.Song;
+import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
@@ -15,10 +16,10 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
 /**
  * An audio pipeline with multiple steps
  * <ol type="1">
- *  <li>Composition</li>
- *  <li>Musical Instants</li>
- *  <li>Simple Sounds</li>
- *  <li>Samples sent to Audio Consumer</li>
+ * <li>Composition</li>
+ * <li>Musical Instants</li>
+ * <li>Simple Sounds</li>
+ * <li>Samples sent to Audio Consumer</li>
  * </ol>
  */
 public class AudioPipeline extends Thread {
@@ -26,8 +27,8 @@ public class AudioPipeline extends Thread {
 	private final AtomicBoolean shouldStop;
 
 	private final SimpleSoundMaker simpleSoundMaker;
-	private final SampleMaker sampler; //Creates Samples from Simple Sounds
-	private final AudioConsumer audioConsumer; //receives Samples
+	private final SampleMaker sampler; // Creates Samples from Simple Sounds
+	private final AudioConsumer audioConsumer; // receives Samples
 	private final BpsController bpsController;
 
 	private Song song;
@@ -36,16 +37,17 @@ public class AudioPipeline extends Thread {
 
 	public AudioPipeline(Song song, AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
 		shouldStop = new AtomicBoolean(false);
-		if(!song.isValid()) {
-			throw new IllegalArgumentException("song invalid: " + song.getSongName());
+		List<CompositionError> songErrors = song.validate();
+		if (!songErrors.isEmpty()) {
+			StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
+			songErrors.forEach(error -> sb.append("\n" + error.getError()));
+			throw new IllegalArgumentException(sb.toString());
 		}
 		bpsController = new BpsController(song.getInitialBps());
 		changeSong(song);
 		simpleSoundMaker = new SimpleSoundMaker();
 		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
-
-
 
 		beatCounter = 0f;
 		secondsCounter = 0f;
