@@ -10,7 +10,7 @@ public class I_CreditsSong extends Song {
 	public I_CreditsSong() {
 		super("Credits", 2f);
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.GUITAR, 1f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.GUITAR, 0.5f);
 		addTrack(mainTrack);
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
