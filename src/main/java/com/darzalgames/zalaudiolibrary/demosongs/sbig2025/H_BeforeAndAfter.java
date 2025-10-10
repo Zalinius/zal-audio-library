@@ -10,9 +10,13 @@ public class H_BeforeAndAfter extends Song {
 	public H_BeforeAndAfter() {
 		super("Before & After", 4);
 
-		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.GUITAR, 0.7f);
+		final float mainAmplitude = 0.3f;
+		final float bassAmplitude = 0.5f;
+		final float percAmplitude = 0.5f;
+
+		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.GUITAR, bassAmplitude);
 		addTrack(bassTrack);
-		SequentialTrack percussionTrack = new SequentialTrack(getSongName(), "perc", Sbig2025Album.PERC, 0.7f);
+		SequentialTrack percussionTrack = new SequentialTrack(getSongName(), "perc", Sbig2025Album.PERC, percAmplitude);
 		addTrack(percussionTrack);
 
 		// Intro
@@ -53,7 +57,7 @@ public class H_BeforeAndAfter extends Song {
 		bassTrack.setRepetitionPoint();
 		percussionTrack.setRepetitionPoint();
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.4f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, mainAmplitude);
 		mainTrack.padWithSilence(bassTrack.lengthInBeats());
 		mainTrack.setRepetitionPoint();
 		addTrack(mainTrack);

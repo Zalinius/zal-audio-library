@@ -11,12 +11,15 @@ public class E_BossTime extends Song {
 	public E_BossTime() {
 		super("Boss Time", 2.5f);
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
+		final float mainAmplitude = 0.55f;
+		final float drumAmplitude = 0.2f;
+
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, mainAmplitude);
 		addTrack(mainTrack);
 		TransposeEffect mainTranspose = new TransposeEffect(Pitch::down);
 		mainTrack.addMusicalEffect(mainTranspose);
 
-		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.BASS_DRONE, 0.3f);
+		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.BASS_DRONE, drumAmplitude);
 		addTrack(bassTrack);
 		TransposeEffect bassTranspose = new TransposeEffect(p -> p.down().octaveDown());
 		bassTrack.addMusicalEffect(bassTranspose);

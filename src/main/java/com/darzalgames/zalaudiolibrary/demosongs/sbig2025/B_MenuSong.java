@@ -1,6 +1,8 @@
 package com.darzalgames.zalaudiolibrary.demosongs.sbig2025;
 
-import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
+import com.darzalgames.zalaudiolibrary.composing.Pitch;
+import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 
 public class B_MenuSong extends Song {
@@ -8,9 +10,12 @@ public class B_MenuSong extends Song {
 	public B_MenuSong() {
 		super("Adventure Awaits", 3f);
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
+		final float mainAmplitude = 0.55f;
+		final float drumAmplitude = 0.2f;
+
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, mainAmplitude);
 		addTrack(mainTrack);
-		SequentialTrack bassTrack = createTrack("bass", Sbig2025Album.BASS_DRONE, 0.3f);
+		SequentialTrack bassTrack = createTrack("bass", Sbig2025Album.BASS_DRONE, drumAmplitude);
 
 		bassTrack.addNote(NoteDuration.WHOLE_DOT, Pitch.C3);
 		mainTrack.addNote(NoteDuration.EIGHTH_DOT, Pitch.C4);

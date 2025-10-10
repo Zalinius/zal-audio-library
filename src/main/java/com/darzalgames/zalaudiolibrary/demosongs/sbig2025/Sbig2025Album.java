@@ -22,14 +22,14 @@ public class Sbig2025Album extends AlbumExportingInformation {
 		super("Demon Lord's Demise : ~Rebirth~", 2025);
 
 		addSong(new A_ThemeSong(), new SimpleOrchestrator(15));
-		addSong(new B_MenuSong(), new SimpleOrchestrator(6 * 2));
+		addSong(new B_MenuSong(), new SimpleOrchestrator(6 * 4));
 		addSong(new C_HomeSong(), new SimpleOrchestrator(8 * 2));
 		D_OverworldSong overworldSong = new D_OverworldSong();
 		addSong(overworldSong, overworldOrchestrator(overworldSong));
-		addSong(new E_BossTime(), new SimpleOrchestrator(6 * 2));
-		addSong(new F_FakeMenuSong(), new SimpleOrchestrator(6 * 2));
-		addSong(new G_DecaratingTime(), new SimpleOrchestrator(16));
-		addSong(new H_BeforeAndAfter(), new SimpleOrchestrator(32));
+		addSong(new E_BossTime(), new SimpleOrchestrator(6 * 4));
+		addSong(new F_FakeMenuSong(), new SimpleOrchestrator(6 * 4));
+		addSong(new G_DecaratingTime(), new SimpleOrchestrator(16 * 2));
+		addSong(new H_BeforeAndAfter(), new SimpleOrchestrator(32 * 2));
 		addSong(new I_CreditsSong(), new SimpleOrchestrator(6));
 	}
 

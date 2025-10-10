@@ -12,9 +12,10 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
-	public static void main(String[] args) {
-		// runSong(new BellSong());
-		// runSong(new TrumpetSong());
+	public static void main(String[] args) throws LineUnavailableException, InterruptedException {
+//		runSong(new BellSong());
+//		runSong(new TrumpetSong());
+//		runSong(new A_ThemeSong());
 
 //		exportDemoAlbum();
 		exportSbig2025Album();

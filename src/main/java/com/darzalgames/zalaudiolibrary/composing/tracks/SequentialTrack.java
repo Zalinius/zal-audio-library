@@ -2,6 +2,7 @@ package com.darzalgames.zalaudiolibrary.composing.tracks;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.IntFunction;
 
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
@@ -49,14 +50,17 @@ public class SequentialTrack implements Track {
 	private void addNote(Synth synth, Envelope envelope, NoteDuration duration, Pitch pitch, Pitch... chord) {
 		List<MusicalInstant> chordedInstants = new ArrayList<>();
 
+		IntFunction<Float> chordAmplitudeFunction = n -> (1f / (float) Math.sqrt(n));
+		float chordAmplitude = amplitude * chordAmplitudeFunction.apply(chord.length + 1);
+
 		Fraction newInstantStartBeat = lengthInBeats();
 		String instantId = getIdPrefix() + newInstantStartBeat;
-		MusicalInstant mainInstant = new MusicalInstant(synth, pitch, duration, envelope, amplitude, instantId);
+		MusicalInstant mainInstant = new MusicalInstant(synth, pitch, duration, envelope, chordAmplitude, instantId);
 		chordedInstants.add(mainInstant);
 
 		for (int i = 0; i < chord.length; i++) {
 			String chordId = instantId + "-" + (i + 1);
-			MusicalInstant chordInstant = new MusicalInstant(synth, chord[i], duration, envelope, amplitude, chordId);
+			MusicalInstant chordInstant = new MusicalInstant(synth, chord[i], duration, envelope, chordAmplitude, chordId);
 			chordedInstants.add(chordInstant);
 		}
 
@@ -162,6 +166,7 @@ public class SequentialTrack implements Track {
 		// TODO check track length works with the song's time signature
 	}
 
+	@Override
 	public String getTrackName() {
 		return trackName;
 	}

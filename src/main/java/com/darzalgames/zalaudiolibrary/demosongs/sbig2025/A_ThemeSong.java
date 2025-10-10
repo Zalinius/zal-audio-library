@@ -1,6 +1,8 @@
 package com.darzalgames.zalaudiolibrary.demosongs.sbig2025;
 
-import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
+import com.darzalgames.zalaudiolibrary.composing.Pitch;
+import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 
 public class A_ThemeSong extends Song {
@@ -8,7 +10,10 @@ public class A_ThemeSong extends Song {
 	public A_ThemeSong() {
 		super("Ancient Legend");
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
+		final float mainAmplitude = 0.55f;
+		final float drumAmplitude = 0.25f;
+
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, mainAmplitude);
 		addTrack(mainTrack);
 
 		// RepeatingTrack bassTrack = createTrack(Instruments.BASS_DRONE, "bass");
@@ -41,7 +46,7 @@ public class A_ThemeSong extends Song {
 		mainTrack.addSilence(NoteDuration.QUARTER);
 
 		// The story
-		SequentialTrack drumTrack = createTrack("drum", Sbig2025Album.RHYTHM, 0.4f);
+		SequentialTrack drumTrack = createTrack("drum", Sbig2025Album.RHYTHM, drumAmplitude);
 		drumTrack.padWithSilence(mainTrack.lengthInBeats());
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);

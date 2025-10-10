@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.List;
 
+import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.exporting.wav.WavEncoderOutputStream;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -30,6 +31,12 @@ public class SongExporter {
 				orchestrator.setAudioPipeline(audioPipeline);
 				orchestrator.orchestrateSong();
 				wavEncoderOutputStream.writeWavToOutputStream();
+				Tuple<List<String>, Float> maxPeak = audioPipeline.getMaxPeak();
+				if (maxPeak.f() > 1f) {
+					System.out.print("PEAKING: " + maxPeak.f() + " at " + maxPeak.e());
+				} else {
+					System.out.print("(max peak: " + maxPeak.f() + ") ");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

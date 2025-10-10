@@ -3,6 +3,7 @@ package com.darzalgames.zalaudiolibrary.pipeline.zamples;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
@@ -15,15 +16,16 @@ public class SampleMaker implements VolumeListener {
 	private final AtomicReference<Float> soundVolume;
 	private final Map<String, Float> phaseMap;
 
-	private float maxAbsolutePeak;
+	private Tuple<List<String>, Float> maxAbsolutePeak;
 
 	public SampleMaker(Float musicVolume, Float soundVolume) {
 		this.musicVolume = new AtomicReference<>(musicVolume);
 		this.soundVolume = new AtomicReference<>(soundVolume);
 		phaseMap = new HashMap<>();
+		maxAbsolutePeak = new Tuple<>(List.of(), 0f);
 	}
 
-	public float[] makeSamples(List<TimedSimpleSound>  simpleSounds, int sampleCount, float samplingStartTime, List<SampleEffect> samplingEffects) {
+	public float[] makeSamples(List<TimedSimpleSound> simpleSounds, int sampleCount, float samplingStartTime, List<SampleEffect> samplingEffects) {
 		float[] sampleBuffer = new float[sampleCount];
 		float currentMusicVolume = musicVolume.get();
 
@@ -42,7 +44,7 @@ public class SampleMaker implements VolumeListener {
 				float amplitude = simpleSound.computeAmplitude(t);
 				float frequency = simpleSound.computeFrequency(t);
 
-				//This is the wave phase, on interval [0,1[
+				// This is the wave phase, on interval [0,1[
 				float waveProgress = frequency * t + phi;
 				float moduloedWaveProgress = waveProgress - (float) Math.floor(waveProgress);
 				float waveValue = simpleSound.timbre().f(moduloedWaveProgress);
@@ -54,14 +56,17 @@ public class SampleMaker implements VolumeListener {
 					sampleBuffer[i] = sampleEffect.apply(sampleBuffer[i]);
 				}
 
-				if(i == sampleCount - 1) {
+				if (i == sampleCount - 1) {
 					phaseMap.put(simpleSound.id(), moduloedWaveProgress);
 				}
 			}
 		}
 
 		for (int i = 0; i < sampleBuffer.length; i++) {
-			maxAbsolutePeak = Math.max(maxAbsolutePeak, Math.abs(sampleBuffer[i]));
+			float currentMaxPeak = maxAbsolutePeak.f();
+			if (Math.abs(sampleBuffer[i]) > currentMaxPeak) {
+				maxAbsolutePeak = new Tuple<>(simpleSounds.stream().map(s -> s.simpleSound().id()).toList(), Math.abs(sampleBuffer[i]));
+			}
 		}
 
 		return sampleBuffer;
@@ -73,9 +78,9 @@ public class SampleMaker implements VolumeListener {
 
 		float frequency = simpleSound.computeFrequency(t);
 
-		//This is the wave phase, on interval [0,1[
+		// This is the wave phase, on interval [0,1[
 		float waveProgress = frequency * t;
-		return waveProgress - (float)Math.floor(waveProgress);
+		return waveProgress - (float) Math.floor(waveProgress);
 	}
 
 	public static float computeCurrentTimeForSimpleSoundForSampleIndex(final float currentAbsoluteTime, final float absoluteSimpleSoundStartTime, int sampleIndex, float sampleDuration) {
@@ -92,7 +97,7 @@ public class SampleMaker implements VolumeListener {
 		soundVolume.set(volume);
 	}
 
-	public float getMaxPeak() {
+	public Tuple<List<String>, Float> getMaxPeak() {
 		return maxAbsolutePeak;
 	}
 

@@ -3,6 +3,7 @@ package com.darzalgames.zalaudiolibrary.pipeline;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.composing.Song;
@@ -72,11 +73,20 @@ public class AudioPipeline extends Thread {
 		shouldStop.set(true);
 		try {
 			join();
-			System.out.println("Music Thread Stopped. Max Peak: " + sampler.getMaxPeak());
+			Tuple<List<String>, Float> maxPeak = sampler.getMaxPeak();
+			if (maxPeak.f() > 1f) {
+				System.out.println("Music Thread Stopped. PEAKING! Max : " + maxPeak + " at " + maxPeak.e());
+			} else {
+				System.out.println("Music Thread Stopped. Max Peak: " + maxPeak);
+			}
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Tuple<List<String>, Float> getMaxPeak() {
+		return sampler.getMaxPeak();
 	}
 
 	public void processMusicStep() {

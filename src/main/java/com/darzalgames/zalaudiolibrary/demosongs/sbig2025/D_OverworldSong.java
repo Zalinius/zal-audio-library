@@ -19,17 +19,21 @@ public class D_OverworldSong extends Song {
 	public D_OverworldSong() {
 		super("Village", 1.5f);
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.GUITAR, 0.7f);
+		final float mainAmplitude = 0.65f;
+		final float rhythmAmplitude = 0.2f;
+		final float fluteAmplitude = 0.75f;
+
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.GUITAR, mainAmplitude);
 		addTrack(mainTrack);
 		mainTranspose = new TransposeEffect(p -> p);
 		mainTrack.addMusicalEffect(mainTranspose);
 
-		rhythmTrack = new SixteenthRhythmTrack(getSongName(), "rhythm", Sbig2025Album.RHYTHM, 0.2f, List.of(true, true, true, false), Pitch.C3);
+		rhythmTrack = new SixteenthRhythmTrack(getSongName(), "rhythm", Sbig2025Album.RHYTHM, rhythmAmplitude, List.of(true, true, true, false), Pitch.C3);
 		addTrack(rhythmTrack);
 		rhythmTranspose = new TransposeEffect(p -> p);
 		rhythmTrack.addMusicalEffect(rhythmTranspose);
 
-		SequentialTrack fluteTrack = new SequentialTrack(getSongName(), "flute", Sbig2025Album.FLUTE, 1f);
+		SequentialTrack fluteTrack = new SequentialTrack(getSongName(), "flute", Sbig2025Album.FLUTE, fluteAmplitude);
 		addTrack(fluteTrack);
 		fluteTranspose = new TransposeEffect(p -> p);
 		fluteTrack.addMusicalEffect(fluteTranspose);
