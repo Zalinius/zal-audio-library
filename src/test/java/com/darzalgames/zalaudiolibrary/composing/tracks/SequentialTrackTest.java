@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.composing;
+package com.darzalgames.zalaudiolibrary.composing.tracks;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
-import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
+import com.darzalgames.zalaudiolibrary.composing.Instrument;
+import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
+import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.composing.validation.TrackEmptyError;
 import com.darzalgames.zalaudiolibrary.composing.validation.TrackFractionalError;
@@ -193,7 +195,7 @@ class SequentialTrackTest {
 	}
 
 	@Test
-	void isTrackLengthValid_onEmptyTrack_returnsFalse() {
+	void validate_onEmptyTrack_returnsTrackEmptyError() {
 		SequentialTrack sequentialTrack = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()), 1f);
 
 		List<CompositionError> errors = sequentialTrack.validate();
@@ -203,7 +205,7 @@ class SequentialTrackTest {
 	}
 
 	@Test
-	void isTrackLengthValid_onTrackWithFractionalNumberOfBeats_returnsFalse() {
+	void validate_onTrackWithFractionalNumberOfBeats_returnsFractionalTrackError() {
 		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()), 1f);
 		track.addSilence(NoteDuration.THIRD);
 
@@ -214,7 +216,7 @@ class SequentialTrackTest {
 	}
 
 	@Test
-	void isTrackLengthValid_onTrackWithIntegerNumberOfBeats_returnsTrue() {
+	void validate_onTrackWithIntegerNumberOfBeats_returnsTrue() {
 		SequentialTrack track = new SequentialTrack("song", "track", new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope()), 1f);
 		track.addSilence(NoteDuration.THIRD);
 		track.addSilence(NoteDuration.THIRD);
