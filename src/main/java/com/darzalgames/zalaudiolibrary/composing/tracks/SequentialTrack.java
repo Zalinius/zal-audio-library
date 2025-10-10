@@ -98,16 +98,21 @@ public class SequentialTrack implements Track {
 
 	@Override
 	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat) {
-		if (trackMelody.isEmpty()) {
+		if (trackMelody.isEmpty()) { // TODO can this be removed now thanks to validate()
 			throw new IllegalStateException("Can't call getMusicalInstantsActiveThisBeatInclusive when Track melody empty");
 		}
 		Fraction beatIndex = computeRelativeBeatIndex(new Fraction(startBeat));
 		Fraction endBeat = Fraction.add(beatIndex, new Fraction(1));
 		List<TimedMusicalInstant> allActiveInstants = new ArrayList<>();
 
+		boolean wrappedAround = false;
+
 		do {
 			Entry<Fraction, List<MusicalInstant>> instantAtOrBeforeBeat = trackMelody.floorEntry(beatIndex);
 			int trackRepetitionCounter = computeLoopIteration(new Fraction(startBeat));
+			if (wrappedAround) {
+				trackRepetitionCounter += 1;
+			}
 			Fraction activeInstantAbsoluteStartTime = Fraction.add(loopingLengthInBeats().scale(trackRepetitionCounter), instantAtOrBeforeBeat.getKey());
 			Collection<MusicalInstant> musicalInstants = instantAtOrBeforeBeat.getValue();
 			for (Iterator<MusicalEffect> it = trackEffects.iterator(); it.hasNext();) {
@@ -120,6 +125,7 @@ public class SequentialTrack implements Track {
 
 			beatIndex = Fraction.add(instantAtOrBeforeBeat.getKey(), instantAtOrBeforeBeat.getValue().get(0).duration().inBeats());
 			if (beatIndex.isGreaterThanOrEqual(endBeat) && endBeat.isGreaterThanOrEqual(lengthInBeats())) {
+				wrappedAround = true;
 				beatIndex = computeRelativeBeatIndex(beatIndex);
 				endBeat = Fraction.integerRemainder(beatIndex, endBeat);
 			}

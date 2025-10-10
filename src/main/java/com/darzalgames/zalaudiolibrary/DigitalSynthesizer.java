@@ -16,6 +16,7 @@ public class DigitalSynthesizer {
 //		runSong(new BellSong());
 //		runSong(new TrumpetSong());
 //		runSong(new A_ThemeSong());
+//		runSong(new TestLoopSoundArtifactSong());
 
 //		exportDemoAlbum();
 		exportSbig2025Album();
