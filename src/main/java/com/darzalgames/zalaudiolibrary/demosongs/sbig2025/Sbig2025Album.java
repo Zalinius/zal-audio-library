@@ -19,7 +19,7 @@ public class Sbig2025Album extends AlbumExportingInformation {
 	public static final Instrument PERC = new Instrument(Synth.brownianNoise(.5f), ArEnvelope.linear(0f, .02f));
 
 	public Sbig2025Album() {
-		super("Demon Lord's Demise : ~Rebirth~", 2025);
+		super("Demon Lord's Demise : ~Rebirth~ (Original Game Soundtrack)", 2025);
 
 		addSong(new A_ThemeSong(), new SimpleOrchestrator(15));
 		addSong(new B_MenuSong(), new SimpleOrchestrator(6 * 4));
