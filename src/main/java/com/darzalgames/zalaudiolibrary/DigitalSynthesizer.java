@@ -19,8 +19,8 @@ public class DigitalSynthesizer {
 //		runSong(new TestLoopSoundArtifactSong());
 //		runSong(new ManagersVacationSong());
 
-		exportDemoAlbum();
-//		exportSbig2025Album();
+//		exportDemoAlbum();
+		exportSbig2025Album();
 	}
 
 	public static void runSong(Song song) throws LineUnavailableException, InterruptedException {

@@ -10,9 +10,9 @@ public class F_FakeMenuSong extends Song {
 	public F_FakeMenuSong() {
 		super("Redecarating Awaits", 3f);
 
-		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.7f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, 0.55f);
 		addTrack(mainTrack);
-		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.BASS_DRONE, 0.3f);
+		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.BASS_DRONE, 0.2f);
 		addTrack(bassTrack);
 
 		bassTrack.addNote(NoteDuration.WHOLE_DOT, Pitch.C3);
