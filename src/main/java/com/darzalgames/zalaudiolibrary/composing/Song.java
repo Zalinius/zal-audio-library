@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.composing.time.BPSAcceptor;
-import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.composing.tracks.Track;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.composing.validation.SongEmptyError;
@@ -21,11 +20,11 @@ public abstract class Song {
 
 	private BPSAcceptor bpsAcceptor;
 
-	public Song(String songName) {
+	protected Song(String songName) {
 		this(songName, 1f);
 	}
 
-	public Song(String songName, float initialBps) {
+	protected Song(String songName, float initialBps) {
 		this.songName = songName;
 		this.initialBps = initialBps;
 		tracks = new ArrayList<>();
@@ -34,12 +33,6 @@ public abstract class Song {
 
 	public void setBpsAcceptor(BPSAcceptor bpsAcceptor) {
 		this.bpsAcceptor = bpsAcceptor;
-	}
-
-	public SequentialTrack createTrack(String trackName, Instrument instrument, float amplitude) {
-		SequentialTrack track = new SequentialTrack(songName, trackName, instrument, amplitude);
-		tracks.add(track);
-		return track;
 	}
 
 	public void addTrack(Track track) {
@@ -78,6 +71,10 @@ public abstract class Song {
 
 	public String getSongName() {
 		return songName;
+	}
+
+	public void changeBPSGradually(float newBPS) {
+		bpsAcceptor.setTargetBPS(newBPS, 4f / newBPS);
 	}
 
 	public void changeBPSGradually(float newBPS, float transitionTime) {

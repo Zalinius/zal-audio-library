@@ -16,7 +16,8 @@ public class TestSong extends Song {
 		AmplitudeModulator amplitudeModulator = new AmplitudeModulator(1f, 2);
 		envelope = amplitudeModulator.modulateEnvelope(envelope);
 
-		SequentialTrack mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(synth, envelope), 1f);
+		addTrack(mainTrack);
 
 		// mainTrack.addEffect(new EnvelopeReverser());
 		// mainTrack.addEffect(new TransposeEffect(Pitch::down));

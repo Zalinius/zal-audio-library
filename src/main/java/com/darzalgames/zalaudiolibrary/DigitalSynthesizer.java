@@ -17,9 +17,10 @@ public class DigitalSynthesizer {
 //		runSong(new TrumpetSong());
 //		runSong(new A_ThemeSong());
 //		runSong(new TestLoopSoundArtifactSong());
+//		runSong(new ManagersVacationSong());
 
-//		exportDemoAlbum();
-		exportSbig2025Album();
+		exportDemoAlbum();
+//		exportSbig2025Album();
 	}
 
 	public static void runSong(Song song) throws LineUnavailableException, InterruptedException {
@@ -28,7 +29,7 @@ public class DigitalSynthesizer {
 
 		audioPipeline.start();
 
-		Thread.sleep(16000);
+		Thread.sleep(100000);
 		audioPipeline.shutdown();
 	}
 

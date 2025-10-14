@@ -23,4 +23,8 @@ public class TransposeEffect extends SimpleMusicalEffect {
 		this.transposeFunction = transposeFunction;
 	}
 
+	public void resetTranspose() {
+		transposeFunction = p -> p;
+	}
+
 }

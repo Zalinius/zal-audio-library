@@ -13,6 +13,9 @@ public class DemoAlbum extends AlbumExportingInformation {
 
 		TrumpetSong trumpetSong = new TrumpetSong();
 		addSong(trumpetSong, new TrumpetSongOrchestrator());
+
+		ManagersVacationSong managersVacationSong = new ManagersVacationSong();
+		addSong(managersVacationSong, new ManagersVacationOrchestrator(managersVacationSong));
 	}
 
 	private static class SimpleOrchestrator extends SongOrchestrator {

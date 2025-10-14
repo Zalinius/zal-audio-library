@@ -46,7 +46,8 @@ public class A_ThemeSong extends Song {
 		mainTrack.addSilence(NoteDuration.QUARTER);
 
 		// The story
-		SequentialTrack drumTrack = createTrack("drum", Sbig2025Album.RHYTHM, drumAmplitude);
+		SequentialTrack drumTrack = new SequentialTrack(getSongName(), "drum", Sbig2025Album.RHYTHM, drumAmplitude);
+		addTrack(drumTrack);
 		drumTrack.padWithSilence(mainTrack.lengthInBeats());
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);

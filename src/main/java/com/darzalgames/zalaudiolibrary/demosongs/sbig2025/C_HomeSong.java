@@ -10,9 +10,11 @@ public class C_HomeSong extends Song {
 	public C_HomeSong() {
 		super("Home", 1f);
 
-		SequentialTrack mainTrack = createTrack("main", Sbig2025Album.GUITAR, 0.65f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.GUITAR, 0.65f);
+		addTrack(mainTrack);
 
-		SequentialTrack rhythmTrack = createTrack("rhythm", Sbig2025Album.RHYTHM, 0.4f);
+		SequentialTrack rhythmTrack = new SequentialTrack(getSongName(), "rhythm", Sbig2025Album.RHYTHM, 0.4f);
+		addTrack(rhythmTrack);
 		rhythmTrack.addSilence(NoteDuration.EIGHTH);
 		rhythmTrack.addNote(NoteDuration.EIGHTH, Pitch.C2);
 

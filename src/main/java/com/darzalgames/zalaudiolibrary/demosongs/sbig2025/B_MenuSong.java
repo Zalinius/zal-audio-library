@@ -15,7 +15,8 @@ public class B_MenuSong extends Song {
 
 		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", Sbig2025Album.MAIN, mainAmplitude);
 		addTrack(mainTrack);
-		SequentialTrack bassTrack = createTrack("bass", Sbig2025Album.BASS_DRONE, drumAmplitude);
+		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.BASS_DRONE, drumAmplitude);
+		addTrack(bassTrack);
 
 		bassTrack.addNote(NoteDuration.WHOLE_DOT, Pitch.C3);
 		mainTrack.addNote(NoteDuration.EIGHTH_DOT, Pitch.C4);
