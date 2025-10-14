@@ -1,6 +1,8 @@
 package com.darzalgames.zalaudiolibrary.demosongs.sbig2025;
 
-import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
+import com.darzalgames.zalaudiolibrary.composing.Pitch;
+import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 
 public class C_HomeSong extends Song {
@@ -8,7 +10,7 @@ public class C_HomeSong extends Song {
 	public C_HomeSong() {
 		super("Home", 1f);
 
-		SequentialTrack mainTrack = createTrack("main", Sbig2025Album.GUITAR, 0.7f);
+		SequentialTrack mainTrack = createTrack("main", Sbig2025Album.GUITAR, 0.65f);
 
 		SequentialTrack rhythmTrack = createTrack("rhythm", Sbig2025Album.RHYTHM, 0.4f);
 		rhythmTrack.addSilence(NoteDuration.EIGHTH);

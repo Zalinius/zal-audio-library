@@ -46,5 +46,7 @@ public class I_CreditsSong extends Song {
 
 		mainTrack.addNote(NoteDuration.HALF, Pitch.C4);
 		mainTrack.addNote(NoteDuration.HALF, Pitch.C5);
+
+		mainTrack.addSilence(NoteDuration.WHOLE);
 	}
 }

@@ -10,9 +10,9 @@ public class H_BeforeAndAfter extends Song {
 	public H_BeforeAndAfter() {
 		super("Before & After", 4);
 
-		final float mainAmplitude = 0.3f;
-		final float bassAmplitude = 0.5f;
-		final float percAmplitude = 0.5f;
+		final float mainAmplitude = 0.35f;
+		final float bassAmplitude = 0.45f;
+		final float percAmplitude = 0.45f;
 
 		SequentialTrack bassTrack = new SequentialTrack(getSongName(), "bass", Sbig2025Album.GUITAR, bassAmplitude);
 		addTrack(bassTrack);
