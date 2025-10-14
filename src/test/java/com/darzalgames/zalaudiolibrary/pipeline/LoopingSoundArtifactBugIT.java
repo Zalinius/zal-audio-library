@@ -41,11 +41,5 @@ class LoopingSoundArtifactBugIT {
 			mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
 			mainTrack.addSilence(NoteDuration.QUARTER);
 		}
-
-		public static void main(String[] args) {
-			TestLoopSong testLoopSong = new TestLoopSong();
-			System.out.println(testLoopSong.mainTrack.getMusicalInstantsActiveThisBeatInclusive(1));
-		}
-
 	}
 }
