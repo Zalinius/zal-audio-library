@@ -73,6 +73,7 @@ public abstract class Song {
 		return songName;
 	}
 
+	// TODO BPS changes seem to create audio artifacts?
 	public void changeBPSGradually(float newBPS) {
 		bpsAcceptor.setTargetBPS(newBPS, 4f / newBPS);
 	}
