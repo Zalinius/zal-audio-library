@@ -4,6 +4,7 @@ import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
+import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class TestSong extends Song {
@@ -15,51 +16,49 @@ public class TestSong extends Song {
 		AmplitudeModulator amplitudeModulator = new AmplitudeModulator(1f, 2);
 		envelope = amplitudeModulator.modulateEnvelope(envelope);
 
-		SequentialTrack mainTrack = createTrack("main", new Instrument(synth, envelope), 1f);
+		SequentialTrack mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(synth, envelope), 1f);
+		addTrack(mainTrack);
 
-		//		mainTrack.addEffect(new EnvelopeReverser());
-		//		mainTrack.addEffect(new TransposeEffect(Pitch::down));
+		// mainTrack.addEffect(new EnvelopeReverser());
+		// mainTrack.addEffect(new TransposeEffect(Pitch::down));
 
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
 
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.G4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.G4, envelope);
-		mainTrack.addNote(synth, NoteDuration.HALF, Pitch.E4, envelope);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.G4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.G4);
+		mainTrack.addNote(NoteDuration.HALF, Pitch.E4);
 
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.D4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.D4);
 
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.F4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.F4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.D4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.D4, envelope);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.B3);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.B3);
+		mainTrack.addNote(NoteDuration.HALF, Pitch.G3);
 
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.B3, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.B3, envelope);
-		mainTrack.addNote(synth, NoteDuration.HALF, Pitch.G3, envelope);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
 
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.G4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.G4);
+		mainTrack.addNote(NoteDuration.HALF, Pitch.C5);
 
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.E4, envelope);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.B4);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.B4);
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.A4);
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.A4);
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.B4);
 
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.G4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.G4, envelope);
-		mainTrack.addNote(synth, NoteDuration.HALF, Pitch.C5, envelope);
-
-
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.B4, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.B4, envelope);
-		mainTrack.addNote(synth, NoteDuration.EIGHTH, Pitch.A4, envelope);
-		mainTrack.addNote(synth, NoteDuration.EIGHTH, Pitch.G4, envelope);
-		mainTrack.addNote(synth, NoteDuration.EIGHTH, Pitch.A4, envelope);
-		mainTrack.addNote(synth, NoteDuration.EIGHTH, Pitch.B4, envelope);
-
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C5, envelope);
-		mainTrack.addNote(synth, NoteDuration.QUARTER, Pitch.C5, envelope);
-		mainTrack.addNote(synth, NoteDuration.HALF, Pitch.C5, envelope);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C5);
+		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C5);
+		mainTrack.addNote(NoteDuration.HALF, Pitch.C5);
 	}
 
 }

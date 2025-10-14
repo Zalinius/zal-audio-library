@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.demosongs.DemoAlbum;
+import com.darzalgames.zalaudiolibrary.demosongs.sbig2025.Sbig2025Album;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -11,12 +12,15 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
 
 public class DigitalSynthesizer {
 
-	public static void main(String[] args) {
-		// runSong(new BellSong());
-		// runSong(new TrumpetSong());
+	public static void main(String[] args) throws LineUnavailableException, InterruptedException {
+//		runSong(new BellSong());
+//		runSong(new TrumpetSong());
+//		runSong(new A_ThemeSong());
+//		runSong(new TestLoopSoundArtifactSong());
+//		runSong(new ManagersVacationSong());
 
-		exportDemoAlbum();
-
+//		exportDemoAlbum();
+		exportSbig2025Album();
 	}
 
 	public static void runSong(Song song) throws LineUnavailableException, InterruptedException {
@@ -25,7 +29,7 @@ public class DigitalSynthesizer {
 
 		audioPipeline.start();
 
-		Thread.sleep(16000);
+		Thread.sleep(100000);
 		audioPipeline.shutdown();
 	}
 
@@ -34,7 +38,13 @@ public class DigitalSynthesizer {
 		SongExporter songExporter = new SongExporter();
 
 		songExporter.export(album);
+	}
 
+	public static void exportSbig2025Album() {
+		AlbumExportingInformation album = new Sbig2025Album();
+		SongExporter songExporter = new SongExporter();
+
+		songExporter.export(album);
 	}
 
 	public static TwoByteSampleAdapter getJavaAudioConsumer() throws LineUnavailableException {

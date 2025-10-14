@@ -30,12 +30,16 @@ public class AlbumExportingInformation {
 	public void addSong(Song song, SongOrchestrator songOrchestrator) {
 		int songNumber = songs.size() + 1;
 		Map<String, String> songMetadata = WavUtils.makeWavMetadata(song.getSongName(), artist, albumTitle, songNumber, year, genre);
-		SongExportingInformation exportingInformation = new SongExportingInformation(song, songOrchestrator, songMetadata);
+		SongExportingInformation exportingInformation = new SongExportingInformation(song, songOrchestrator, songMetadata, songNumber);
 		songs.add(exportingInformation);
 	}
 
 	public List<SongExportingInformation> getSongs() {
 		return songs;
+	}
+
+	public String getAlbumTitle() {
+		return albumTitle;
 	}
 
 	@Override

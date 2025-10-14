@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.composing.time.BPSAcceptor;
+import com.darzalgames.zalaudiolibrary.composing.tracks.Track;
+import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
+import com.darzalgames.zalaudiolibrary.composing.validation.SongEmptyError;
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 
@@ -17,11 +20,11 @@ public abstract class Song {
 
 	private BPSAcceptor bpsAcceptor;
 
-	public Song(String songName) {
+	protected Song(String songName) {
 		this(songName, 1f);
 	}
 
-	public Song(String songName, float initialBps) {
+	protected Song(String songName, float initialBps) {
 		this.songName = songName;
 		this.initialBps = initialBps;
 		tracks = new ArrayList<>();
@@ -32,17 +35,11 @@ public abstract class Song {
 		this.bpsAcceptor = bpsAcceptor;
 	}
 
-	public SequentialTrack createTrack(String trackName, Instrument instrument, float amplitude) {
-		SequentialTrack track = new SequentialTrack(songName, trackName, instrument, amplitude);
-		tracks.add(track);
-		return track;
-	}
-
 	public void addTrack(Track track) {
 		tracks.add(track);
 	}
 
-	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat){
+	public List<TimedMusicalInstant> getMusicalInstantsActiveThisBeatInclusive(int startBeat) {
 		List<TimedMusicalInstant> allActiveInstants = new ArrayList<>();
 
 		tracks.forEach(track -> allActiveInstants.addAll(track.getMusicalInstantsActiveThisBeatInclusive(startBeat)));
@@ -58,8 +55,14 @@ public abstract class Song {
 		return sampleEffects;
 	}
 
-	public boolean isValid() {
-		return !tracks.isEmpty() && tracks.stream().allMatch(Track::isValid);
+	public List<CompositionError> validate() {
+		List<CompositionError> errors = new ArrayList<>();
+		if (tracks.isEmpty()) {
+			errors.add(new SongEmptyError(this));
+		}
+		tracks.forEach(track -> errors.addAll(track.validate()));
+
+		return errors;
 	}
 
 	public float getInitialBps() {
@@ -68,6 +71,11 @@ public abstract class Song {
 
 	public String getSongName() {
 		return songName;
+	}
+
+	// TODO BPS changes seem to create audio artifacts?
+	public void changeBPSGradually(float newBPS) {
+		bpsAcceptor.setTargetBPS(newBPS, 4f / newBPS);
 	}
 
 	public void changeBPSGradually(float newBPS, float transitionTime) {

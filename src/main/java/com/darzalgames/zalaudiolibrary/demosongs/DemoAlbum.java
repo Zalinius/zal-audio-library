@@ -1,6 +1,7 @@
 package com.darzalgames.zalaudiolibrary.demosongs;
 
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
+import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
 
 public class DemoAlbum extends AlbumExportingInformation {
 
@@ -12,5 +13,28 @@ public class DemoAlbum extends AlbumExportingInformation {
 
 		TrumpetSong trumpetSong = new TrumpetSong();
 		addSong(trumpetSong, new TrumpetSongOrchestrator());
+
+		ManagersVacationSong managersVacationSong = new ManagersVacationSong();
+		addSong(managersVacationSong, new ManagersVacationOrchestrator(managersVacationSong));
 	}
+
+	private static class SimpleOrchestrator extends SongOrchestrator {
+
+		private final int measures;
+
+		public SimpleOrchestrator(int measures) {
+			super(4);
+			if (measures <= 0) {
+				throw new IllegalArgumentException("measures must be positive: " + measures);
+			}
+			this.measures = measures;
+		}
+
+		@Override
+		public void orchestrateSong() {
+			processMeasures(measures);
+		}
+
+	}
+
 }

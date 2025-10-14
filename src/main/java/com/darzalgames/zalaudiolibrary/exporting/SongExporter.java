@@ -1,9 +1,11 @@
 package com.darzalgames.zalaudiolibrary.exporting;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.List;
 
+import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.exporting.wav.WavEncoderOutputStream;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -21,11 +23,20 @@ public class SongExporter {
 
 			System.out.print("Exporting: " + song.getSongName() + " . . . ");
 
-			try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(song.getSongName() + ".wav"), songInfo.getMetadata())){
+			String relativeExportPath = album.getAlbumTitle() + File.separator + songInfo.getIndexedName() + ".wav";
+			File file = new File(album.getAlbumTitle());
+			file.mkdir();
+			try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(relativeExportPath), songInfo.getMetadata())) {
 				AudioPipeline audioPipeline = new AudioPipeline(song, wavEncoderOutputStream, 1f, 0f);
 				orchestrator.setAudioPipeline(audioPipeline);
 				orchestrator.orchestrateSong();
 				wavEncoderOutputStream.writeWavToOutputStream();
+				Tuple<List<String>, Float> maxPeak = audioPipeline.getMaxPeak();
+				if (maxPeak.f() > 1f) {
+					System.out.print("PEAKING: " + maxPeak.f() + " at " + maxPeak.e());
+				} else {
+					System.out.print("(max peak: " + maxPeak.f() + ") ");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -35,6 +46,5 @@ public class SongExporter {
 		}
 		System.out.println("Exporting complete for album " + album.toString());
 	}
-
 
 }
