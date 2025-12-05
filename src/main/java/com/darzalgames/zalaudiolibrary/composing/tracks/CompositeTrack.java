@@ -51,6 +51,10 @@ public class CompositeTrack implements Track {
 		addSilence(new NoteDuration(beats));
 	}
 
+	public void setRepetitionPoint() {
+		tracks.forEach(SequentialTrack::setRepetitionPoint);
+	}
+
 	@Override
 	public void addMusicalEffect(MusicalEffect musicalEffect) {
 		tracks.forEach(track -> track.addMusicalEffect(musicalEffect));
