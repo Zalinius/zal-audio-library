@@ -37,27 +37,37 @@ public class Synth {
 		return waveFunction;
 	}
 
-
 	/**
 	 * Constructs a sine synth
 	 * @return A sine synth
 	 */
-	public static Synth sine() { return new Synth(WaveFunctions.getSinWaveFunction());}
+	public static Synth sine() {
+		return new Synth(WaveFunctions.getSinWaveFunction());
+	}
+
 	/**
 	 * Constructs a square synth
 	 * @return a square synth
 	 */
-	public static Synth square() { return new Synth(WaveFunctions.getSquareWaveFunction());}
+	public static Synth square() {
+		return new Synth(WaveFunctions.getSquareWaveFunction());
+	}
+
 	/**
 	 * Constructs a sawtooth synth
 	 * @return a sawtooth synth
 	 */
-	public static Synth saw() { return new Synth(WaveFunctions.getSawtoothWaveFunction());}
+	public static Synth saw() {
+		return new Synth(WaveFunctions.getSawtoothWaveFunction());
+	}
+
 	/**
 	 * Constructs a triangle synth
 	 * @return a triangle synth
 	 */
-	public static Synth triangle() { return new Synth(WaveFunctions.getTriangleWaveFunction());}
+	public static Synth triangle() {
+		return new Synth(WaveFunctions.getTriangleWaveFunction());
+	}
 
 	/**
 	 * Constructs a band-limited sawtooth synth, made from a number of sine harmonics
@@ -87,20 +97,33 @@ public class Synth {
 	}
 
 	/**
+	 * Constructs a flatter sine synth
+	 * @return A flat sine synth
+	 */
+	public static Synth flatSine(int power) {
+		return new Synth(WaveFunctions.getFlatSinWaveFunction(power));
+	}
+
+	/**
 	 * Constructs a 0-wave
 	 * @return a zero wave
 	 */
-	public static final Synth zero() { return new Synth(WaveFunctions.getNullWaveFunction());}
+	public static final Synth zero() {
+		return new Synth(WaveFunctions.getNullWaveFunction());
+	}
 
 	/**
 	 * Constructs a non-repeating white noise synth
 	 * @return a white noise synth
 	 */
-	public static final Synth whiteNoise() { return new Synth(WaveFunctions.getWhiteNoiseFunction());}
+	public static final Synth whiteNoise() {
+		return new Synth(WaveFunctions.getWhiteNoiseFunction());
+	}
+
 	/**
 	 * Constructs a non-repeating brownian noise synth
 	 * @param continuity the bass-iness of the synth between [0,1].<br>
-	 * Higher values are more bassy, lower values are less so and closer sounding to white noise
+	 *                   Higher values are more bassy, lower values are less so and closer sounding to white noise
 	 * @return a brown noise synth
 	 */
 	public static Synth brownianNoise(float continuity) {
@@ -127,7 +150,7 @@ public class Synth {
 
 	/**
 	 * Constructs a new synth from a synth and it's 1st overtone (at double the frequency)
-	 * @param synth the original Synth
+	 * @param synth         the original Synth
 	 * @param overtoneRatio the relative amplitude of the overtone to the original wave
 	 * @return a overtoned synth
 	 */

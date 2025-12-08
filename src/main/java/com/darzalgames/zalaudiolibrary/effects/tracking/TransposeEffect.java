@@ -16,7 +16,7 @@ public class TransposeEffect extends SimpleMusicalEffect {
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant original) {
 		Pitch pitch = transposeFunction.apply(original.pitch());
-		return new MusicalInstant(original.synth(), pitch, original.duration(), original.envelope(), original.amplitude(), original.id());
+		return new MusicalInstant(original.synth(), pitch, original.frequencyModulator(), original.duration(), original.envelope(), original.amplitude(), original.id());
 	}
 
 	public void setTranspose(UnaryOperator<Pitch> transposeFunction) {

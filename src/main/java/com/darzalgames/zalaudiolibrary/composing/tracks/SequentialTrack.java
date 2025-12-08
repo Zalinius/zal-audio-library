@@ -3,6 +3,7 @@ package com.darzalgames.zalaudiolibrary.composing.tracks;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.IntFunction;
+import java.util.function.UnaryOperator;
 
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
@@ -40,14 +41,14 @@ public class SequentialTrack implements Track {
 	}
 
 	public void addNote(NoteDuration duration, Pitch pitch, Pitch... chord) {
-		addNote(instrument.synth(), instrument.envelope(), duration, pitch, chord);
+		addNote(instrument.synth(), instrument.envelope(), instrument.frequencyModulator(), duration, pitch, chord);
 	}
 
 	public void addSilence(NoteDuration duration) {
-		addNote(Synth.zero(), ConstantEnvelope.zeroEnvelope(), duration, Pitch.NONE);
+		addNote(Synth.zero(), ConstantEnvelope.zeroEnvelope(), Instrument.noFrequencyModulation(), duration, Pitch.NONE);
 	}
 
-	private void addNote(Synth synth, Envelope envelope, NoteDuration duration, Pitch pitch, Pitch... chord) {
+	private void addNote(Synth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator, NoteDuration duration, Pitch pitch, Pitch... chord) {
 		List<MusicalInstant> chordedInstants = new ArrayList<>();
 
 		IntFunction<Float> chordAmplitudeFunction = n -> (1f / (float) Math.sqrt(n));
@@ -55,12 +56,12 @@ public class SequentialTrack implements Track {
 
 		Fraction newInstantStartBeat = lengthInBeats();
 		String instantId = getIdPrefix() + newInstantStartBeat;
-		MusicalInstant mainInstant = new MusicalInstant(synth, pitch, duration, envelope, chordAmplitude, instantId);
+		MusicalInstant mainInstant = new MusicalInstant(synth, pitch, frequencyModulator, duration, envelope, chordAmplitude, instantId);
 		chordedInstants.add(mainInstant);
 
 		for (int i = 0; i < chord.length; i++) {
 			String chordId = instantId + "-" + (i + 1);
-			MusicalInstant chordInstant = new MusicalInstant(synth, chord[i], duration, envelope, chordAmplitude, chordId);
+			MusicalInstant chordInstant = new MusicalInstant(synth, chord[i], frequencyModulator, duration, envelope, chordAmplitude, chordId);
 			chordedInstants.add(chordInstant);
 		}
 

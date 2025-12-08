@@ -26,12 +26,15 @@ public class SampleMaker implements VolumeListener {
 	}
 
 	public float[] makeSamples(List<TimedSimpleSound> simpleSounds, int sampleCount, float samplingStartTime, List<SampleEffect> samplingEffects) {
+		Set<String> soundIdsActiveThisFrame = new HashSet<>();
 		float[] sampleBuffer = new float[sampleCount];
 		float currentMusicVolume = musicVolume.get();
 
 		for (Iterator<TimedSimpleSound> it = simpleSounds.iterator(); it.hasNext();) {
 			TimedSimpleSound timedSimpleSound = it.next();
 			SimpleSound simpleSound = timedSimpleSound.simpleSound();
+
+			soundIdsActiveThisFrame.add(simpleSound.id());
 
 			float phaseAtMinus1 = phaseMap.getOrDefault(simpleSound.id(), 0f);
 			float alpha = phaseAtMinus1;
@@ -61,6 +64,10 @@ public class SampleMaker implements VolumeListener {
 				}
 			}
 		}
+
+		Set<String> absentSoundIds = new HashSet<>(phaseMap.keySet());
+		absentSoundIds.removeAll(soundIdsActiveThisFrame);
+		absentSoundIds.forEach(id -> phaseMap.remove(id));
 
 		for (int i = 0; i < sampleBuffer.length; i++) {
 			float currentMaxPeak = maxAbsolutePeak.f();
