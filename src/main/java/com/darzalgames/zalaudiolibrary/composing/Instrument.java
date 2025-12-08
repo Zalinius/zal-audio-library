@@ -7,6 +7,7 @@ import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public record Instrument(Synth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator) {
+
 	public Instrument(Synth synth, Envelope envelope) {
 		this(synth, envelope, noFrequencyModulation());
 	}
