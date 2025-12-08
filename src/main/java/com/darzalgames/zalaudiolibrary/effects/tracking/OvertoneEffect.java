@@ -41,11 +41,11 @@ public class OvertoneEffect implements MusicalEffect {
 		Iterator<Pitch> pitchIt = sortedPitches.iterator();
 		Pitch fundamentalPitch = pitchIt.next();
 
-		modifiedMusicalInstants.add(new MusicalInstant(original.synth(), fundamentalPitch, original.duration(), original.envelope(), original.amplitude() * pitchAmplitudes.get(fundamentalPitch), original.id()));
+		modifiedMusicalInstants.add(new MusicalInstant(original.synth(), fundamentalPitch, original.frequencyModulator(), original.duration(), original.envelope(), original.amplitude() * pitchAmplitudes.get(fundamentalPitch), original.id()));
 		int overtoneIndex = 1;
 		while (pitchIt.hasNext()) {
 			Pitch pitch = pitchIt.next();
-			modifiedMusicalInstants.add(new MusicalInstant(original.synth(), pitch, original.duration(), original.envelope(), original.amplitude() * pitchAmplitudes.get(pitch), original.id() + " overtone " + overtoneIndex));
+			modifiedMusicalInstants.add(new MusicalInstant(original.synth(), pitch, original.frequencyModulator(), original.duration(), original.envelope(), original.amplitude() * pitchAmplitudes.get(pitch), original.id() + " overtone " + overtoneIndex));
 			overtoneIndex++;
 		}
 

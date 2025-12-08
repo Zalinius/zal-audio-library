@@ -3,7 +3,7 @@ package com.darzalgames.zalaudiolibrary;
 import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
-import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
+import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.demosongs.DemoAlbum;
@@ -14,10 +14,11 @@ import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
+import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class DigitalSynthesizer {
 
-	public static void main(String[] args) throws LineUnavailableException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 //		runSong(new BellSong());
 //		runSong(new TrumpetSong());
 //		runSong(new A_ThemeSong());
@@ -26,35 +27,33 @@ public class DigitalSynthesizer {
 
 //		playKickDrumDemo();
 
-//		runSong(new ScratchPadSong());
-		exportAlbum(ScratchPadSong.scratchAlbum());
+		runSong(new ScratchPadSong());
+//		exportAlbum(ScratchPadSong.scratchAlbum());
 
 //		exportDemoAlbum();
 //		exportSbig2025Album();
 	}
 
-	public static void playKickDrumDemo() throws LineUnavailableException, InterruptedException {
+	public static void playKickDrumDemo() throws Exception {
 		AudioConsumer audio = getJavaAudioConsumer();
 
-		for (int drumIndex = 0; drumIndex != 100; drumIndex++) {
+		for (int drumIndex = 0; drumIndex != 10; drumIndex++) {
+			float desiredDrumDuration = 0.25f;
+			Pitch pitch = Pitch.G2;
 
-			float[] sample = new float[AudioConstants.SAMPLING_RATE];
-
+			Instrument kickDrum = Instrument.kickDrum(desiredDrumDuration);
+			float[] sample = new float[(int) (AudioConstants.SAMPLING_RATE * (desiredDrumDuration))];
 			for (int i = 0; i < sample.length; i++) {
-				float drumDuration = sample.length / (float) AudioConstants.SAMPLING_RATE;
 				float time = i / (float) AudioConstants.SAMPLING_RATE;
-				Pitch pitch = Pitch.G2;
-				float frequency = pitch.getFrequency() * (1 - (time / drumDuration));
-
-				Envelope envelope = ArEnvelope.quadratic(0.01f, drumDuration - 0.01f);
-
-				float value = (float) Math.sin(2 * Math.PI * frequency * time);
-				value *= envelope.getEnvelope(1f, time);
+				Envelope envelope = kickDrum.envelope();
+				float frequency = pitch.getFrequency() * kickDrum.frequencyModulator().apply(time);
+				Synth synth = kickDrum.synth();
+				float value = synth.f((frequency * time) % 1f);
+				value *= envelope.getEnvelope(desiredDrumDuration, time);
 				sample[i] = value;
 			}
 
 			audio.writeSamples(sample);
-
 		}
 
 		Thread.sleep(100_000);

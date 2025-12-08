@@ -13,7 +13,7 @@ public class SynthChanger extends SimpleMusicalEffect {
 
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant original) {
-		return new MusicalInstant(newSynth, original.pitch(), original.duration(), original.envelope(), original.amplitude(), original.id());
+		return new MusicalInstant(newSynth, original.pitch(), original.frequencyModulator(), original.duration(), original.envelope(), original.amplitude(), original.id());
 	}
 
 }

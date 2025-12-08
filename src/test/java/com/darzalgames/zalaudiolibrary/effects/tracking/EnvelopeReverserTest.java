@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AsrEnvelope;
+import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
@@ -46,7 +47,7 @@ class EnvelopeReverserTest {
 	@Test
 	void apply_createsInstantWithIdenticalContentsExceptEnvelope() {
 		Envelope original = AdsrEnvelope.linear(0.01f, 0.09f, 0.5f, 0.9f);
-		MusicalInstant musicalInstant = new MusicalInstant(Synth.sine(), Pitch.C4, NoteDuration.QUARTER, original, 1f, "instant ID");
+		MusicalInstant musicalInstant = new MusicalInstant(Synth.sine(), Pitch.C4, Instrument.noFrequencyModulation(), NoteDuration.QUARTER, original, 1f, "instant ID");
 
 		MusicalInstant modifiedInstant = new EnvelopeReverser().apply(musicalInstant).get(0);
 

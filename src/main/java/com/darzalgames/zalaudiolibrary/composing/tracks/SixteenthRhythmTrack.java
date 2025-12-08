@@ -68,7 +68,7 @@ public class SixteenthRhythmTrack implements Track {
 			if (rhythm.apply(sixteenth) && new Fraction(startBeat).isGreaterThanOrEqual(initialSilence)) {
 				Fraction instantBeat = Fraction.add(new Fraction(startBeat), NoteDuration.SIXTEENTH.inBeats().scale(sixteenth));
 				String id = getIdPrefix() + sixteenth;
-				MusicalInstant rhythmInstant = new MusicalInstant(instrument.synth(), pitch, NoteDuration.SIXTEENTH, instrument.envelope(), amplitude, id);
+				MusicalInstant rhythmInstant = new MusicalInstant(instrument.synth(), pitch, instrument.frequencyModulator(), NoteDuration.SIXTEENTH, instrument.envelope(), amplitude, id);
 				List<MusicalInstant> effectedInstants = List.of(rhythmInstant);
 				for (Iterator<MusicalEffect> it = trackEffects.iterator(); it.hasNext();) {
 					MusicalEffect effect = it.next();

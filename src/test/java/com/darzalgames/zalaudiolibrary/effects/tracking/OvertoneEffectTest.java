@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
+import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
@@ -18,7 +19,7 @@ class OvertoneEffectTest {
 	@Test
 	void octaveOvertoneEffect_createsMoreInstants_withFirstSharingTheOriginalIdAndPitch() {
 		OvertoneEffect overtoneEffect = OvertoneEffect.octaveChord();
-		MusicalInstant original = new MusicalInstant(Synth.sine(), Pitch.C4, NoteDuration.QUARTER, ArEnvelope.linear(0.1f, 0.9f), 1, "id");
+		MusicalInstant original = new MusicalInstant(Synth.sine(), Pitch.C4, Instrument.noFrequencyModulation(), NoteDuration.QUARTER, ArEnvelope.linear(0.1f, 0.9f), 1, "id");
 
 		List<MusicalInstant> overtones = overtoneEffect.apply(original);
 		MusicalInstant baseTone = overtones.get(0);

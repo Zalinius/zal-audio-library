@@ -11,7 +11,7 @@ public class SynthOverflower extends SimpleMusicalEffect {
 	private final float overflowAmplitude;
 
 	public SynthOverflower(float overflowAmplitude) {
-		if(overflowAmplitude < 0) {
+		if (overflowAmplitude < 0) {
 			throw new IllegalArgumentException("overflow amplitude must be non-negative: " + overflowAmplitude);
 		}
 		this.overflowAmplitude = overflowAmplitude;
@@ -21,7 +21,7 @@ public class SynthOverflower extends SimpleMusicalEffect {
 	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
 		Synth overflowedSynth = overflowSynth(instant.synth(), overflowAmplitude);
 
-		return new MusicalInstant(overflowedSynth, instant.pitch(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());
+		return new MusicalInstant(overflowedSynth, instant.pitch(), instant.frequencyModulator(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());
 	}
 
 	public static Synth overflowSynth(Synth original, float overflowAmplitude) {

@@ -22,28 +22,46 @@ public class ScratchPadSong extends Song {
 
 	private final SequentialTrack mainTrack;
 	private final SequentialTrack bassTrack;
+	private final SequentialTrack kickDrum;
 
 	public ScratchPadSong() {
-		// TODO add a slow steady bass drum
-		// TODO make the main instrument into a complex synth, with the higher frequencies dropping off faster
-
 		super("Cosmic Waltz", 0.75f);
-		float mainVolume = 0.2f * 1.75f;
-		float bassVolume = 0.15f * 1.75f;
+		float mainVolume = 0.2f;
+		float bassVolume = 0.15f;
+		float drumVolume = 0.10f;
 
 		AdsrEnvelope mainEnvelope = AdsrEnvelope.quadratic(0.02f, 0.1f, 0.5f, 0.15f);
-		ArEnvelope mainAltEnvelope = mainEnvelope.toArEnvelope();
 		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(Synth.sine(), mainEnvelope), mainVolume);
 		addTrack(mainTrack);
 		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(Synth.flatSine(2), ArEnvelope.quadratic(.005f, .3f)), bassVolume);
 		addTrack(bassTrack);
+		kickDrum = new SequentialTrack(getSongName(), "kick drum", Instrument.kickDrum(0.25f), drumVolume);
+		addTrack(kickDrum);
 
 		mainTrack.addMusicalEffect(OvertoneEffect.evenOvertoneEffect(p -> Set.of(p, p.octaveDown(), p.octaveDown().octaveDown())));
 		mainTrack.addMusicalEffect(new SynthClipper(0.5f));
-//		mainTrack.addMusicalEffect(new TransposeEffect(Pitch::down));
 
 		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
-//		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::down));
+
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+		kickDrum.addNote(QUARTER_DOT, G2);
+
+		kickDrum.setRepetitionPoint();
+
+		kickDrum.addNote(EIGHTH, G2);
+		kickDrum.addNote(EIGHTH, G2);
+
+		kickDrum.addNote(EIGHTH, G2);
+		kickDrum.addNote(EIGHTH, G2);
+
+		kickDrum.addNote(EIGHTH, G2);
+		kickDrum.addNote(EIGHTH, G2);
 
 		// Intro
 		mainTrack.addNote(QUARTER_DOT, D4);
@@ -233,7 +251,7 @@ public class ScratchPadSong extends Song {
 		SongOrchestrator orchestrator = new SongOrchestrator(3) {
 			@Override
 			public void orchestrateSong() {
-				processMeasures(28);
+				processMeasures(1);
 			}
 		};
 		albumExportingInformation.addSong(new ScratchPadSong(), orchestrator);

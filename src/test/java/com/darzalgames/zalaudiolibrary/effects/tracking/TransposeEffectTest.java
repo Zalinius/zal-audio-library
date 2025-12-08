@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
+import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
@@ -16,7 +17,7 @@ class TransposeEffectTest {
 	@Test
 	void transpose_createsCopyOfInstantWithTransposedPitch() {
 		TransposeEffect transposeEffect = new TransposeEffect(Pitch::up);
-		MusicalInstant original = new MusicalInstant(Synth.sine(), Pitch.C4, NoteDuration.QUARTER, ArEnvelope.linear(0.1f, 0.9f), 1, "id");
+		MusicalInstant original = new MusicalInstant(Synth.sine(), Pitch.C4, Instrument.noFrequencyModulation(), NoteDuration.QUARTER, ArEnvelope.linear(0.1f, 0.9f), 1, "id");
 
 		MusicalInstant transpose = transposeEffect.applySimpleEffect(original);
 

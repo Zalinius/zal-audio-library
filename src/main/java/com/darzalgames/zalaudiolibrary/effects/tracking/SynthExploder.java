@@ -10,7 +10,7 @@ public class SynthExploder extends SimpleMusicalEffect {
 	private final float explodeThreshold;
 
 	public SynthExploder(float explodeThreshold) {
-		if(explodeThreshold < 0) {
+		if (explodeThreshold < 0) {
 			throw new IllegalArgumentException("explode threshold must be non-negative: " + explodeThreshold);
 		}
 		this.explodeThreshold = explodeThreshold;
@@ -20,17 +20,16 @@ public class SynthExploder extends SimpleMusicalEffect {
 	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
 		Synth explodedSynth = explodeSynth(instant.synth(), explodeThreshold);
 
-		return new MusicalInstant(explodedSynth, instant.pitch(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());
+		return new MusicalInstant(explodedSynth, instant.pitch(), instant.frequencyModulator(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());
 	}
 
 	public static Synth explodeSynth(Synth original, float explodeThreshold) {
 		UnaryOperator<Float> originalSynth = original.getWaveFunction();
 		UnaryOperator<Float> explodedSynth = x -> {
 			float value = originalSynth.apply(x);
-			if(value < 0 && value > -explodeThreshold) {
+			if (value < 0 && value > -explodeThreshold) {
 				value = -explodeThreshold;
-			}
-			else if(value >= 0 && value < explodeThreshold) {
+			} else if (value >= 0 && value < explodeThreshold) {
 				value = explodeThreshold;
 			}
 
