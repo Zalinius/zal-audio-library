@@ -16,7 +16,7 @@ public class AmplifierEffect extends SimpleMusicalEffect {
 
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant original) {
-		float newAmplitude = multiplyAmplitudes(amplitude);
+		float newAmplitude = multiplyAmplitudes(original.amplitude());
 		return new MusicalInstant(original.synth(), original.pitch(), original.frequencyModulator(), original.duration(), original.envelope(), newAmplitude, original.id());
 	}
 
