@@ -1,5 +1,7 @@
 package com.darzalgames.zalaudiolibrary.pipeline;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -36,16 +38,15 @@ public class AudioPipeline extends Thread {
 	private float beatCounter;
 	private float secondsCounter;
 
-	public AudioPipeline(Song song, AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
+	private final Collection<AudioActor> audioActors;
+
+	public AudioPipeline(AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
+		this(audioConsumer, musicVolume, soundVolume, List.of());
+	}
+
+	public AudioPipeline(AudioConsumer audioConsumer, float musicVolume, float soundVolume, Collection<AudioActor> audioActors) {
 		shouldStop = new AtomicBoolean(false);
-		List<CompositionError> songErrors = song.validate();
-		if (!songErrors.isEmpty()) {
-			StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
-			songErrors.forEach(error -> sb.append("\n" + error.getError()));
-			throw new IllegalArgumentException(sb.toString());
-		}
-		bpsController = new BpsController(song.getInitialBps());
-		changeSong(song);
+		bpsController = new BpsController(1f);
 		simpleSoundMaker = new SimpleSoundMaker();
 		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
@@ -53,7 +54,13 @@ public class AudioPipeline extends Thread {
 		beatCounter = 0f;
 		secondsCounter = 0f;
 
+		this.audioActors = new ArrayList<>(audioActors);
+
 		setDaemon(true);
+	}
+
+	public void addAudioActor(AudioActor audioActor) {
+		audioActors.add(audioActor);
 	}
 
 	@Override
@@ -75,9 +82,9 @@ public class AudioPipeline extends Thread {
 			join();
 			Tuple<List<String>, Float> maxPeak = sampler.getMaxPeak();
 			if (maxPeak.f() > 1f) {
-				System.out.println("Music Thread Stopped. PEAKING! Max : " + maxPeak + " at " + maxPeak.e());
+				System.out.println("Music Thread Stopped. PEAKING! Max: " + maxPeak.f() + " at " + maxPeak.e());
 			} else {
-				System.out.println("Music Thread Stopped. Max Peak: " + maxPeak);
+				System.out.println("Music Thread Stopped. Max Peak: " + maxPeak.f() + " at " + maxPeak.e());
 			}
 
 		} catch (InterruptedException e) {
@@ -96,6 +103,8 @@ public class AudioPipeline extends Thread {
 		final float beatIncrementDuringMusicStep = AudioConstants.STEP_DURATION_IN_SECONDS * stepBPS;
 		final float stepIntervalStartInBeats = beatCounter;
 
+		audioActors.forEach(actor -> actor.update(AudioConstants.STEP_DURATION_IN_SECONDS));
+
 		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
 		List<TimedSimpleSound> simpleSoundsActive = simpleSoundMaker.makeSimpleSounds(musicalInstantsActive, stepBPS, stepIntervalStartInBeats, secondsCounter);
 
@@ -106,9 +115,16 @@ public class AudioPipeline extends Thread {
 		secondsCounter += AudioConstants.STEP_DURATION_IN_SECONDS;
 	}
 
-	private void changeSong(Song newSong) {
+	public void changeSong(Song newSong) {
 		newSong.setBpsAcceptor(bpsController);
+		bpsController.resetBPS(newSong.getInitialBps());
 		song = newSong;
+		List<CompositionError> songErrors = song.validate();
+		if (!songErrors.isEmpty()) {
+			StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
+			songErrors.forEach(error -> sb.append("\n" + error.getError()));
+			throw new IllegalArgumentException(sb.toString());
+		}
 	}
 
 	public float getBeatCounter() {

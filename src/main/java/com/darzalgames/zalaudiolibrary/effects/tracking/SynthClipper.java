@@ -7,7 +7,7 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class SynthClipper extends SimpleMusicalEffect {
 
-	private final float clipAmplitude;
+	private float clipAmplitude;
 
 	public SynthClipper(float clipAmplitude) {
 		if (clipAmplitude < 0) {
@@ -36,6 +36,14 @@ public class SynthClipper extends SimpleMusicalEffect {
 			return value;
 		};
 		return new Synth(clippedSynth);
+	}
+
+	public float getClipAmplitude() {
+		return clipAmplitude;
+	}
+
+	public void setClipAmplitude(float clipAmplitude) {
+		this.clipAmplitude = clipAmplitude;
 	}
 
 }

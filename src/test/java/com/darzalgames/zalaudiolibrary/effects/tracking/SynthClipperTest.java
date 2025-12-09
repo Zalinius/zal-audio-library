@@ -32,5 +32,13 @@ class SynthClipperTest {
 		assertEquals(0, clippedSynth.f(1f), ALLOWED_ERROR);
 	}
 
+	@Test
+	void setClipAmplitude_changesCurrentClipAmplitude() {
+		SynthClipper clipper = new SynthClipper(0.65f);
+
+		clipper.setClipAmplitude(0.8f);
+
+		assertEquals(0.8f, clipper.getClipAmplitude());
+	}
 
 }
