@@ -25,12 +25,13 @@ public class SampleMaker implements VolumeListener {
 		maxAbsolutePeak = new Tuple<>(List.of(), 0f);
 	}
 
-	public float[] makeSamples(List<TimedSimpleSound> simpleSounds, int sampleCount, float samplingStartTime, List<SampleEffect> samplingEffects) {
+	public float[] makeSamples(List<TimedSimpleSound> simpleMusicalSounds, Collection<TimedSimpleSound> simpleSoundEffects, int sampleCount, float samplingStartTime, List<SampleEffect> samplingEffects) {
 		Set<String> soundIdsActiveThisFrame = new HashSet<>();
 		float[] sampleBuffer = new float[sampleCount];
 		float currentMusicVolume = musicVolume.get();
+		float currentSoundEffectVolume = soundVolume.get();
 
-		for (Iterator<TimedSimpleSound> it = simpleSounds.iterator(); it.hasNext();) {
+		for (Iterator<TimedSimpleSound> it = simpleMusicalSounds.iterator(); it.hasNext();) {
 			TimedSimpleSound timedSimpleSound = it.next();
 			SimpleSound simpleSound = timedSimpleSound.simpleSound();
 
@@ -65,6 +66,37 @@ public class SampleMaker implements VolumeListener {
 			}
 		}
 
+		// sound effects
+		for (Iterator<TimedSimpleSound> it = simpleSoundEffects.iterator(); it.hasNext();) {
+			TimedSimpleSound timedSimpleSound = it.next();
+			SimpleSound simpleSound = timedSimpleSound.simpleSound();
+
+			soundIdsActiveThisFrame.add(simpleSound.id());
+
+			float phaseAtMinus1 = phaseMap.getOrDefault(simpleSound.id(), 0f);
+			float alpha = phaseAtMinus1;
+			float beta = computeBeta(samplingStartTime, timedSimpleSound);
+			float phi = alpha - beta;
+
+			for (int i = 0; i < sampleBuffer.length; i++) {
+				float t = samplingStartTime - timedSimpleSound.startTime() + i * AudioConstants.SAMPLE_DURATION;
+
+				float amplitude = simpleSound.computeAmplitude(t);
+				float frequency = simpleSound.computeFrequency(t);
+
+				// This is the wave phase, on interval [0,1[
+				float waveProgress = frequency * t + phi;
+				float moduloedWaveProgress = waveProgress - (float) Math.floor(waveProgress);
+				float waveValue = simpleSound.timbre().f(moduloedWaveProgress);
+
+				sampleBuffer[i] += currentSoundEffectVolume * amplitude * waveValue;
+
+				if (i == sampleCount - 1) {
+					phaseMap.put(simpleSound.id(), moduloedWaveProgress);
+				}
+			}
+		}
+
 		Set<String> absentSoundIds = new HashSet<>(phaseMap.keySet());
 		absentSoundIds.removeAll(soundIdsActiveThisFrame);
 		absentSoundIds.forEach(id -> phaseMap.remove(id));
@@ -72,7 +104,7 @@ public class SampleMaker implements VolumeListener {
 		for (int i = 0; i < sampleBuffer.length; i++) {
 			float currentMaxPeak = maxAbsolutePeak.f();
 			if (Math.abs(sampleBuffer[i]) > currentMaxPeak) {
-				maxAbsolutePeak = new Tuple<>(simpleSounds.stream().map(s -> s.simpleSound().id()).toList(), Math.abs(sampleBuffer[i]));
+				maxAbsolutePeak = new Tuple<>(simpleMusicalSounds.stream().map(s -> s.simpleSound().id()).toList(), Math.abs(sampleBuffer[i]));
 			}
 		}
 

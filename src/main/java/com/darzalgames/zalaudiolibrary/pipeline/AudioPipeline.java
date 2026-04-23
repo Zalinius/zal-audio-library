@@ -1,8 +1,7 @@
 package com.darzalgames.zalaudiolibrary.pipeline;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.darzalgames.darzalcommon.data.Tuple;
@@ -11,6 +10,7 @@ import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
+import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
@@ -40,6 +40,9 @@ public class AudioPipeline extends Thread {
 
 	private final Collection<AudioActor> audioActors;
 
+	private final Queue<SimpleSound> queuedSoundEffects;
+	private final Collection<TimedSimpleSound> activeSoundEffects;
+
 	public AudioPipeline(AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
 		this(audioConsumer, musicVolume, soundVolume, List.of());
 	}
@@ -55,6 +58,9 @@ public class AudioPipeline extends Thread {
 		secondsCounter = 0f;
 
 		this.audioActors = new ArrayList<>(audioActors);
+
+		queuedSoundEffects = new ConcurrentLinkedQueue<>();
+		activeSoundEffects = new ArrayList<>();
 
 		setDaemon(true);
 	}
@@ -96,6 +102,15 @@ public class AudioPipeline extends Thread {
 		return sampler.getMaxPeak();
 	}
 
+	/**
+	 * Request the playing of a sound effect
+	 * This method is thread safe
+	 * @param soundEffect The sound effect to be played immediately
+	 */
+	public void playSoundEffectNow(SimpleSound soundEffect) {
+		queuedSoundEffects.add(soundEffect);
+	}
+
 	public void processMusicStep() {
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
 
@@ -107,12 +122,21 @@ public class AudioPipeline extends Thread {
 
 		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
 		List<TimedSimpleSound> simpleSoundsActive = simpleSoundMaker.makeSimpleSounds(musicalInstantsActive, stepBPS, stepIntervalStartInBeats, secondsCounter);
+		updateSoundEffects();
 
-		float[] nextSample = sampler.makeSamples(simpleSoundsActive, AudioConstants.SAMPLES_PER_STEP, secondsCounter, song.getSampleEffects());
+		float[] nextSample = sampler.makeSamples(simpleSoundsActive, activeSoundEffects, AudioConstants.SAMPLES_PER_STEP, secondsCounter, song.getSampleEffects());
 		audioConsumer.writeSamples(nextSample);
 
 		beatCounter += beatIncrementDuringMusicStep;
 		secondsCounter += AudioConstants.STEP_DURATION_IN_SECONDS;
+	}
+
+	public void updateSoundEffects() {
+		activeSoundEffects.removeIf(sound -> secondsCounter > sound.startTime() + sound.simpleSound().duration());
+		while (!queuedSoundEffects.isEmpty()) {
+			SimpleSound soundEffect = queuedSoundEffects.remove();
+			activeSoundEffects.add(new TimedSimpleSound(secondsCounter, soundEffect));
+		}
 	}
 
 	public void changeSong(Song newSong) {

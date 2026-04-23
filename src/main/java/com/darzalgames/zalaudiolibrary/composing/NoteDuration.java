@@ -9,6 +9,8 @@ public record NoteDuration(Fraction inBeats) {
 	public static final NoteDuration QUARTER = new NoteDuration(1);
 	public static final NoteDuration HALF = new NoteDuration(2);
 	public static final NoteDuration WHOLE = new NoteDuration(4);
+	public static final NoteDuration DOUBLE_WHOLE = new NoteDuration(8);
+	public static final NoteDuration QUADRUPLE_WHOLE = new NoteDuration(16);
 
 	public static final NoteDuration EIGHTH_DOT = new NoteDuration(new Fraction(3, 4));
 	public static final NoteDuration QUARTER_DOT = new NoteDuration(new Fraction(3, 2));

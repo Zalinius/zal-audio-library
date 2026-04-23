@@ -11,7 +11,10 @@ public record SimpleSound(
 		Synth timbre,
 		/** The base frequency in hertz of the sound */
 		Pitch frequency,
-		/** The modulator function which multiplies the frequency of the sound */
+		/**
+		 * The modulator function which multiplies the frequency of the sound
+		 * Input is time in seconds, output is a multiplier applied to the frequency
+		 */
 		UnaryOperator<Float> frequencyModulator,
 		/** The duration in seconds of the sound */
 		float duration,
