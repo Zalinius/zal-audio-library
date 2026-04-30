@@ -1,16 +1,16 @@
 package com.darzalgames.zalaudiolibrary.pipeline;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.AudioConstants;
-import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
+import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
@@ -25,7 +25,7 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
  * <li>Samples sent to Audio Consumer</li>
  * </ol>
  */
-public class AudioPipeline extends Thread {
+public class AudioPipeline extends Thread implements AudioPipelineAPI {
 
 	private final AtomicBoolean shouldStop;
 
@@ -35,10 +35,15 @@ public class AudioPipeline extends Thread {
 	private final BpsController bpsController;
 
 	private Song song;
+	private final Queue<Song> queuedSongs;
+
 	private float beatCounter;
 	private float secondsCounter;
 
 	private final Collection<AudioActor> audioActors;
+
+	private final Queue<SimpleSound> queuedSoundEffects;
+	private final Collection<TimedSimpleSound> activeSoundEffects;
 
 	public AudioPipeline(AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
 		this(audioConsumer, musicVolume, soundVolume, List.of());
@@ -51,14 +56,21 @@ public class AudioPipeline extends Thread {
 		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
 
+		song = null;
+		queuedSongs = new ConcurrentLinkedQueue<>();
+
 		beatCounter = 0f;
 		secondsCounter = 0f;
 
-		this.audioActors = new ArrayList<>(audioActors);
+		this.audioActors = new CopyOnWriteArrayList<>(audioActors);
+
+		queuedSoundEffects = new ConcurrentLinkedQueue<>();
+		activeSoundEffects = new ArrayList<>();
 
 		setDaemon(true);
 	}
 
+	@Override
 	public void addAudioActor(AudioActor audioActor) {
 		audioActors.add(audioActor);
 	}
@@ -76,6 +88,7 @@ public class AudioPipeline extends Thread {
 		}
 	}
 
+	@Override
 	public void shutdown() {
 		shouldStop.set(true);
 		try {
@@ -96,7 +109,19 @@ public class AudioPipeline extends Thread {
 		return sampler.getMaxPeak();
 	}
 
+	/**
+	 * Request the playing of a sound effect
+	 * This method is thread safe
+	 * @param soundEffect The sound effect to be played immediately
+	 */
+	@Override
+	public void requestSoundEffect(SimpleSound soundEffect) {
+		queuedSoundEffects.add(soundEffect);
+	}
+
 	public void processMusicStep() {
+		checkChangeSong();
+
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
 
 		final int beatNumber = (int) beatCounter;
@@ -107,23 +132,45 @@ public class AudioPipeline extends Thread {
 
 		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
 		List<TimedSimpleSound> simpleSoundsActive = simpleSoundMaker.makeSimpleSounds(musicalInstantsActive, stepBPS, stepIntervalStartInBeats, secondsCounter);
+		updateSoundEffects();
 
-		float[] nextSample = sampler.makeSamples(simpleSoundsActive, AudioConstants.SAMPLES_PER_STEP, secondsCounter, song.getSampleEffects());
+		float[] nextSample = sampler.makeSamples(simpleSoundsActive, activeSoundEffects, AudioConstants.SAMPLES_PER_STEP, secondsCounter, song.getSampleEffects());
 		audioConsumer.writeSamples(nextSample);
 
 		beatCounter += beatIncrementDuringMusicStep;
 		secondsCounter += AudioConstants.STEP_DURATION_IN_SECONDS;
 	}
 
-	public void changeSong(Song newSong) {
-		newSong.setBpsAcceptor(bpsController);
-		bpsController.resetBPS(newSong.getInitialBps());
-		song = newSong;
-		List<CompositionError> songErrors = song.validate();
+	public void updateSoundEffects() {
+		activeSoundEffects.removeIf(sound -> secondsCounter > sound.startTime() + sound.simpleSound().duration());
+		while (!queuedSoundEffects.isEmpty()) {
+			SimpleSound soundEffect = queuedSoundEffects.remove();
+			activeSoundEffects.add(new TimedSimpleSound(secondsCounter, soundEffect));
+		}
+	}
+
+	@Override
+	public void requestChangeSong(Song newSong) {
+		List<CompositionError> songErrors = newSong.validate();
 		if (!songErrors.isEmpty()) {
-			StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
+			StringBuilder sb = new StringBuilder("Song invalid: " + newSong.getSongName() + ", errors: " + songErrors.size());
 			songErrors.forEach(error -> sb.append("\n" + error.getError()));
 			throw new IllegalArgumentException(sb.toString());
+		}
+
+		queuedSongs.add(newSong);
+	}
+
+	public void checkChangeSong() {
+		Song newSong = null;
+		while (!queuedSongs.isEmpty()) {
+			newSong = queuedSongs.remove();
+		}
+
+		if (newSong != null) {
+			newSong.setBpsAcceptor(bpsController);
+			bpsController.resetBPS(newSong.getInitialBps());
+			song = newSong;
 		}
 	}
 
@@ -131,7 +178,14 @@ public class AudioPipeline extends Thread {
 		return beatCounter;
 	}
 
-	public VolumeListener getVolumeListener() {
-		return sampler;
+	@Override
+	public void setMusicVolume(float volume) {
+		sampler.setMusicVolume(volume);
 	}
+
+	@Override
+	public void setSoundEffectVolume(float volume) {
+		sampler.setSoundEffectVolume(volume);
+	}
+
 }

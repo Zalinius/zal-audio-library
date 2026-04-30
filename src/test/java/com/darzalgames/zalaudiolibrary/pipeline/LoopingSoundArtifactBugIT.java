@@ -20,7 +20,7 @@ class LoopingSoundArtifactBugIT {
 		TestLoopSong testSong = new TestLoopSong();
 		AudioConsumerSpy audioConsumerSpy = new AudioConsumerSpy();
 		AudioPipeline audioPipeline = new AudioPipeline(audioConsumerSpy, 1, 0);
-		audioPipeline.changeSong(testSong);
+		audioPipeline.requestChangeSong(testSong);
 		int steps = 4 * AudioConstants.STEPS_PER_SECOND;
 
 		Do.xTimes(steps, () -> audioPipeline.processMusicStep());

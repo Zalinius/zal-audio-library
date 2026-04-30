@@ -3,8 +3,10 @@ package com.darzalgames.zalaudiolibrary.demosongs;
 import static com.darzalgames.zalaudiolibrary.composing.NoteDuration.*;
 import static com.darzalgames.zalaudiolibrary.composing.Pitch.*;
 
-import java.util.Set;
+import java.util.Map;
 
+import com.darzalgames.darzalcommon.math.Fraction;
+import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Instrument;
@@ -12,11 +14,11 @@ import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.effects.tracking.OvertoneEffect;
-import com.darzalgames.zalaudiolibrary.effects.tracking.SynthClipper;
 import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 public class ScratchPadSong extends Song {
 
@@ -30,18 +32,20 @@ public class ScratchPadSong extends Song {
 		float bassVolume = 0.15f;
 		float drumVolume = 0.10f;
 
-		AdsrEnvelope mainEnvelope = AdsrEnvelope.quadratic(0.02f, 0.1f, 0.5f, 0.15f);
-		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(Synth.sine(), mainEnvelope), mainVolume);
+		Synth mainSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 2), 1.25f);
+		Envelope mainEnvelope = AdsrEnvelope.quadratic(0.05f, 0.1f, 0.5f, 0.15f);
+		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(mainSynth, mainEnvelope), mainVolume);
 		addTrack(mainTrack);
-		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(Synth.flatSine(2), ArEnvelope.quadratic(.005f, .3f)), bassVolume);
+		mainTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
+		mainTrack.addMusicalEffect(new OvertoneEffect(p -> Map.of(p, 1f, p.octaveUp(), 0.25f, p.octaveDown(), 0.5f)));
+
+		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1f);
+		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(bassSynth, ArEnvelope.quadratic(.01f, 0.49f)), bassVolume);
 		addTrack(bassTrack);
+		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
+
 		kickDrum = new SequentialTrack(getSongName(), "kick drum", Instrument.kickDrum(0.25f), drumVolume);
 		addTrack(kickDrum);
-
-		mainTrack.addMusicalEffect(OvertoneEffect.evenOvertoneEffect(p -> Set.of(p, p.octaveDown(), p.octaveDown().octaveDown())));
-		mainTrack.addMusicalEffect(new SynthClipper(0.5f));
-
-		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 
 		kickDrum.addNote(QUARTER_DOT, G2);
 		kickDrum.addNote(QUARTER_DOT, G2);
@@ -251,7 +255,7 @@ public class ScratchPadSong extends Song {
 		SongOrchestrator orchestrator = new SongOrchestrator(3) {
 			@Override
 			public void orchestrateSong() {
-				processMeasures(1);
+				processMeasures(16);
 			}
 		};
 		albumExportingInformation.addSong(new ScratchPadSong(), orchestrator);

@@ -6,11 +6,12 @@ import java.util.List;
 import com.darzalgames.zalaudiolibrary.amplitude.ConstantEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 public class TestTools {
 
-	public static final Instrument TEST_INSTRUMENT = new Instrument(Synth.zero(), ConstantEnvelope.zeroEnvelope());
+	public static final Instrument TEST_INSTRUMENT = new Instrument(SynthFactory.zero(), ConstantEnvelope.zeroEnvelope());
+	public static final Instrument FULL_SINE = new Instrument(SynthFactory.sine(), new ConstantEnvelope(1f));
 
 	public static class AudioConsumerSpy implements AudioConsumer {
 		private final List<Float> samplesList;

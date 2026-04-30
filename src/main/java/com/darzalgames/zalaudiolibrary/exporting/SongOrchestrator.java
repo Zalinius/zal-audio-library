@@ -28,6 +28,10 @@ public abstract class SongOrchestrator {
 		}
 	}
 
+	public final void processStep() {
+		audioPipeline.processMusicStep();
+	}
+
 	public abstract void orchestrateSong();
 
 }

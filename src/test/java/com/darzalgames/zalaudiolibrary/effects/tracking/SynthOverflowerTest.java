@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 class SynthOverflowerTest {
 
@@ -16,7 +17,7 @@ class SynthOverflowerTest {
 
 	@Test
 	void overflowSynth_onSineWave_overflowsValuesAboveThreshold() {
-		Synth overflowedSynth = SynthOverflower.overflowSynth(Synth.triangle(), 0.75f);
+		Synth overflowedSynth = SynthOverflower.overflowSynth(SynthFactory.triangle(), 0.75f);
 
 		assertEquals(0, overflowedSynth.f(0));
 		assertEquals(0.5f, overflowedSynth.f(0.125f));
@@ -25,10 +26,9 @@ class SynthOverflowerTest {
 		assertEquals(0, overflowedSynth.f(0.5f));
 		assertEquals(0, overflowedSynth.f(0));
 		assertEquals(-0.5f, overflowedSynth.f(0.625f));
-		assertEquals( 0.5f, overflowedSynth.f(0.75f));
+		assertEquals(0.5f, overflowedSynth.f(0.75f));
 		assertEquals(-0.5f, overflowedSynth.f(0.875f));
 		assertEquals(0, overflowedSynth.f(1f));
 	}
-
 
 }

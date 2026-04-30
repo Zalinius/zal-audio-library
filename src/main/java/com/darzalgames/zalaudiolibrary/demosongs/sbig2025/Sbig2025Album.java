@@ -6,17 +6,17 @@ import com.darzalgames.zalaudiolibrary.amplitude.sustained.AsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 public class Sbig2025Album extends AlbumExportingInformation {
 
-	public static final Instrument MAIN = new Instrument(Synth.pulse(.15f), AdsrEnvelope.linear(.01f, .1f, .5f, .1f));
-	public static final Instrument GUITAR = new Instrument(Synth.pulse(.3f), AdsrEnvelope.linear(.01f, .09f, .3f, .9f));
-	public static final Instrument FLUTE = new Instrument(Synth.overtone(Synth.sine(), 0.5f), GUITAR.envelope());
-	public static final Instrument BASS_DRONE = new Instrument(Synth.pulse(.2f), AsrEnvelope.linear(.05f, .1f));
+	public static final Instrument MAIN = new Instrument(SynthFactory.pulse(.15f), AdsrEnvelope.linear(.01f, .1f, .5f, .1f));
+	public static final Instrument GUITAR = new Instrument(SynthFactory.pulse(.3f), AdsrEnvelope.linear(.01f, .09f, .3f, .9f));
+	public static final Instrument FLUTE = new Instrument(SynthFactory.overtone(SynthFactory.sine(), 0.5f), GUITAR.envelope());
+	public static final Instrument BASS_DRONE = new Instrument(SynthFactory.pulse(.2f), AsrEnvelope.linear(.05f, .1f));
 
-	public static final Instrument RHYTHM = new Instrument(Synth.pulse(.15f), ArEnvelope.linear(.02f, .1f));
-	public static final Instrument PERC = new Instrument(Synth.brownianNoise(.5f), ArEnvelope.linear(0f, .02f));
+	public static final Instrument RHYTHM = new Instrument(SynthFactory.pulse(.15f), ArEnvelope.linear(.02f, .1f));
+	public static final Instrument PERC = new Instrument(SynthFactory.brownianNoise(.5f), ArEnvelope.linear(0f, .02f));
 
 	public Sbig2025Album() {
 		super("Demon Lord's Demise : ~Rebirth~ (Original Game Soundtrack)", 2025);

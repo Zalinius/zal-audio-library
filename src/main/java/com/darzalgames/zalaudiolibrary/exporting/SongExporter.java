@@ -28,7 +28,7 @@ public class SongExporter {
 			file.mkdir();
 			try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(relativeExportPath), songInfo.getMetadata())) {
 				AudioPipeline audioPipeline = new AudioPipeline(wavEncoderOutputStream, 1f, 0f);
-				audioPipeline.changeSong(song);
+				audioPipeline.requestChangeSong(song);
 				orchestrator.setAudioPipeline(audioPipeline);
 				orchestrator.orchestrateSong();
 				wavEncoderOutputStream.writeWavToOutputStream();

@@ -15,17 +15,16 @@ public class DigitalSynthesizer {
 //		runSong(new BellSong());
 //		runSong(new TrumpetSong());
 //		runSong(new A_ThemeSong());
-//		runSong(new TestLoopSoundArtifactSong());
 //		runSong(new ManagersVacationSong());
 
 		runSong(new ScratchPadSong());
 //		exportAlbum(ScratchPadSong.scratchAlbum());
 	}
 
-	public static void runSong(Song song) throws LineUnavailableException, InterruptedException {
+	public static void runSong(Song song) throws Exception {
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 		AudioPipeline audioPipeline = new AudioPipeline(audioConsumer, 1f, 1f);
-		audioPipeline.changeSong(song);
+		audioPipeline.requestChangeSong(song);
 
 		System.out.println("Playing \"" + song.getSongName() + "\"");
 
