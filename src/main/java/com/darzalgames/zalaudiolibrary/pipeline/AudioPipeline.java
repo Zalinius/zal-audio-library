@@ -2,11 +2,11 @@ package com.darzalgames.zalaudiolibrary.pipeline;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.AudioConstants;
-import com.darzalgames.zalaudiolibrary.VolumeListener;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
@@ -25,7 +25,7 @@ import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
  * <li>Samples sent to Audio Consumer</li>
  * </ol>
  */
-public class AudioPipeline extends Thread {
+public class AudioPipeline extends Thread implements AudioPipelineAPI {
 
 	private final AtomicBoolean shouldStop;
 
@@ -35,6 +35,8 @@ public class AudioPipeline extends Thread {
 	private final BpsController bpsController;
 
 	private Song song;
+	private final Queue<Song> queuedSongs;
+
 	private float beatCounter;
 	private float secondsCounter;
 
@@ -54,10 +56,13 @@ public class AudioPipeline extends Thread {
 		sampler = new SampleMaker(musicVolume, soundVolume);
 		this.audioConsumer = audioConsumer;
 
+		song = null;
+		queuedSongs = new ConcurrentLinkedQueue<>();
+
 		beatCounter = 0f;
 		secondsCounter = 0f;
 
-		this.audioActors = new ArrayList<>(audioActors);
+		this.audioActors = new CopyOnWriteArrayList<>(audioActors);
 
 		queuedSoundEffects = new ConcurrentLinkedQueue<>();
 		activeSoundEffects = new ArrayList<>();
@@ -65,6 +70,7 @@ public class AudioPipeline extends Thread {
 		setDaemon(true);
 	}
 
+	@Override
 	public void addAudioActor(AudioActor audioActor) {
 		audioActors.add(audioActor);
 	}
@@ -82,6 +88,7 @@ public class AudioPipeline extends Thread {
 		}
 	}
 
+	@Override
 	public void shutdown() {
 		shouldStop.set(true);
 		try {
@@ -107,11 +114,13 @@ public class AudioPipeline extends Thread {
 	 * This method is thread safe
 	 * @param soundEffect The sound effect to be played immediately
 	 */
-	public void playSoundEffectNow(SimpleSound soundEffect) {
+	public void requestSoundEffect(SimpleSound soundEffect) {
 		queuedSoundEffects.add(soundEffect);
 	}
 
 	public void processMusicStep() {
+		checkChangeSong();
+
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
 
 		final int beatNumber = (int) beatCounter;
@@ -139,15 +148,26 @@ public class AudioPipeline extends Thread {
 		}
 	}
 
-	public void changeSong(Song newSong) {
-		newSong.setBpsAcceptor(bpsController);
-		bpsController.resetBPS(newSong.getInitialBps());
-		song = newSong;
-		List<CompositionError> songErrors = song.validate();
-		if (!songErrors.isEmpty()) {
-			StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
-			songErrors.forEach(error -> sb.append("\n" + error.getError()));
-			throw new IllegalArgumentException(sb.toString());
+	public void requestChangeSong(Song newSong) {
+		queuedSongs.add(newSong);
+	}
+
+	public void checkChangeSong() {
+		Song newSong = null;
+		while (!queuedSongs.isEmpty()) {
+			newSong = queuedSongs.remove();
+		}
+
+		if (newSong != null) {
+			newSong.setBpsAcceptor(bpsController);
+			bpsController.resetBPS(newSong.getInitialBps());
+			song = newSong;
+			List<CompositionError> songErrors = song.validate();
+			if (!songErrors.isEmpty()) {
+				StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
+				songErrors.forEach(error -> sb.append("\n" + error.getError()));
+				throw new IllegalArgumentException(sb.toString());
+			}
 		}
 	}
 
@@ -155,7 +175,14 @@ public class AudioPipeline extends Thread {
 		return beatCounter;
 	}
 
-	public VolumeListener getVolumeListener() {
-		return sampler;
+	@Override
+	public void setMusicVolume(float volume) {
+		sampler.setMusicVolume(volume);
 	}
+
+	@Override
+	public void setSoundEffectVolume(float volume) {
+		sampler.setSoundEffectVolume(volume);
+	}
+
 }

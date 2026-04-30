@@ -24,7 +24,7 @@ public class DigitalSynthesizer {
 	public static void runSong(Song song) throws Exception {
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 		AudioPipeline audioPipeline = new AudioPipeline(audioConsumer, 1f, 1f);
-		audioPipeline.changeSong(song);
+		audioPipeline.requestChangeSong(song);
 
 		System.out.println("Playing \"" + song.getSongName() + "\"");
 

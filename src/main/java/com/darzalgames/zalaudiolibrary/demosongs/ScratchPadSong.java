@@ -28,25 +28,24 @@ public class ScratchPadSong extends Song {
 
 	public ScratchPadSong() {
 		super("Cosmic Waltz", 0.75f);
-		float mainVolume = 0.3f;
-		float bassVolume = 0.2f;
+		float mainVolume = 0.2f;
+		float bassVolume = 0.15f;
 		float drumVolume = 0.10f;
 
 		Synth mainSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 3), 1.25f);
-		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1f);
-
 		Envelope mainEnvelope = AdsrEnvelope.quadratic(0.05f, 0.1f, 0.5f, 0.15f);
 		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(mainSynth, mainEnvelope), mainVolume);
 		addTrack(mainTrack);
-		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(bassSynth, ArEnvelope.quadratic(.01f, 0.49f)), bassVolume);
-		addTrack(bassTrack);
-		kickDrum = new SequentialTrack(getSongName(), "kick drum", Instrument.kickDrum(0.25f), drumVolume);
-		addTrack(kickDrum);
-
 		mainTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 		mainTrack.addMusicalEffect(new OvertoneEffect(p -> Map.of(p, 1f, p.octaveUp(), 0.25f, p.octaveDown(), 0.5f)));
 
+		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1f);
+		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(bassSynth, ArEnvelope.quadratic(.01f, 0.49f)), bassVolume);
+		addTrack(bassTrack);
 		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
+
+		kickDrum = new SequentialTrack(getSongName(), "kick drum", Instrument.kickDrum(0.25f), drumVolume);
+		addTrack(kickDrum);
 
 		kickDrum.addNote(QUARTER_DOT, G2);
 		kickDrum.addNote(QUARTER_DOT, G2);
