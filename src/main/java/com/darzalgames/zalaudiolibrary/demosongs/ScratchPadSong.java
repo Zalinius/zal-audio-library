@@ -32,7 +32,7 @@ public class ScratchPadSong extends Song {
 		float bassVolume = 0.15f;
 		float drumVolume = 0.10f;
 
-		Synth mainSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 3), 1.25f);
+		Synth mainSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 2), 1.25f);
 		Envelope mainEnvelope = AdsrEnvelope.quadratic(0.05f, 0.1f, 0.5f, 0.15f);
 		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(mainSynth, mainEnvelope), mainVolume);
 		addTrack(mainTrack);

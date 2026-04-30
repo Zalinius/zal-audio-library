@@ -114,6 +114,7 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 	 * This method is thread safe
 	 * @param soundEffect The sound effect to be played immediately
 	 */
+	@Override
 	public void requestSoundEffect(SimpleSound soundEffect) {
 		queuedSoundEffects.add(soundEffect);
 	}
@@ -148,7 +149,15 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 		}
 	}
 
+	@Override
 	public void requestChangeSong(Song newSong) {
+		List<CompositionError> songErrors = newSong.validate();
+		if (!songErrors.isEmpty()) {
+			StringBuilder sb = new StringBuilder("Song invalid: " + newSong.getSongName() + ", errors: " + songErrors.size());
+			songErrors.forEach(error -> sb.append("\n" + error.getError()));
+			throw new IllegalArgumentException(sb.toString());
+		}
+
 		queuedSongs.add(newSong);
 	}
 
@@ -162,12 +171,6 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 			newSong.setBpsAcceptor(bpsController);
 			bpsController.resetBPS(newSong.getInitialBps());
 			song = newSong;
-			List<CompositionError> songErrors = song.validate();
-			if (!songErrors.isEmpty()) {
-				StringBuilder sb = new StringBuilder("Song invalid: " + song.getSongName() + ", errors: " + songErrors.size());
-				songErrors.forEach(error -> sb.append("\n" + error.getError()));
-				throw new IllegalArgumentException(sb.toString());
-			}
 		}
 	}
 
