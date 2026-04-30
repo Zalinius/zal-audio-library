@@ -7,7 +7,7 @@ import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArbitraryEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.ArbitrarySustainedEnvelope;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 /**
  * Objects of this class are immutable
@@ -75,7 +75,7 @@ public class TrumpetComplexSynth implements ComplexSynth {
 				envelope = new ArbitraryEnvelope(envelopeData);
 			}
 
-			Partial harmonicPartial = new Partial(Synth.sine(), frequencyMultiple, AMPLITUDE_NORMALIZER, envelope, i);
+			Partial harmonicPartial = new Partial(SynthFactory.sine(), frequencyMultiple, AMPLITUDE_NORMALIZER, envelope, i);
 			partials.add(harmonicPartial);
 		}
 

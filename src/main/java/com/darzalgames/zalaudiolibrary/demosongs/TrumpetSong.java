@@ -8,7 +8,7 @@ import com.darzalgames.zalaudiolibrary.composing.*;
 import com.darzalgames.zalaudiolibrary.composing.tracks.CompositeTrack;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 import com.darzalgames.zalaudiolibrary.synth.complex.ComplexSynth;
 import com.darzalgames.zalaudiolibrary.synth.complex.TrumpetComplexSynth;
 
@@ -43,8 +43,8 @@ public class TrumpetSong extends Song {
 		tuba = new CompositeTrack(tubaComblexSynth, getSongName(), "tuba", 0.2f);
 		addTrack(tuba);
 
-		SequentialTrack percLow = new SequentialTrack(getSongName(), "perc Low", new Instrument(Synth.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.1f);
-		SequentialTrack percHi = new SequentialTrack(getSongName(), "perc Hi", new Instrument(Synth.brownianNoise(0.5f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.15f);
+		SequentialTrack percLow = new SequentialTrack(getSongName(), "perc Low", new Instrument(SynthFactory.brownianNoise(0.7f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.1f);
+		SequentialTrack percHi = new SequentialTrack(getSongName(), "perc Hi", new Instrument(SynthFactory.brownianNoise(0.5f), ArEnvelope.quadratic(0.01f, 0.15f)), 0.15f);
 		addTrack(percLow);
 		addTrack(percHi);
 

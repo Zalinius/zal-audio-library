@@ -17,7 +17,8 @@ import com.darzalgames.zalaudiolibrary.composing.validation.TrackFractionalError
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 public class SequentialTrack implements Track {
 
@@ -45,10 +46,10 @@ public class SequentialTrack implements Track {
 	}
 
 	public void addSilence(NoteDuration duration) {
-		addNote(Synth.zero(), ConstantEnvelope.zeroEnvelope(), Instrument.noFrequencyModulation(), duration, Pitch.NONE);
+		addNote(SynthFactory.zero(), ConstantEnvelope.zeroEnvelope(), Instrument.noFrequencyModulation(), duration, Pitch.NONE);
 	}
 
-	private void addNote(Synth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator, NoteDuration duration, Pitch pitch, Pitch... chord) {
+	private void addNote(PeriodicSynth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator, NoteDuration duration, Pitch pitch, Pitch... chord) {
 		List<MusicalInstant> chordedInstants = new ArrayList<>();
 
 		IntFunction<Float> chordAmplitudeFunction = n -> (1f / (float) Math.sqrt(n));

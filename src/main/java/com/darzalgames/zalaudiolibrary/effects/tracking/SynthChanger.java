@@ -1,13 +1,13 @@
 package com.darzalgames.zalaudiolibrary.effects.tracking;
 
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
 
 public class SynthChanger extends SimpleMusicalEffect {
 
-	private final Synth newSynth;
+	private final PeriodicSynth newSynth;
 
-	public SynthChanger(Synth newSynth) {
+	public SynthChanger(PeriodicSynth newSynth) {
 		this.newSynth = newSynth;
 	}
 

@@ -4,11 +4,12 @@ import java.util.function.UnaryOperator;
 
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
-public record Instrument(Synth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator) {
+public record Instrument(PeriodicSynth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator) {
 
-	public Instrument(Synth synth, Envelope envelope) {
+	public Instrument(PeriodicSynth synth, Envelope envelope) {
 		this(synth, envelope, noFrequencyModulation());
 	}
 
@@ -19,7 +20,7 @@ public record Instrument(Synth synth, Envelope envelope, UnaryOperator<Float> fr
 	public static Instrument kickDrum(float duration) {
 		float samplingDuration = duration * 2;
 		Envelope envelope = ArEnvelope.quadratic(0.01f, duration - 0.01f);
-		Synth synth = Synth.sine();
+		PeriodicSynth synth = SynthFactory.sine();
 		UnaryOperator<Float> frequencyModulator = decayingFrequencyModulator(samplingDuration);
 		return new Instrument(synth, envelope, frequencyModulator);
 	}

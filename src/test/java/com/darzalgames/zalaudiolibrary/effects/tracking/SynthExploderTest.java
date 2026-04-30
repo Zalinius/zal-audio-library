@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 class SynthExploderTest {
 
@@ -18,17 +19,17 @@ class SynthExploderTest {
 
 	@Test
 	void explodeSynth_onSineWave_explodesValuesAboveThreshold() {
-		Synth explodedSynth = SynthExploder.explodeSynth(Synth.sine(), 0.5f);
+		PeriodicSynth explodedSynth = SynthExploder.explodeSynth(SynthFactory.sine(), 0.5f);
 
 		assertEquals(0.5f, explodedSynth.f(0));
-		assertEquals(Math.sqrt(2)/2, explodedSynth.f(0.125f), ALLOWED_ERROR);
+		assertEquals(Math.sqrt(2) / 2, explodedSynth.f(0.125f), ALLOWED_ERROR);
 		assertEquals(1f, explodedSynth.f(0.25f));
-		assertEquals(Math.sqrt(2)/2, explodedSynth.f(0.375f), ALLOWED_ERROR);
+		assertEquals(Math.sqrt(2) / 2, explodedSynth.f(0.375f), ALLOWED_ERROR);
 		assertEquals(0.5f, explodedSynth.f(0.5f), ALLOWED_ERROR);
 		assertEquals(0.5f, explodedSynth.f(0));
-		assertEquals(-Math.sqrt(2)/2, explodedSynth.f(0.625f), ALLOWED_ERROR);
+		assertEquals(-Math.sqrt(2) / 2, explodedSynth.f(0.625f), ALLOWED_ERROR);
 		assertEquals(-1f, explodedSynth.f(0.75f));
-		assertEquals(-Math.sqrt(2)/2, explodedSynth.f(0.875f), ALLOWED_ERROR);
+		assertEquals(-Math.sqrt(2) / 2, explodedSynth.f(0.875f), ALLOWED_ERROR);
 		assertEquals(-0.5f, explodedSynth.f(1f), ALLOWED_ERROR);
 	}
 

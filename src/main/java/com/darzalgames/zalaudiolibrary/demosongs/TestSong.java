@@ -5,13 +5,14 @@ import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.*;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 public class TestSong extends Song {
 
 	public TestSong() {
 		super("test", 2);
-		Synth synth = Synth.sine();
+		PeriodicSynth synth = SynthFactory.sine();
 		Envelope envelope = AdsrEnvelope.quadratic(.01f, .09f, .3f, .2f);
 		AmplitudeModulator amplitudeModulator = new AmplitudeModulator(1f, 2);
 		envelope = amplitudeModulator.modulateEnvelope(envelope);

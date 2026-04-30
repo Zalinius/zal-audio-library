@@ -4,11 +4,11 @@ import java.util.function.UnaryOperator;
 
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
 
 public record SimpleSound(
 		/** The synth of the sound */
-		Synth timbre,
+		PeriodicSynth timbre,
 		/** The base frequency in hertz of the sound */
 		Pitch frequency,
 		/**

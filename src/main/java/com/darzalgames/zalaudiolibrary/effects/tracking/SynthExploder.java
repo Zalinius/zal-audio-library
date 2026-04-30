@@ -3,7 +3,7 @@ package com.darzalgames.zalaudiolibrary.effects.tracking;
 import java.util.function.UnaryOperator;
 
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
+import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
 
 public class SynthExploder extends SimpleMusicalEffect {
 
@@ -18,12 +18,12 @@ public class SynthExploder extends SimpleMusicalEffect {
 
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
-		Synth explodedSynth = explodeSynth(instant.synth(), explodeThreshold);
+		PeriodicSynth explodedSynth = explodeSynth(instant.synth(), explodeThreshold);
 
 		return new MusicalInstant(explodedSynth, instant.pitch(), instant.frequencyModulator(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());
 	}
 
-	public static Synth explodeSynth(Synth original, float explodeThreshold) {
+	public static PeriodicSynth explodeSynth(PeriodicSynth original, float explodeThreshold) {
 		UnaryOperator<Float> originalSynth = original.getWaveFunction();
 		UnaryOperator<Float> explodedSynth = x -> {
 			float value = originalSynth.apply(x);
@@ -35,7 +35,7 @@ public class SynthExploder extends SimpleMusicalEffect {
 
 			return value;
 		};
-		return new Synth(explodedSynth);
+		return new PeriodicSynth(explodedSynth);
 	}
 
 }
