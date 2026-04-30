@@ -1,6 +1,6 @@
 package com.darzalgames.zalaudiolibrary.synth;
 
-import java.util.*;
+import java.util.Random;
 import java.util.function.UnaryOperator;
 
 import com.darzalgames.darzalcommon.math.Fraction;
@@ -223,24 +223,6 @@ public class WaveFunctions {
 			}
 
 		};
-	}
-
-	public static void main(String[] args) {
-		List<Integer> list = new LinkedList<>();
-
-		list.add(0);
-		list.add(1);
-		// oops we didn't add 2, well add it in an iterator
-		list.add(3);
-
-		for (ListIterator<Integer> listIterator = list.listIterator(); listIterator.hasNext();) {
-			Integer integer = listIterator.next();
-			if (integer == 1) {
-				listIterator.add(2);
-			}
-		}
-
-		System.out.println(list); // Prints [0, 1, 2, 3]
 	}
 
 	/**
