@@ -13,7 +13,6 @@ import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.demosongs.ScratchPadSong;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
-import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.TwoByteSampleAdapter;
@@ -28,22 +27,9 @@ public class DigitalSynthesizer {
 //		runSong(new TestLoopSoundArtifactSong());
 //		runSong(new ManagersVacationSong());
 
-//		runSong(new ScratchPadSong());
-		exportAlbum(ScratchPadSong.scratchAlbum());
-		exportAlbum(dumbAlbum());
-	}
-
-	private static AlbumExportingInformation dumbAlbum() {
-		AlbumExportingInformation albumExportingInformation = new AlbumExportingInformation("Boundary", 667);
-		SongOrchestrator orchestrator = new SongOrchestrator(4) {
-			@Override
-			public void orchestrateSong() {
-				processStep();
-				processStep();
-			}
-		};
-		albumExportingInformation.addSong(new TestSong(), orchestrator);
-		return albumExportingInformation;
+		runSong(new ScratchPadSong());
+//		exportAlbum(ScratchPadSong.scratchAlbum());
+//		exportAlbum(dumbAlbum());
 	}
 
 	private static class TestSong extends Song {

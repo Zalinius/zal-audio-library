@@ -15,32 +15,32 @@ public class SynthFactory {
 	 * Constructs a sine synth
 	 * @return A sine synth
 	 */
-	public static PeriodicSynth sine() {
-		return new PeriodicSynth(WaveFunctions.getSinWaveFunction());
+	public static Synth sine() {
+		return new Synth(WaveFunctions.getSinWaveFunction());
 	}
 
 	/**
 	 * Constructs a square synth
 	 * @return a square synth
 	 */
-	public static PeriodicSynth square() {
-		return new PeriodicSynth(WaveFunctions.getSquareWaveFunction());
+	public static Synth square() {
+		return new Synth(WaveFunctions.getSquareWaveFunction());
 	}
 
 	/**
 	 * Constructs a sawtooth synth
 	 * @return a sawtooth synth
 	 */
-	public static PeriodicSynth saw() {
-		return new PeriodicSynth(WaveFunctions.getSawtoothWaveFunction());
+	public static Synth saw() {
+		return new Synth(WaveFunctions.getSawtoothWaveFunction());
 	}
 
 	/**
 	 * Constructs a triangle synth
 	 * @return a triangle synth
 	 */
-	public static PeriodicSynth triangle() {
-		return new PeriodicSynth(WaveFunctions.getTriangleWaveFunction());
+	public static Synth triangle() {
+		return new Synth(WaveFunctions.getTriangleWaveFunction());
 	}
 
 	/**
@@ -48,8 +48,8 @@ public class SynthFactory {
 	 * @param harmonics the number of sine harmonics
 	 * @return a band-limited sawtooth wave
 	 */
-	public static PeriodicSynth bandLimitedSawTooth(int harmonics) {
-		return new PeriodicSynth(WaveFunctions.getBandLimitedSawtoothWaveFunction(harmonics));
+	public static Synth bandLimitedSawTooth(int harmonics) {
+		return new Synth(WaveFunctions.getBandLimitedSawtoothWaveFunction(harmonics));
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class SynthFactory {
 	 * @param modulation the width of the positive side of the pulse
 	 * @return a pulse wave
 	 */
-	public static PeriodicSynth pulse(float modulation) {
-		return new PeriodicSynth(WaveFunctions.getPulseWaveFunction(modulation));
+	public static Synth pulse(float modulation) {
+		return new Synth(WaveFunctions.getPulseWaveFunction(modulation));
 	}
 
 	/**
@@ -66,19 +66,19 @@ public class SynthFactory {
 	 * @param power the power to which the sine is raised. The higher the power the sharper the wave
 	 * @return a sine power wave
 	 */
-	public static PeriodicSynth sinePower(int power) {
-		return new PeriodicSynth(WaveFunctions.getSinPowerWaveFunction(power));
+	public static Synth sinePower(int power) {
+		return new Synth(WaveFunctions.getSinPowerWaveFunction(power));
 	}
 
 	/**
 	 * Constructs a flatter sine synth
 	 * @return A flat sine synth
 	 */
-	public static PeriodicSynth flatSine(int power) {
-		return new PeriodicSynth(WaveFunctions.getFlatSinWaveFunction(power));
+	public static Synth flatSine(int power) {
+		return new Synth(WaveFunctions.getFlatSinWaveFunction(power));
 	}
 
-	public static PeriodicSynth rationalFrequencyModulator(Fraction frequencyRatio, float modulationIndex) {
+	public static Synth rationalFrequencyModulator(Fraction frequencyRatio, float modulationIndex) {
 		float fundamentalFrequency = 1f; // Since it's a synth
 
 		float carrierFrequency = fundamentalFrequency * frequencyRatio.numerator();
@@ -86,23 +86,23 @@ public class SynthFactory {
 
 		UnaryOperator<Float> fmOperator = t -> ((float) Math.sin(2 * Math.PI * carrierFrequency * t + modulationIndex * Math.sin(2 * Math.PI * modulationFrequency * t)));
 
-		return new PeriodicSynth(fmOperator);
+		return new Synth(fmOperator);
 	}
 
 	/**
 	 * Constructs a 0-wave
 	 * @return a zero wave
 	 */
-	public static final PeriodicSynth zero() {
-		return new PeriodicSynth(WaveFunctions.getNullWaveFunction());
+	public static final Synth zero() {
+		return new Synth(WaveFunctions.getNullWaveFunction());
 	}
 
 	/**
 	 * Constructs a non-repeating white noise synth
 	 * @return a white noise synth
 	 */
-	public static final PeriodicSynth whiteNoise() {
-		return new PeriodicSynth(WaveFunctions.getWhiteNoiseFunction());
+	public static final Synth whiteNoise() {
+		return new Synth(WaveFunctions.getWhiteNoiseFunction());
 	}
 
 	/**
@@ -111,8 +111,8 @@ public class SynthFactory {
 	 *                   Higher values are more bassy, lower values are less so and closer sounding to white noise
 	 * @return a brown noise synth
 	 */
-	public static PeriodicSynth brownianNoise(float continuity) {
-		return new PeriodicSynth(WaveFunctions.getBrownianNoiseFunction(continuity));
+	public static Synth brownianNoise(float continuity) {
+		return new Synth(WaveFunctions.getBrownianNoiseFunction(continuity));
 	}
 
 	/**
@@ -120,13 +120,13 @@ public class SynthFactory {
 	 * @param synths the synths to combine
 	 * @return a combined synth
 	 */
-	public static PeriodicSynth additiveSynthesis(PeriodicSynth... synths) {
-		Collection<PeriodicSynth> synthCollection = Arrays.asList(synths);
+	public static Synth additiveSynthesis(Synth... synths) {
+		Collection<Synth> synthCollection = Arrays.asList(synths);
 
-		return new PeriodicSynth(x -> {
+		return new Synth(x -> {
 			float y = 0;
-			for (Iterator<PeriodicSynth> it = synthCollection.iterator(); it.hasNext();) {
-				PeriodicSynth synth = it.next();
+			for (Iterator<Synth> it = synthCollection.iterator(); it.hasNext();) {
+				Synth synth = it.next();
 				y += synth.f(x);
 			}
 			return y / synths.length;
@@ -139,8 +139,8 @@ public class SynthFactory {
 	 * @param overtoneRatio the relative amplitude of the overtone to the original wave
 	 * @return a overtoned synth
 	 */
-	public static PeriodicSynth overtone(PeriodicSynth synth, float overtoneRatio) {
-		return new PeriodicSynth(WaveFunctions.getOvertoneFunction(synth, overtoneRatio));
+	public static Synth overtone(Synth synth, float overtoneRatio) {
+		return new Synth(WaveFunctions.getOvertoneFunction(synth, overtoneRatio));
 	}
 
 }

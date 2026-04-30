@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.Synth;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 class SynthClipperTest {
@@ -19,7 +19,7 @@ class SynthClipperTest {
 
 	@Test
 	void clipSynth_onSineWave_clipsValuesAboveThreshold() {
-		PeriodicSynth clippedSynth = SynthClipper.clipSynth(SynthFactory.sine(), 0.5f);
+		Synth clippedSynth = SynthClipper.clipSynth(SynthFactory.sine(), 0.5f);
 
 		assertEquals(0, clippedSynth.f(0));
 		assertEquals(0.5f, clippedSynth.f(0.125f));

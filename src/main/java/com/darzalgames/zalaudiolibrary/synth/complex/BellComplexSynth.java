@@ -7,7 +7,7 @@ import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.PercussiveEnvelope;
-import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.Synth;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 // An attempt to recreate this sound https://en.wikipedia.org/wiki/File:Additive_synthesis_bell.ogg
@@ -16,7 +16,7 @@ public class BellComplexSynth implements ComplexSynth {
 	private static final float AMPLITUDE_NORMALIZER = 0.54f;
 
 	private final float releaseMultiplier;
-	private final PeriodicSynth synth;
+	private final Synth synth;
 
 	public BellComplexSynth() {
 		this(1f);
@@ -26,7 +26,7 @@ public class BellComplexSynth implements ComplexSynth {
 		this(releaseMultiplier, SynthFactory.sine());
 	}
 
-	public BellComplexSynth(float releaseMultiplier, PeriodicSynth synth) {
+	public BellComplexSynth(float releaseMultiplier, Synth synth) {
 		this.releaseMultiplier = releaseMultiplier;
 		this.synth = synth;
 	}

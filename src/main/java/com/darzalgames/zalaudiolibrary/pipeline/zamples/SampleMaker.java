@@ -113,7 +113,7 @@ public class SampleMaker implements VolumeListener {
 
 	private static float computeBeta(float samplingStartTime, TimedSimpleSound timedSimpleSound) {
 		SimpleSound simpleSound = timedSimpleSound.simpleSound();
-		float t = samplingStartTime - timedSimpleSound.startTime() + 0 * AudioConstants.SAMPLE_DURATION;
+		float t = samplingStartTime - timedSimpleSound.startTime() + -1 * AudioConstants.SAMPLE_DURATION;
 
 		float frequency = simpleSound.computeFrequency(t);
 

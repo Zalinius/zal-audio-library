@@ -4,7 +4,7 @@ import java.util.function.UnaryOperator;
 
 import com.darzalgames.zalaudiolibrary.effects.sampling.SampleOverflower;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
-import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class SynthOverflower extends SimpleMusicalEffect {
 
@@ -19,18 +19,18 @@ public class SynthOverflower extends SimpleMusicalEffect {
 
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
-		PeriodicSynth overflowedSynth = overflowSynth(instant.synth(), overflowAmplitude);
+		Synth overflowedSynth = overflowSynth(instant.synth(), overflowAmplitude);
 
 		return new MusicalInstant(overflowedSynth, instant.pitch(), instant.frequencyModulator(), instant.duration(), instant.envelope(), instant.amplitude(), instant.id());
 	}
 
-	public static PeriodicSynth overflowSynth(PeriodicSynth original, float overflowAmplitude) {
+	public static Synth overflowSynth(Synth original, float overflowAmplitude) {
 		UnaryOperator<Float> originalSynth = original.getWaveFunction();
 		UnaryOperator<Float> overflowedSynth = x -> {
 			SampleOverflower sampleOverflower = new SampleOverflower(overflowAmplitude);
 			return sampleOverflower.apply(originalSynth.apply(x));
 		};
-		return new PeriodicSynth(overflowedSynth);
+		return new Synth(overflowedSynth);
 	}
 
 }

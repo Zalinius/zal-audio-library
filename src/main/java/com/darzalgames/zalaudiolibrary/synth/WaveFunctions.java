@@ -249,7 +249,7 @@ public class WaveFunctions {
 	 * @param overtoneRatio the relative amplitude of the overtone to the original wave
 	 * @return Creates a function with an overtone at double frequency, of a specified amplitude
 	 */
-	public static UnaryOperator<Float> getOvertoneFunction(PeriodicSynth synth, float overtoneRatio) {
+	public static UnaryOperator<Float> getOvertoneFunction(Synth synth, float overtoneRatio) {
 		return x -> {
 			float value = synth.f(x);
 			float overtone = synth.f((2f * x) % 1f);

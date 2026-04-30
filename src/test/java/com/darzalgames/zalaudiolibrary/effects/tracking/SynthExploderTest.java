@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import com.darzalgames.zalaudiolibrary.synth.PeriodicSynth;
+import com.darzalgames.zalaudiolibrary.synth.Synth;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 class SynthExploderTest {
@@ -19,7 +19,7 @@ class SynthExploderTest {
 
 	@Test
 	void explodeSynth_onSineWave_explodesValuesAboveThreshold() {
-		PeriodicSynth explodedSynth = SynthExploder.explodeSynth(SynthFactory.sine(), 0.5f);
+		Synth explodedSynth = SynthExploder.explodeSynth(SynthFactory.sine(), 0.5f);
 
 		assertEquals(0.5f, explodedSynth.f(0));
 		assertEquals(Math.sqrt(2) / 2, explodedSynth.f(0.125f), ALLOWED_ERROR);
