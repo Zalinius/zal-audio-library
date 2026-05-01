@@ -3,7 +3,7 @@ package com.darzalgames.zalaudiolibrary;
 import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.ScratchPadSong;
+import com.darzalgames.zalaudiolibrary.demosongs.rainbow.RainbowSeedAlbum;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -16,9 +16,13 @@ public class DigitalSynthesizer {
 //		runSong(new TrumpetSong());
 //		runSong(new A_ThemeSong());
 //		runSong(new ManagersVacationSong());
+//		runSong(new ScratchPadSong());
 
-		runSong(new ScratchPadSong());
-//		exportAlbum(ScratchPadSong.scratchAlbum());
+//		runSong(new SpringSong());
+//		runSong(new WinterSong());
+		exportAlbum(new RainbowSeedAlbum());
+
+		// exportAlbum(ScratchPadSong.scratchAlbum());
 	}
 
 	public static void runSong(Song song) throws Exception {
