@@ -27,7 +27,7 @@ public class ScratchPadSong extends Song {
 	private final SequentialTrack kickDrum;
 
 	public ScratchPadSong() {
-		super("Cosmic Waltz", 0.75f);
+		super("Cosmic Waltz", 1f);
 		float mainVolume = 0.2f;
 		float bassVolume = 0.15f;
 		float drumVolume = 0.10f;
@@ -35,7 +35,7 @@ public class ScratchPadSong extends Song {
 		Synth mainSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 2), 1.25f);
 		Envelope mainEnvelope = AdsrEnvelope.quadratic(0.05f, 0.1f, 0.5f, 0.15f);
 		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(mainSynth, mainEnvelope), mainVolume);
-		addTrack(mainTrack);
+//		addTrack(mainTrack);
 		mainTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 		mainTrack.addMusicalEffect(new OvertoneEffect(p -> Map.of(p, 1f, p.octaveUp(), 0.25f, p.octaveDown(), 0.5f)));
 
@@ -44,8 +44,13 @@ public class ScratchPadSong extends Song {
 		addTrack(bassTrack);
 		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
 
+		bassTrack.addNote(QUARTER, C3);
+		bassTrack.addNote(QUARTER, C3);
+		bassTrack.addNote(QUARTER, C3);
+		bassTrack.addNote(QUARTER, C3);
+
 		kickDrum = new SequentialTrack(getSongName(), "kick drum", Instrument.kickDrum(0.25f), drumVolume);
-		addTrack(kickDrum);
+//		addTrack(kickDrum);
 
 		kickDrum.addNote(QUARTER_DOT, G2);
 		kickDrum.addNote(QUARTER_DOT, G2);
@@ -79,7 +84,7 @@ public class ScratchPadSong extends Song {
 		mainTrack.addNote(QUARTER_DOT, D4, A4);
 
 		mainTrack.setRepetitionPoint();
-		bassTrack.padWithSilence(mainTrack.lengthInBeats());
+//		bassTrack.padWithSilence(mainTrack.lengthInBeats());
 		bassTrack.setRepetitionPoint();
 
 		// Part 1a

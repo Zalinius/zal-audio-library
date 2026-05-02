@@ -15,6 +15,7 @@ import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
+import com.darzalgames.zalaudiolibrary.sfx.SoundEffect;
 
 /**
  * An audio pipeline with multiple steps
@@ -115,8 +116,8 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 	 * @param soundEffect The sound effect to be played immediately
 	 */
 	@Override
-	public void requestSoundEffect(SimpleSound soundEffect) {
-		queuedSoundEffects.add(soundEffect);
+	public void requestSoundEffect(SoundEffect soundEffect) {
+		soundEffect.getInnerSounds().forEach(sound -> queuedSoundEffects.add(sound.simpleSound()));
 	}
 
 	public void processMusicStep() {
