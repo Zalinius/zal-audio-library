@@ -1,54 +1,93 @@
 package com.darzalgames.zalaudiolibrary.demosongs.rainbow;
 
+import java.util.List;
+
+import com.darzalgames.darzalcommon.functional.Do;
 import com.darzalgames.zalaudiolibrary.composing.*;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
+import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
 
 public abstract class AbstractRainbowSeedSong extends Song {
 
-	AbstractRainbowSeedSong(String name) {
-		super(name, 3f);
+	private final SequentialTrack mainTrack;
+	private final SequentialTrack secondaryTrack;
 
-		SequentialTrack mainTrack = new SequentialTrack(name, "main", getMainInstrument(), 0.5f);
+	AbstractRainbowSeedSong(String name) {
+		super(name, 2f);
+
+		mainTrack = new SequentialTrack(name, "main", getMainInstrument(), 0.4f);
+		mainMusicalEffects().forEach(mainTrack::addMusicalEffect);
 		addTrack(mainTrack);
 
-		mainTrack.addNote(NoteDuration.WHOLE, Pitch.C4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.C4);
-		mainTrack.addNote(NoteDuration.QUARTER_DOT, Pitch.D4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.D4);
+		secondaryTrack = new SequentialTrack(name, "secondary", getSecondaryInstrument(), 0.4f);
+		secondaryMusicalEffects().forEach(secondaryTrack::addMusicalEffect);
+		addTrack(secondaryTrack);
 
-		mainTrack.addNote(NoteDuration.WHOLE, Pitch.E4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.E4);
-		mainTrack.addNote(NoteDuration.QUARTER_DOT, Pitch.F4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.F4);
+		addSecondaryMeasure(Pitch.C3, Pitch.A2);
+		addSecondaryMeasure(Pitch.C3, Pitch.A2);
 
-		mainTrack.addNote(NoteDuration.WHOLE, Pitch.G4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);
-		mainTrack.addNote(NoteDuration.QUARTER_DOT, Pitch.A4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.A4);
+		addSecondaryMeasure(Pitch.B2, Pitch.G2);
+		addSecondaryMeasure(Pitch.B2, Pitch.G2);
 
-		mainTrack.addNote(NoteDuration.WHOLE, Pitch.B4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.B4);
-		mainTrack.addNote(NoteDuration.QUARTER_DOT, Pitch.C5);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.C5);
+		addSecondaryMeasure(Pitch.A2, Pitch.F2);
+		addSecondaryMeasure(Pitch.A2, Pitch.F2);
 
-		mainTrack.addNote(NoteDuration.SIXTH, Pitch.B4);
-		mainTrack.addNote(NoteDuration.THIRD, Pitch.A4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.G4);
+		addSecondaryMeasure(Pitch.B2, Pitch.G2);
+		addSecondaryMeasure(Pitch.B2, Pitch.G2);
 
-		mainTrack.addNote(NoteDuration.SIXTH, Pitch.A4);
-		mainTrack.addNote(NoteDuration.THIRD, Pitch.G4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.F4);
+		addSecondaryMeasure(Pitch.C3, Pitch.E3);
+		addSecondaryMeasure(Pitch.C3, Pitch.E3);
 
-		mainTrack.addNote(NoteDuration.SIXTH, Pitch.G4);
-		mainTrack.addNote(NoteDuration.THIRD, Pitch.F4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.E4);
+		addSecondaryMeasure(Pitch.B2, Pitch.D3);
+		addSecondaryMeasure(Pitch.B2, Pitch.D3);
 
-		mainTrack.addNote(NoteDuration.SIXTH, Pitch.F4);
-		mainTrack.addNote(NoteDuration.THIRD, Pitch.E4);
-		mainTrack.addNote(NoteDuration.HALF, Pitch.D4);
+		addSecondaryMeasure(Pitch.A2, Pitch.C3);
+		addSecondaryMeasure(Pitch.A2, Pitch.C3);
+
+		addSecondaryMeasure(Pitch.B2, Pitch.D3);
+		addSecondaryMeasure(Pitch.B2, Pitch.D3);
+
+		addMainMeasure(Pitch.E4);
+		addMainMeasure(Pitch.D4);
+		addMainMeasure(Pitch.E4);
+		addMainMeasure(Pitch.F4);
+
+		addMainMeasure(Pitch.E4, Pitch.G4);
+		addMainMeasure(Pitch.D4, Pitch.F4);
+		addMainMeasure(Pitch.E4, Pitch.G4);
+		addMainMeasure(Pitch.F4, Pitch.A4);
 
 	}
 
+	private void addMainMeasure(Pitch pitch, Pitch... chord) {
+		getMainNoteDuration().forEach(note -> mainTrack.addNote(note, pitch, chord));
+	}
+
+	private void addSecondaryMeasure(Pitch first, Pitch second) {
+
+		Do.xTimes(4, () -> {
+			secondaryTrack.addNote(NoteDuration.EIGHTH, first);
+			secondaryTrack.addNote(NoteDuration.EIGHTH, second);
+		});
+
+	}
+
+	// main track
 	public abstract Instrument getMainInstrument();
+
+	public List<NoteDuration> getMainNoteDuration() {
+		return List.of(NoteDuration.WHOLE);
+	}
+
+	public List<MusicalEffect> mainMusicalEffects() {
+		return List.of();
+	}
+
+	// secondary track
+	public abstract Instrument getSecondaryInstrument();
+
+	public List<MusicalEffect> secondaryMusicalEffects() {
+		return List.of();
+	}
 
 }

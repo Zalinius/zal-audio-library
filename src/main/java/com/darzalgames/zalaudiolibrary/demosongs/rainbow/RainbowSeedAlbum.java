@@ -8,7 +8,7 @@ public class RainbowSeedAlbum extends AlbumExportingInformation {
 	public RainbowSeedAlbum() {
 		super("Rainbow Seed OST", 2026);
 
-		int songLengthInMeasures = 12;
+		int songLengthInMeasures = 16;
 
 		SongOrchestrator standardOrchestrator = new SongOrchestrator(4) {
 			@Override
@@ -17,8 +17,10 @@ public class RainbowSeedAlbum extends AlbumExportingInformation {
 			}
 		};
 
-		addSong(new WinterSong(), standardOrchestrator);
 		addSong(new SpringSong(), standardOrchestrator);
+		addSong(new SummerSong(), standardOrchestrator);
+		addSong(new AutumnSong(), standardOrchestrator);
+		addSong(new WinterSong(), standardOrchestrator);
 	}
 
 }

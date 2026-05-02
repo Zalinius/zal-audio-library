@@ -19,6 +19,8 @@ public class DigitalSynthesizer {
 //		runSong(new ScratchPadSong());
 
 //		runSong(new SpringSong());
+//		runSong(new SummerSong());
+//		runSong(new AutumnSong());
 //		runSong(new WinterSong());
 		exportAlbum(new RainbowSeedAlbum());
 

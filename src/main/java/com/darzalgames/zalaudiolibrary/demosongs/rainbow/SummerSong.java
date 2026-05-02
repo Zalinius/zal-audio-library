@@ -1,36 +1,41 @@
 package com.darzalgames.zalaudiolibrary.demosongs.rainbow;
 
 import java.util.List;
+import java.util.Set;
 
 import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.TriangleEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Instrument;
 import com.darzalgames.zalaudiolibrary.composing.NoteDuration;
-import com.darzalgames.zalaudiolibrary.composing.Pitch;
+import com.darzalgames.zalaudiolibrary.effects.tracking.AmplifierEffect;
 import com.darzalgames.zalaudiolibrary.effects.tracking.MusicalEffect;
-import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
+import com.darzalgames.zalaudiolibrary.effects.tracking.OvertoneEffect;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
-public class SpringSong extends AbstractRainbowSeedSong {
+public class SummerSong extends AbstractRainbowSeedSong {
 
-	public SpringSong() {
-		super("Spring");
+	public SummerSong() {
+		super("Summer");
 	}
 
 	@Override
 	public Instrument getMainInstrument() {
-		return new Instrument(SynthFactory.rationalFrequencyModulator(new Fraction(2, 3), 1.5f), TriangleEnvelope.quadratic(0.01f));
+
+		return new Instrument(SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1.5f), TriangleEnvelope.quadratic(0.04f));
 	}
 
 	@Override
 	public List<MusicalEffect> mainMusicalEffects() {
-		return List.of(new TransposeEffect(Pitch::octaveDown));
+		return List.of(
+				OvertoneEffect.evenOvertoneEffect(p -> Set.of(p, p.octaveUp())),
+				new AmplifierEffect(0.5f)
+		);
 	}
 
 	@Override
 	public List<NoteDuration> getMainNoteDuration() {
-		return List.of(NoteDuration.QUARTER, NoteDuration.HALF_DOT);
+		return List.of(NoteDuration.QUARTER, NoteDuration.QUARTER, NoteDuration.QUARTER, NoteDuration.QUARTER);
 	}
 
 	@Override
