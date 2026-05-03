@@ -15,14 +15,14 @@ import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 public class RainbowSoundEffects {
 
 	public static Collection<SoundEffect> soundEffects() {
-		return List.of(springSound(), summerSound(), fallSound(), winterSound());
+		return List.of(springSound(), summerSound(), fallSound(), winterSound(), successSound());
 	}
 
 	private static SoundEffect springSound() {
 		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(2, 3), 1f);
-		Envelope envelope = ArEnvelope.quadratic(.05f, 0.70f);
+		Envelope envelope = ArEnvelope.quadratic(.01f, 0.70f);
 
-		SimpleSound strum1 = new SimpleSound(bassSynth, Pitch.C4, p -> 1f, 0.75f, envelope, 0.5f, "toot");
+		SimpleSound strum1 = new SimpleSound(bassSynth, Pitch.C4, p -> 1f, 0.71f, envelope, 0.3f, "toot");
 		SoundEffect soundEffect = new SoundEffect("springSound");
 		soundEffect.addSound(strum1);
 
@@ -54,12 +54,29 @@ public class RainbowSoundEffects {
 	}
 
 	private static SoundEffect winterSound() {
-		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(3), 1);
-		Envelope envelope = ArEnvelope.quadratic(.01f, 0.29f);
+		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(3), 3);
+		Envelope envelope = ArEnvelope.quadratic(.01f, 0.19f);
 
-		SimpleSound strum1 = new SimpleSound(bassSynth, Pitch.C6, p -> 1f, 0.3f, envelope, 0.5f, "winter");
+		SimpleSound strum1 = new SimpleSound(bassSynth, Pitch.C6, p -> 1f, 0.2f, envelope, 0.3f, "winter");
 		SoundEffect soundEffect = new SoundEffect("winterSound");
 		soundEffect.addSound(strum1);
+
+		return soundEffect;
+	}
+
+	private static SoundEffect successSound() {
+		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 2), 2f);
+		Envelope envelope = ArEnvelope.quadratic(.01f, 0.49f);
+
+		SimpleSound strum1 = new SimpleSound(bassSynth, Pitch.C4, p -> 1f, 0.5f, envelope, 0.25f, "strum1");
+		SimpleSound strum2 = new SimpleSound(bassSynth, Pitch.E4, p -> 1f, 0.5f, envelope, 0.25f, "strum2");
+		SimpleSound strum3 = new SimpleSound(bassSynth, Pitch.G4, p -> 1f, 0.5f, envelope, 0.25f, "strum3");
+		SimpleSound strum4 = new SimpleSound(bassSynth, Pitch.C5, p -> 1f, 0.5f, envelope, 0.25f, "strum4");
+		SoundEffect soundEffect = new SoundEffect("successSound");
+		soundEffect.addSound(strum1);
+		soundEffect.addSound(strum2);
+		soundEffect.addSound(strum3);
+		soundEffect.addSound(strum4);
 
 		return soundEffect;
 	}

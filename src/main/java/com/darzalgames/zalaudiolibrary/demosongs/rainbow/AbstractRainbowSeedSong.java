@@ -15,11 +15,11 @@ public abstract class AbstractRainbowSeedSong extends Song {
 	AbstractRainbowSeedSong(String name) {
 		super(name, 2f);
 
-		mainTrack = new SequentialTrack(name, "main", getMainInstrument(), 0.4f);
+		mainTrack = new SequentialTrack(name, "main", getMainInstrument(), getMainAmplitude());
 		mainMusicalEffects().forEach(mainTrack::addMusicalEffect);
 		addTrack(mainTrack);
 
-		secondaryTrack = new SequentialTrack(name, "secondary", getSecondaryInstrument(), 0.4f);
+		secondaryTrack = new SequentialTrack(name, "secondary", getSecondaryInstrument(), getSecondaryAmplitude());
 		secondaryMusicalEffects().forEach(secondaryTrack::addMusicalEffect);
 		addTrack(secondaryTrack);
 
@@ -88,6 +88,14 @@ public abstract class AbstractRainbowSeedSong extends Song {
 
 	public List<MusicalEffect> secondaryMusicalEffects() {
 		return List.of();
+	}
+
+	public float getMainAmplitude() {
+		return 0.3f;
+	}
+
+	public float getSecondaryAmplitude() {
+		return 0.3f;
 	}
 
 }

@@ -21,6 +21,7 @@ public class RainbowSeedAlbum extends AlbumExportingInformation {
 		addSong(new SummerSong(), standardOrchestrator);
 		addSong(new AutumnSong(), standardOrchestrator);
 		addSong(new WinterSong(), standardOrchestrator);
+		addSong(new RainbowSong(), standardOrchestrator);
 	}
 
 }

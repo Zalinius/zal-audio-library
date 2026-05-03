@@ -30,4 +30,9 @@ public class AutumnSong extends AbstractRainbowSeedSong {
 		return new Instrument(SynthFactory.rationalFrequencyModulator(new Fraction(1, 3), 1f), ArEnvelope.linear(0.01f, 0.29f));
 	}
 
+	@Override
+	public float getMainAmplitude() {
+		return 0.2f;
+	}
+
 }

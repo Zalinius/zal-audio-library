@@ -21,7 +21,6 @@ public class SummerSong extends AbstractRainbowSeedSong {
 
 	@Override
 	public Instrument getMainInstrument() {
-
 		return new Instrument(SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1.5f), TriangleEnvelope.quadratic(0.04f));
 	}
 
