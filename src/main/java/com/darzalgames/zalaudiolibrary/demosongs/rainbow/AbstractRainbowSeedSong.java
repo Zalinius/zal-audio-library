@@ -83,15 +83,15 @@ public abstract class AbstractRainbowSeedSong extends Song {
 		return List.of();
 	}
 
+	public float getMainAmplitude() {
+		return 0.3f;
+	}
+
 	// secondary track
 	public abstract Instrument getSecondaryInstrument();
 
 	public List<MusicalEffect> secondaryMusicalEffects() {
 		return List.of();
-	}
-
-	public float getMainAmplitude() {
-		return 0.3f;
 	}
 
 	public float getSecondaryAmplitude() {

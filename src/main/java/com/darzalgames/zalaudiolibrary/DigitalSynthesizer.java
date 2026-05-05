@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.sound.sampled.*;
 
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.rainbow.RainbowSoundEffects;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -27,12 +26,11 @@ public class DigitalSynthesizer {
 //		playSong(new WinterSong());
 //		playSong(new RainbowSong());
 //		exportAlbum(new RainbowSeedAlbum());
-		playSoundEffects(RainbowSoundEffects.soundEffects());
+//		playSoundEffects(RainbowSoundEffects.soundEffects());
 
-//		Collection<SoundEffect> soundEffects = RainbowSoundEffects.soundEffects();
-//		soundEffects.forEach(sfx -> SoundEffectExporter.exportSound(sfx, "Rainbow Seed Sounds", sfx.getSoundName()));
+//		SoundEffectExporter.exportSounds(RainbowSoundEffects.soundEffects(), "Rainbow Seed Sounds");
 
-		// exportAlbum(ScratchPadSong.scratchAlbum());
+//		exportAlbum(ScratchPadSong.scratchAlbum());
 	}
 
 	public static void playSong(Song song) throws Exception {

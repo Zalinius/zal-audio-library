@@ -2,6 +2,7 @@ package com.darzalgames.zalaudiolibrary.exporting;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -16,14 +17,20 @@ import com.darzalgames.zalaudiolibrary.sfx.SoundEffect;
 
 public class SoundEffectExporter {
 
-	public static void exportSound(SoundEffect soundEffect, String directory, String name) {
-		System.out.print("Exporting: " + name + " . . . ");
+	public static void exportSounds(Collection<SoundEffect> soundEffect, String directory) {
+		System.out.println("Exporting sfx " + directory + ": " + soundEffect.size() + " sounds");
+		soundEffect.forEach(sfx -> exportSound(sfx, directory));
+		System.out.println("Exporting complete for sfx " + directory + ": " + soundEffect.size() + " sounds");
+	}
 
-		String relativeExportPath = directory + File.separator + name + ".wav";
+	public static void exportSound(SoundEffect soundEffect, String directory) {
+		System.out.print("Exporting: " + soundEffect.getSoundName() + " . . . ");
+
+		String relativeExportPath = directory + File.separator + soundEffect.getSoundName() + ".wav";
 		File file = new File(directory);
 		file.mkdir();
 
-		try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(relativeExportPath), soundEffectMetaData(name, directory))) {
+		try (WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(new FileOutputStream(relativeExportPath), soundEffectMetaData(soundEffect.getSoundName(), directory))) {
 			AudioPipeline audioPipeline = new AudioPipeline(wavEncoderOutputStream, 0f, 1f);
 			audioPipeline.requestChangeSong(new BlankSong());
 			audioPipeline.requestSoundEffect(soundEffect);
