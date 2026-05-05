@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.demosongs;
+package com.darzalgames.zalaudiolibrary.demosongs.other;
 
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;

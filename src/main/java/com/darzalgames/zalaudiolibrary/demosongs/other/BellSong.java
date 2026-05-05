@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.demosongs;
+package com.darzalgames.zalaudiolibrary.demosongs.other;
 
 import static com.darzalgames.zalaudiolibrary.composing.NoteDuration.*;
 import static com.darzalgames.zalaudiolibrary.composing.Pitch.*;

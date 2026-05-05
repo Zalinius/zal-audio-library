@@ -36,6 +36,7 @@ public abstract class Song {
 	}
 
 	public void addTrack(Track track) {
+		validateNewTrack(track);
 		tracks.add(track);
 	}
 
@@ -84,6 +85,15 @@ public abstract class Song {
 
 	public void changeBPSNow(float newBPS) {
 		bpsAcceptor.setTargetBPS(newBPS, 0f);
+	}
+
+	private void validateNewTrack(Track track) {
+		if (!track.getSongName().equals(getSongName())) {
+			throw new IllegalArgumentException("Song's name doesn't match song name in new track: " + getSongName() + " != " + track.getSongName());
+		}
+		if (tracks.stream().anyMatch(t -> t.getTrackName().equals(track.getTrackName()))) {
+			throw new IllegalArgumentException("New track's name is not unique to other tracks in song: " + track.getTrackName());
+		}
 	}
 
 }

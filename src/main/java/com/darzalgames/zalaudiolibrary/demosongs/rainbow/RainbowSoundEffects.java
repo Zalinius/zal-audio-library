@@ -15,6 +15,8 @@ import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 public class RainbowSoundEffects {
 
+	private RainbowSoundEffects() {}
+
 	public static Collection<SoundEffect> soundEffects() {
 		return List.of(springSound(), summerSound(), fallSound(), winterSound(), successSound(), greatSuccessSound());
 	}
@@ -38,7 +40,7 @@ public class RainbowSoundEffects {
 		SimpleSound strum2 = new SimpleSound(bassSynth, Pitch.E3, p -> 1f, 0.5f, envelope, 0.4f, "strum2");
 		SoundEffect soundEffect = new SoundEffect("summerSound");
 		soundEffect.addSound(strum1);
-		soundEffect.addSound(strum2);
+		soundEffect.addSound(strum2, 0.075f);
 
 		return soundEffect;
 	}

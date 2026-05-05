@@ -175,6 +175,11 @@ public class SequentialTrack implements Track {
 	}
 
 	@Override
+	public String getSongName() {
+		return songName;
+	}
+
+	@Override
 	public String getTrackName() {
 		return trackName;
 	}
