@@ -22,11 +22,13 @@ public class CompositeTrack implements Track {
 
 	private final List<SequentialTrack> tracks;
 	private final List<Partial> partials;
+	private final String songName;
 	private final String trackName;
 
 	public CompositeTrack(ComplexSynth complexSynth, String songName, String trackName, float amplitude) {
 		tracks = new ArrayList<>();
 		partials = complexSynth.makePartials();
+		this.songName = songName;
 		this.trackName = trackName;
 		for (Iterator<Partial> it = partials.iterator(); it.hasNext();) {
 			Partial partial = it.next();
@@ -85,6 +87,11 @@ public class CompositeTrack implements Track {
 			errors.add(new CompositeTrackDesynchronization(this, tracks.size(), partials.size()));
 		}
 		return errors;
+	}
+
+	@Override
+	public String getSongName() {
+		return songName;
 	}
 
 	@Override

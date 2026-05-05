@@ -10,11 +10,11 @@ import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
-import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
+import com.darzalgames.zalaudiolibrary.sfx.SoundEffect;
 
 /**
  * An audio pipeline with multiple steps
@@ -42,7 +42,7 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 
 	private final Collection<AudioActor> audioActors;
 
-	private final Queue<SimpleSound> queuedSoundEffects;
+	private final Queue<TimedSimpleSound> queuedSoundEffects;
 	private final Collection<TimedSimpleSound> activeSoundEffects;
 
 	public AudioPipeline(AudioConsumer audioConsumer, float musicVolume, float soundVolume) {
@@ -115,8 +115,8 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 	 * @param soundEffect The sound effect to be played immediately
 	 */
 	@Override
-	public void requestSoundEffect(SimpleSound soundEffect) {
-		queuedSoundEffects.add(soundEffect);
+	public void requestSoundEffect(SoundEffect soundEffect) {
+		soundEffect.getInnerSounds().forEach(queuedSoundEffects::add);
 	}
 
 	public void processMusicStep() {
@@ -144,8 +144,10 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 	public void updateSoundEffects() {
 		activeSoundEffects.removeIf(sound -> secondsCounter > sound.startTime() + sound.simpleSound().duration());
 		while (!queuedSoundEffects.isEmpty()) {
-			SimpleSound soundEffect = queuedSoundEffects.remove();
-			activeSoundEffects.add(new TimedSimpleSound(secondsCounter, soundEffect));
+			TimedSimpleSound requestedSoundEffect = queuedSoundEffects.remove();
+			float soundEffectStartTime = secondsCounter + requestedSoundEffect.startTime();
+			TimedSimpleSound correctlyTimedSoundEffect = new TimedSimpleSound(soundEffectStartTime, requestedSoundEffect.simpleSound());
+			activeSoundEffects.add(correctlyTimedSoundEffect);
 		}
 	}
 

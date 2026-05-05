@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.demosongs;
+package com.darzalgames.zalaudiolibrary.demosongs.other;
 
 import com.darzalgames.zalaudiolibrary.amplitude.AmplitudeModulator;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;

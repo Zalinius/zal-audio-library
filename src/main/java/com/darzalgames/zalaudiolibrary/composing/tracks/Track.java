@@ -22,6 +22,8 @@ public interface Track {
 
 	List<CompositionError> validate();
 
+	String getSongName();
+
 	String getTrackName();
 
 }
