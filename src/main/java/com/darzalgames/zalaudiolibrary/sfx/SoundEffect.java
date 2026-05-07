@@ -81,4 +81,12 @@ public class SoundEffect {
 		}
 	}
 
+	/**
+	 * Creates a blank SoundEffect, one with no inner sounds. It is safe to play in an AudioPipeline
+	 * @return a blank SoundEffect
+	 */
+	public static SoundEffect blank() {
+		return new SoundEffect("blank");
+	}
+
 }
