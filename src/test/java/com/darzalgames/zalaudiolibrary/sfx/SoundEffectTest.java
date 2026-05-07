@@ -2,6 +2,7 @@ package com.darzalgames.zalaudiolibrary.sfx;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -58,6 +59,13 @@ class SoundEffectTest {
 		assertThrows(IllegalArgumentException.class, () -> soundEffect.addSound(s3));
 		assertThrows(IllegalArgumentException.class, () -> soundEffect.addSound(s1, 1f));
 		assertThrows(IllegalArgumentException.class, () -> new SoundEffect("sfx", s1, s2, s3));
+	}
+
+	@Test
+	void blankSoundEffect_containsNoSounds() {
+		SoundEffect soundEffect = SoundEffect.blank();
+
+		assertTrue(soundEffect.getInnerSounds().isEmpty());
 	}
 
 }
