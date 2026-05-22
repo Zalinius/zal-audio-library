@@ -57,20 +57,23 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 	private final AudioPipelineAPI audioPipeline;
 	private final Map<Character, Runnable> keyRunnables;
 	private final Map<Character, Boolean> keyStates;
+	private final Map<Character, JButton> keyButtons;
 
 	private int keyIdCounter;
 
-	public DigitalSynthesizer() throws LineUnavailableException {
+	public DigitalSynthesizer() throws LineUnavailableException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		super("Z.A.L. Digital Synthesizer!");
 
 		audioPipeline = new AudioPipeline(getJavaAudioConsumer(), 1f, 1f);
-		audioPipeline.requestChangeSong(new BlankSong());
+		audioPipeline.requestChangeSong(new MetronomeSong());
 
 		keyRunnables = new HashMap<>();
 		keyStates = new HashMap<>();
+		keyButtons = new HashMap<>();
 
 		keyIdCounter = 0;
 
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -93,12 +96,13 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 
 		KeyboardConfiguration keyboardConfiguration = new KeyboardConfiguration(BOTTOM_PITCH);
 		Map<Character, Pitch> keys = keyboardConfiguration.colemak();
+		keys = KeyboardConfiguration.reorderForVisuals(keys);
 
 		JPanel keyboard = new JPanel();
 		Border buttonPadding = BorderFactory.createEmptyBorder(getSmallPadding(), getLargePadding(), getLargePadding(), getLargePadding());
 		keyboard.setBorder(buttonPadding);
 		add(keyboard, BorderLayout.CENTER);
-		keyboard.setLayout(new GridLayout(3, 8));
+		keyboard.setLayout(new GridLayout(3, 8, 0, getSmallPadding()));
 
 		for (Map.Entry<Character, Pitch> entry : keys.entrySet()) {
 			Character key = entry.getKey();
@@ -115,13 +119,10 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 			keyRunnables.put(key, playPitch);
 
 			JButton pianoKey = new JButton(pitch.getName());
-			pianoKey.addActionListener(
-					e -> {
-						keyRunnables.get(key).run();
-					}
-			);
+			pianoKey.addActionListener(e -> keyRunnables.get(key).run());
 			pianoKey.addKeyListener(this);
 			keyboard.add(pianoKey);
+			keyButtons.put(key, pianoKey);
 
 		}
 
@@ -203,6 +204,8 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 			if (!keyAlreadyPressed) {
 				keyStates.put(key, true);
 				keyRunnables.get(key).run();
+				keyButtons.get(key).getModel().setPressed(true);
+				System.out.println("raqwr");
 			}
 		}
 	}
@@ -210,9 +213,12 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		char key = e.getKeyChar();
-		boolean keyAlreadyPressed = keyStates.getOrDefault(key, true);
-		if (keyAlreadyPressed) {
-			keyStates.put(key, false);
+		if (keyRunnables.containsKey(key)) {
+			boolean keyAlreadyPressed = keyStates.getOrDefault(key, true);
+			if (keyAlreadyPressed) {
+				keyStates.put(key, false);
+				keyButtons.get(key).getModel().setPressed(false);
+			}
 		}
 	}
 

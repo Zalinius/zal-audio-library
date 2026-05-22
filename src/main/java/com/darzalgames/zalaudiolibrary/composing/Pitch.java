@@ -52,7 +52,7 @@ public class Pitch implements Comparable<Pitch> {
 	public static final Pitch D4 = new Pitch("D4", 293.66f);
 	public static final Pitch E4 = new Pitch("E4", 329.63f);
 	public static final Pitch F4 = new Pitch("F4", 349.23f);
-	public static final Pitch G4 = new Pitch("H4", 392.00f);
+	public static final Pitch G4 = new Pitch("G4", 392.00f);
 	public static final Pitch A4 = new Pitch("A4", 440.00f);
 	public static final Pitch B4 = new Pitch("B4", 493.88f);
 
