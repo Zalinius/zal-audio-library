@@ -14,9 +14,6 @@ import com.darzalgames.zalaudiolibrary.synth.complex.TrumpetComplexSynth;
 
 public class TrumpetSong extends Song {
 
-	public static final Pitch F4s = Pitch.F4.sharpen();
-	public static final Pitch G4s = Pitch.G4.sharpen();
-
 	public static final NoteDuration QUARTER_SIXTEENTH = NoteDuration.tie(QUARTER, SIXTEENTH);
 	public static final NoteDuration HALF_EIGHTH = NoteDuration.tie(HALF, EIGHTH);
 
@@ -48,17 +45,17 @@ public class TrumpetSong extends Song {
 		addTrack(percLow);
 		addTrack(percHi);
 
-		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addNote(SIXTEENTH, C4);
 		percLow.addSilence(SIXTEENTH);
-		percLow.addNote(SIXTEENTH, Pitch.C4);
-		percLow.addSilence(SIXTEENTH);
-
-		percLow.addNote(SIXTEENTH, Pitch.C4);
-		percLow.addSilence(SIXTEENTH);
-		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addNote(SIXTEENTH, C4);
 		percLow.addSilence(SIXTEENTH);
 
-		percHi.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addNote(SIXTEENTH, C4);
+		percLow.addSilence(SIXTEENTH);
+		percLow.addNote(SIXTEENTH, C4);
+		percLow.addSilence(SIXTEENTH);
+
+		percHi.addNote(SIXTEENTH, C4);
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);

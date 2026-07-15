@@ -14,9 +14,6 @@ import com.darzalgames.zalaudiolibrary.synth.complex.BellComplexSynth;
 
 public class BellSong extends Song {
 
-	public static final Pitch F4s = Pitch.F4.sharpen();
-	public static final Pitch G4s = Pitch.G4.sharpen();
-
 	private final CompositeTrack bellTrack;
 	private final CompositeTrack bellOctaveTrack;
 
