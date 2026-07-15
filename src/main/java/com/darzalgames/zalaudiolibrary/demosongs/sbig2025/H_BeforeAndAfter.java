@@ -65,37 +65,37 @@ public class H_BeforeAndAfter extends Song {
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4.sharpen());
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4s);
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4.sharpen());
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4s);
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.D4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.G4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4.sharpen());
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4s);
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.A4);
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.D4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.G4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4.sharpen());
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4s);
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.A4);
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4.sharpen());
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4s);
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);
 
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.C4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.E4);
 		mainTrack.addNote(NoteDuration.QUARTER, Pitch.F4);
-		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4.sharpen());
+		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.F4s);
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);
 
 		mainTrack.addNote(NoteDuration.EIGHTH, Pitch.G4);

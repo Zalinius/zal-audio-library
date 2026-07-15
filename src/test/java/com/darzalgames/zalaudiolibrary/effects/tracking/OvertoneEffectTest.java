@@ -43,4 +43,23 @@ class OvertoneEffectTest {
 		assertNotEquals(original.id(), octaveTone.id());
 	}
 
+	@Test
+	void octaveOvertoneEffect_whenDisabled_hasNoEffect() {
+		OvertoneEffect overtoneEffect = OvertoneEffect.octaveChord();
+		overtoneEffect.disable();
+		MusicalInstant original = new MusicalInstant(SynthFactory.sine(), Pitch.C4, Instrument.noFrequencyModulation(), NoteDuration.QUARTER, ArEnvelope.linear(0.1f, 0.9f), 1, "id");
+
+		List<MusicalInstant> overtones = overtoneEffect.apply(original);
+		MusicalInstant baseTone = overtones.get(0);
+
+		assertEquals(1, overtones.size());
+
+		assertEquals(original.synth(), baseTone.synth());
+		assertEquals(original.pitch(), baseTone.pitch());
+		assertEquals(original.duration(), baseTone.duration());
+		assertEquals(original.envelope(), baseTone.envelope());
+		assertEquals(original.amplitude(), baseTone.amplitude());
+		assertEquals(original.id(), baseTone.id());
+	}
+
 }

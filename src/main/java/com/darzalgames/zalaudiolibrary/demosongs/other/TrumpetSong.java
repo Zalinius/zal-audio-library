@@ -14,9 +14,6 @@ import com.darzalgames.zalaudiolibrary.synth.complex.TrumpetComplexSynth;
 
 public class TrumpetSong extends Song {
 
-	public static final Pitch F4s = Pitch.F4.sharpen();
-	public static final Pitch G4s = Pitch.G4.sharpen();
-
 	public static final NoteDuration QUARTER_SIXTEENTH = NoteDuration.tie(QUARTER, SIXTEENTH);
 	public static final NoteDuration HALF_EIGHTH = NoteDuration.tie(HALF, EIGHTH);
 
@@ -48,17 +45,17 @@ public class TrumpetSong extends Song {
 		addTrack(percLow);
 		addTrack(percHi);
 
-		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addNote(SIXTEENTH, C4);
 		percLow.addSilence(SIXTEENTH);
-		percLow.addNote(SIXTEENTH, Pitch.C4);
-		percLow.addSilence(SIXTEENTH);
-
-		percLow.addNote(SIXTEENTH, Pitch.C4);
-		percLow.addSilence(SIXTEENTH);
-		percLow.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addNote(SIXTEENTH, C4);
 		percLow.addSilence(SIXTEENTH);
 
-		percHi.addNote(SIXTEENTH, Pitch.C4);
+		percLow.addNote(SIXTEENTH, C4);
+		percLow.addSilence(SIXTEENTH);
+		percLow.addNote(SIXTEENTH, C4);
+		percLow.addSilence(SIXTEENTH);
+
+		percHi.addNote(SIXTEENTH, C4);
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
 		percHi.addSilence(SIXTEENTH);
@@ -138,14 +135,14 @@ public class TrumpetSong extends Song {
 
 	private void addNote(NoteDuration duration, Pitch mainPitch) {
 		main.addNote(duration, mainPitch);
-		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2));
+		mainOctave.addNote(duration, new Pitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2, false, false));
 		secondary.addSilence(duration);
 		tuba.addSilence(duration);
 	}
 
 	private void addNote(NoteDuration duration, Pitch mainPitch, Pitch secondaryPitch) {
 		main.addNote(duration, mainPitch);
-		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2));
+		mainOctave.addNote(duration, new Pitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2, false, false));
 		secondary.addNote(duration, secondaryPitch);
 		tuba.addNote(duration, secondaryPitch.octaveDown());
 	}

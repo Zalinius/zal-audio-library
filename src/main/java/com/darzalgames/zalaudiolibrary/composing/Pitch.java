@@ -136,14 +136,9 @@ public class Pitch implements Comparable<Pitch> {
 		}
 	}
 
-	/**
-	 * Create a custom runtime pitch
-	 * @param name      The name of the pitch
-	 * @param frequency the frequency in hertz (hz)
-	 * @return A pitch object with the given name an pitch
-	 */
-	public static Pitch makePitch(String name, float frequency) {
-		return new Pitch(name, frequency, false);
+	public Pitch(String name, float frequency, boolean natural, boolean accidental) {
+		this.name = name;
+		this.frequency = frequency;
 	}
 
 	/**
@@ -177,11 +172,57 @@ public class Pitch implements Comparable<Pitch> {
 	}
 
 	/**
+	 * Gets the note one semitone above this one
+	 * @return the pitch one semitone above this one, or NONE if the resulting pitch is too high
+	 */
+	public Pitch semiToneUp() {
+		if (this == NONE) {
+			return NONE;
+		}
+		Pitch higherPitch = allPitches.higher(this);
+		if (higherPitch == null) {
+			return NONE;
+		}
+		return higherPitch;
+	}
+
+	/**
+	 * Gets the note one semitone below this one
+	 * @return the pitch one semitone below this one, or NONE if the resulting pitch is too low
+	 */
+	public Pitch semiToneDown() {
+		if (this == NONE) {
+			return NONE;
+		}
+		Pitch lowerPitch = allPitches.lower(this);
+		if (lowerPitch == null) {
+			return NONE;
+		}
+		return lowerPitch;
+	}
+
+	/**
+	 * Gets the pitch a full tone higher
+	 * @return the pitch one tone above this one, or NONE if the resulting pitch is too high
+	 */
+	public Pitch toneUp() {
+		return semiToneUp().semiToneUp();
+	}
+
+	/**
+	 * Gets the pitch a full tone lower
+	 * @return the pitch one tone below this one, or NONE if the resulting pitch is too low
+	 */
+	public Pitch toneDown() {
+		return semiToneDown().semiToneDown();
+	}
+
+	/**
 	 * Gets the pitch an octave higher
 	 * @return the pitch one octave above this one, or NONE if the resulting pitch is too high
 	 */
 	public Pitch octaveUp() {
-		return up().up().up().up().up().up().up();
+		return toneUp().toneUp().toneUp().toneUp().toneUp().toneUp();
 	}
 
 	/**
@@ -189,23 +230,7 @@ public class Pitch implements Comparable<Pitch> {
 	 * @return the pitch one octave below this one, or NONE if the resulting pitch is too low
 	 */
 	public Pitch octaveDown() {
-		return down().down().down().down().down().down().down();
-	}
-
-	/**
-	 * Gets the pitch a semitone higher, a sharp version of the pitch
-	 * @return the pitch one semitone higher
-	 */
-	public Pitch sharpen() {
-		return makePitch(getName() + "♯", getFrequency() * (float) Math.pow(2, 1 / 12f));
-	}
-
-	/**
-	 * Gets the pitch a semitone lower, a flat version of the pitch
-	 * @return the pitch one semitone lower
-	 */
-	public Pitch flatten() {
-		return makePitch(getName() + "♭", getFrequency() / (float) Math.pow(2, 1 / 12f));
+		return toneDown().toneDown().toneDown().toneDown().toneDown().toneDown();
 	}
 
 	/**
@@ -252,6 +277,22 @@ public class Pitch implements Comparable<Pitch> {
 	@Override
 	public int compareTo(Pitch other) {
 		return Float.compare(frequency, other.frequency);
+	}
+
+	/**
+	 * Gets the pitch a semitone higher, a sharp version of the pitch
+	 * @return the pitch one semitone higher
+	 */
+	private Pitch sharpen() {
+		return new Pitch(getName() + "♯", getFrequency() * (float) Math.pow(2, 1 / 12f), false);
+	}
+
+	/**
+	 * Gets the pitch a semitone lower, a flat version of the pitch
+	 * @return the pitch one semitone lower
+	 */
+	private Pitch flatten() {
+		return new Pitch(getName() + "♭", getFrequency() / (float) Math.pow(2, 1 / 12f), false);
 	}
 
 	public static NavigableSet<Pitch> getAllpitches() {
