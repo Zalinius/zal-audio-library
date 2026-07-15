@@ -135,14 +135,14 @@ public class TrumpetSong extends Song {
 
 	private void addNote(NoteDuration duration, Pitch mainPitch) {
 		main.addNote(duration, mainPitch);
-		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2));
+		mainOctave.addNote(duration, new Pitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2, false, false));
 		secondary.addSilence(duration);
 		tuba.addSilence(duration);
 	}
 
 	private void addNote(NoteDuration duration, Pitch mainPitch, Pitch secondaryPitch) {
 		main.addNote(duration, mainPitch);
-		mainOctave.addNote(duration, Pitch.makePitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2));
+		mainOctave.addNote(duration, new Pitch(mainPitch.getName() + "x2", mainPitch.getFrequency() * 2, false, false));
 		secondary.addNote(duration, secondaryPitch);
 		tuba.addNote(duration, secondaryPitch.octaveDown());
 	}

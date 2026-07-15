@@ -32,14 +32,12 @@ class PitchTest {
 
 	@Test
 	void up_onSharpPitch_returnsNextNaturalNoteUp() {
-		Pitch d3sharp = Pitch.makePitch("d3s", 155.56f);
-		assertEquals(Pitch.E3, d3sharp.up());
+		assertEquals(Pitch.E3, Pitch.D3s.up());
 	}
 
 	@Test
 	void down_onSharpPitch_returnsNextNaturalNoteDown() {
-		Pitch d3sharp = Pitch.makePitch("d3s", 155.56f);
-		assertEquals(Pitch.D3, d3sharp.down());
+		assertEquals(Pitch.D3, Pitch.D3s.down());
 	}
 
 	@Test
@@ -48,6 +46,7 @@ class PitchTest {
 		assertEquals(Pitch.C3, Pitch.C2.octaveUp());
 		assertEquals(Pitch.D3, Pitch.D2.octaveUp());
 		assertEquals(Pitch.E3, Pitch.E2.octaveUp());
+		assertEquals(Pitch.C5, Pitch.C4.octaveUp());
 	}
 
 	@Test

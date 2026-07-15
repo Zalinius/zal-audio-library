@@ -25,7 +25,7 @@ public class Partial {
 	}
 
 	public Pitch getPartialPitch(Pitch fundamental) {
-		return Pitch.makePitch(fundamental.getName() + "x" + frequencyMultiplier , fundamental.getFrequency() * frequencyMultiplier);
+		return new Pitch(fundamental.getName() + "x" + frequencyMultiplier, fundamental.getFrequency() * frequencyMultiplier, false, false);
 	}
 
 	public float getAmplitude() {

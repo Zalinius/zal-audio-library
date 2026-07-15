@@ -136,14 +136,9 @@ public class Pitch implements Comparable<Pitch> {
 		}
 	}
 
-	/**
-	 * Create a custom runtime pitch
-	 * @param name      The name of the pitch
-	 * @param frequency the frequency in hertz (hz)
-	 * @return A pitch object with the given name an pitch
-	 */
-	public static Pitch makePitch(String name, float frequency) {
-		return new Pitch(name, frequency, false);
+	public Pitch(String name, float frequency, boolean natural, boolean accidental) {
+		this.name = name;
+		this.frequency = frequency;
 	}
 
 	/**
@@ -289,7 +284,7 @@ public class Pitch implements Comparable<Pitch> {
 	 * @return the pitch one semitone higher
 	 */
 	private Pitch sharpen() {
-		return makePitch(getName() + "♯", getFrequency() * (float) Math.pow(2, 1 / 12f));
+		return new Pitch(getName() + "♯", getFrequency() * (float) Math.pow(2, 1 / 12f), false);
 	}
 
 	/**
@@ -297,7 +292,7 @@ public class Pitch implements Comparable<Pitch> {
 	 * @return the pitch one semitone lower
 	 */
 	private Pitch flatten() {
-		return makePitch(getName() + "♭", getFrequency() / (float) Math.pow(2, 1 / 12f));
+		return new Pitch(getName() + "♭", getFrequency() / (float) Math.pow(2, 1 / 12f), false);
 	}
 
 	public static NavigableSet<Pitch> getAllpitches() {

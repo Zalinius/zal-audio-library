@@ -85,7 +85,8 @@ public class BellSong extends Song {
 
 	private void addNote(NoteDuration duration, Pitch pitch) {
 		bellTrack.addNote(duration, pitch);
-		bellOctaveTrack.addNote(duration, Pitch.makePitch(pitch.getName() + "x2", pitch.getFrequency() * 2));
+//		bellOctaveTrack.addNote(duration, Pitch.makePitch(pitch.getName() + "x2", pitch.getFrequency() * 2));
+		// TODO fix this so arbitrary pitches are possible, but not registered anywhere
 	}
 
 	public void backwards1() {
