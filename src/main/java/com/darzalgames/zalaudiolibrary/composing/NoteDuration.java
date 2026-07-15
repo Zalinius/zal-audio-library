@@ -24,6 +24,10 @@ public record NoteDuration(Fraction inBeats) {
 	public static final NoteDuration SIXTH = new NoteDuration(new Fraction(2, 3));
 	public static final NoteDuration THIRD = new NoteDuration(new Fraction(4, 3));
 
+	public NoteDuration(Fraction inBeats) {
+		this.inBeats = inBeats;
+	}
+
 	public NoteDuration(int durationInBeats) {
 		this(new Fraction(durationInBeats));
 	}
@@ -37,4 +41,5 @@ public record NoteDuration(Fraction inBeats) {
 
 		return new NoteDuration(totalDuration);
 	}
+
 }
