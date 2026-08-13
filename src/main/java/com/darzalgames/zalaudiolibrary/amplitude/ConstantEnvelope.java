@@ -13,7 +13,11 @@ public class ConstantEnvelope implements Envelope {
 
 	@Override
 	public float getEnvelope(float envelopeDuration, float currentTime) {
-		return constant;
+		if (currentTime < 0 || currentTime > envelopeDuration) {
+			return 0f;
+		} else {
+			return constant;
+		}
 	}
 
 	public static final ConstantEnvelope zeroEnvelope() {
