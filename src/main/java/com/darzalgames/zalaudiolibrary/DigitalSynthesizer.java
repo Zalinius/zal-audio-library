@@ -14,6 +14,7 @@ import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
+import com.darzalgames.zalaudiolibrary.demosongs.TrainSong;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -33,9 +34,11 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 	public static final Pitch BOTTOM_PITCH = Pitch.C3;
 
 	public static void main(String[] args) throws Exception {
-		DigitalSynthesizer digitalSynthesizer = new DigitalSynthesizer();
+//		DigitalSynthesizer digitalSynthesizer = new DigitalSynthesizer();
 
-//		playSong(new BellSong());
+		playSong(new TrainSong());
+
+		// playSong(new BellSong());
 //		playSong(new TrumpetSong());
 //		playSong(new A_ThemeSong());
 //		playSong(new ManagersVacationSong());
