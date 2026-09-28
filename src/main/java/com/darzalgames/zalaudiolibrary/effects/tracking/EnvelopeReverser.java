@@ -8,11 +8,28 @@ import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
  */
 public class EnvelopeReverser extends SimpleMusicalEffect {
 
+	private boolean isEnabled;
+
+	public EnvelopeReverser() {
+		isEnabled = false;
+	}
+
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
-		Envelope reversedEnvelope = reverseEnvelope(instant.envelope());
+		if (isEnabled) {
+			Envelope reversedEnvelope = reverseEnvelope(instant.envelope());
+			return new MusicalInstant(instant.synth(), instant.pitch(), instant.frequencyModulator(), instant.duration(), reversedEnvelope, instant.amplitude(), instant.id());
+		} else {
+			return instant;
+		}
+	}
 
-		return new MusicalInstant(instant.synth(), instant.pitch(), instant.frequencyModulator(), instant.duration(), reversedEnvelope, instant.amplitude(), instant.id());
+	public void enable() {
+		isEnabled = true;
+	}
+
+	public void disable() {
+		isEnabled = false;
 	}
 
 	/**
