@@ -1,7 +1,6 @@
 package com.darzalgames.zalaudiolibrary.effects.tracking;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +14,22 @@ import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 
 class EnvelopeReverserTest {
+
+	@Test
+	void defaultConstructor_startsDisabled() {
+		EnvelopeReverser envelopeReverser = new EnvelopeReverser();
+
+		assertFalse(envelopeReverser.isEnabled());
+	}
+
+	@Test
+	void enable_onDisabledEnvelope_enablesEffect() {
+		EnvelopeReverser envelopeReverser = new EnvelopeReverser();
+
+		envelopeReverser.enable();
+
+		assertTrue(envelopeReverser.isEnabled());
+	}
 
 	@Test
 	void reverseEnvelope_onSymmetricalEnvelope_returnsIdenticalEnvelope() {
@@ -45,11 +60,13 @@ class EnvelopeReverserTest {
 	}
 
 	@Test
-	void apply_createsInstantWithIdenticalContentsExceptEnvelope() {
+	void apply_withEnabledReverser_createsInstantWithIdenticalContentsExceptEnvelope() {
 		Envelope original = AdsrEnvelope.linear(0.01f, 0.09f, 0.5f, 0.9f);
 		MusicalInstant musicalInstant = new MusicalInstant(SynthFactory.sine(), Pitch.C4, Instrument.noFrequencyModulation(), NoteDuration.QUARTER, original, 1f, "instant ID");
 
-		MusicalInstant modifiedInstant = new EnvelopeReverser().apply(musicalInstant).get(0);
+		EnvelopeReverser envelopeReverser = new EnvelopeReverser();
+		envelopeReverser.enable();
+		MusicalInstant modifiedInstant = envelopeReverser.apply(musicalInstant).get(0);
 
 		assertNotEquals(musicalInstant, modifiedInstant);
 		assertEquals(musicalInstant.synth(), modifiedInstant.synth());

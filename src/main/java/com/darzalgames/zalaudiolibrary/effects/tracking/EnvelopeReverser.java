@@ -10,6 +10,9 @@ public class EnvelopeReverser extends SimpleMusicalEffect {
 
 	private boolean isEnabled;
 
+	/**
+	 * Creates a new disabled EnvelopeReverser
+	 */
 	public EnvelopeReverser() {
 		isEnabled = false;
 	}
@@ -24,12 +27,35 @@ public class EnvelopeReverser extends SimpleMusicalEffect {
 		}
 	}
 
+	/**
+	 * enables the envelope reverser
+	 */
 	public void enable() {
 		isEnabled = true;
 	}
 
+	/**
+	 * disables the envelope reverser
+	 */
 	public void disable() {
 		isEnabled = false;
+	}
+
+	/**
+	 * toggler the envelope reverser
+	 * @return the new state of the envelope reverser
+	 */
+	public boolean toggle() {
+		isEnabled = !isEnabled;
+		return isEnabled;
+	}
+
+	/**
+	 * whether or not the envelope reverser is active
+	 * @return True if the envelope reverser is enabled, false otherwise
+	 */
+	public boolean isEnabled() {
+		return isEnabled;
 	}
 
 	/**
