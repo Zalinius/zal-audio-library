@@ -128,6 +128,7 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 		final float beatIncrementDuringMusicStep = AudioConstants.STEP_DURATION_IN_SECONDS * stepBPS;
 		final float stepIntervalStartInBeats = beatCounter;
 
+		audioActors.forEach(actor -> actor.updateBps(stepBPS));
 		audioActors.forEach(actor -> actor.update(AudioConstants.STEP_DURATION_IN_SECONDS));
 
 		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
