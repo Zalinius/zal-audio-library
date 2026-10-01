@@ -8,4 +8,10 @@ public interface AudioActor {
 	 */
 	void update(float delta);
 
+	/**
+	 *
+	 * @param newBps
+	 */
+	void updateBps(float newBps);
+
 }
