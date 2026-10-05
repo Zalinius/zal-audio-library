@@ -1,6 +1,7 @@
 package com.darzalgames.zalaudiolibrary.effects.tracking;
 
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
+import com.darzalgames.zalaudiolibrary.amplitude.percussive.PercussiveEnvelope;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 
 /**
@@ -64,7 +65,21 @@ public class EnvelopeReverser extends SimpleMusicalEffect {
 	 * @return A reversed envelope, which is like traversing the original envelope backwards
 	 */
 	public static Envelope reverseEnvelope(Envelope original) {
+		if (original instanceof PercussiveEnvelope percussiveEnvelope) {
+			return reversePercussiveEnvelope(percussiveEnvelope);
+		}
 		return (float envelopeDuration, float currentTime) -> original.getEnvelope(envelopeDuration, envelopeDuration - currentTime);
+	}
+
+	private static Envelope reversePercussiveEnvelope(PercussiveEnvelope original) {
+		return (float envelopeDuration, float currentTime) -> {
+			float percussiveDuration = original.getEnvelopeDuration();
+			if (currentTime <= percussiveDuration) {
+				return original.getEnvelope(envelopeDuration, percussiveDuration - currentTime);
+			} else {
+				return original.getEnvelope(envelopeDuration, currentTime);
+			}
+		};
 	}
 
 }

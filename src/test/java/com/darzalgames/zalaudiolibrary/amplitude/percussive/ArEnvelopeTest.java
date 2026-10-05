@@ -63,4 +63,13 @@ class ArEnvelopeTest {
 		assertEquals(0.00f, arEnvelope.getEnvelope(2.0f), ALLOWED_ERROR);
 	}
 
+	@Test
+	void getEnvelopeDuration_returnsSumOfAttackAndReleaseDurations() {
+		ArEnvelope arEnvelopeLinear = ArEnvelope.linear(0.1f, 0.4f);
+		ArEnvelope arEnvelopeQuadratic = ArEnvelope.quadratic(0.1f, 0.4f);
+
+		assertEquals(0.5f, arEnvelopeLinear.getEnvelopeDuration());
+		assertEquals(0.5f, arEnvelopeQuadratic.getEnvelopeDuration());
+	}
+
 }
