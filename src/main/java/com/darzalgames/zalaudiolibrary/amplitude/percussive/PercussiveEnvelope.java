@@ -20,4 +20,10 @@ public interface PercussiveEnvelope extends Envelope {
 	 */
 	float getEnvelope(float currentTime);
 
+	/**
+	 * Get the total duration of the envelope in seconds
+	 * @return the total active duration of the envelope in seconds
+	 */
+	float getEnvelopeDuration();
+
 }

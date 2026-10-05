@@ -19,10 +19,9 @@ public class ArbitraryEnvelope implements PercussiveEnvelope {
 		envelopePoints.forEach(point -> points.put(point.e(), point.f()));
 	}
 
-
 	@Override
 	public float getEnvelope(float currentTime) {
-		if(points.floorKey(currentTime) == null || points.ceilingKey(currentTime) == null) {
+		if (points.floorKey(currentTime) == null || points.ceilingKey(currentTime) == null) {
 			return 0f;
 		}
 
@@ -31,13 +30,21 @@ public class ArbitraryEnvelope implements PercussiveEnvelope {
 		float intervalEnd = points.ceilingKey(currentTime);
 		float endValue = points.get(intervalEnd);
 
-		if(intervalStart == intervalEnd) {
+		if (intervalStart == intervalEnd) {
 			return startValue;
 		}
 
 		float intervalProgress = (currentTime - intervalStart) / (intervalEnd - intervalStart);
 
-		return startValue * (1-intervalProgress) + endValue * intervalProgress;
+		return startValue * (1 - intervalProgress) + endValue * intervalProgress;
+	}
+
+	@Override
+	public float getEnvelopeDuration() {
+		if (points.isEmpty()) {
+			return 0;
+		}
+		return points.lastKey();
 	}
 
 }
