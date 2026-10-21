@@ -134,6 +134,24 @@ public class SynthFactory {
 	}
 
 	/**
+	 * Creates a new synth by multiplying together many others through multiplicative synthesis
+	 * @param synths the synths to combine
+	 * @return a combined synth
+	 */
+	public static Synth multiplicativeSynthesis(Synth... synths) {
+		Collection<Synth> synthCollection = Arrays.asList(synths);
+
+		return new Synth(x -> {
+			float y = 1;
+			for (Iterator<Synth> it = synthCollection.iterator(); it.hasNext();) {
+				Synth synth = it.next();
+				y *= synth.f(x);
+			}
+			return y;
+		});
+	}
+
+	/**
 	 * Constructs a new synth from a synth and it's 1st overtone (at double the frequency)
 	 * @param synth         the original Synth
 	 * @param overtoneRatio the relative amplitude of the overtone to the original wave

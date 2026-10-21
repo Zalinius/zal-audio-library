@@ -1,20 +1,19 @@
 package com.darzalgames.zalaudiolibrary.demosongs.other;
 
-import static com.darzalgames.zalaudiolibrary.composing.NoteDuration.*;
-import static com.darzalgames.zalaudiolibrary.composing.Pitch.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.UnaryOperator;
 
-import java.util.Map;
-
-import com.darzalgames.darzalcommon.math.Fraction;
+import com.darzalgames.darzalcommon.random.RandomExtended;
 import com.darzalgames.zalaudiolibrary.amplitude.Envelope;
-import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
-import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdsrEnvelope;
-import com.darzalgames.zalaudiolibrary.composing.Instrument;
-import com.darzalgames.zalaudiolibrary.composing.Pitch;
-import com.darzalgames.zalaudiolibrary.composing.Song;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdrEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.AsrEnvelope;
+import com.darzalgames.zalaudiolibrary.amplitude.sustained.TriangleEnvelope;
+import com.darzalgames.zalaudiolibrary.composing.*;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
+import com.darzalgames.zalaudiolibrary.effects.tracking.EnvelopeReverser;
 import com.darzalgames.zalaudiolibrary.effects.tracking.OvertoneEffect;
-import com.darzalgames.zalaudiolibrary.effects.tracking.TransposeEffect;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
 import com.darzalgames.zalaudiolibrary.synth.Synth;
@@ -23,231 +22,86 @@ import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 public class ScratchPadSong extends Song {
 
 	private final SequentialTrack mainTrack;
-	private final SequentialTrack bassTrack;
-	private final SequentialTrack kickDrum;
+	private final SequentialTrack brownNoise;
+	private final SequentialTrack wubNoise;
+	private final SequentialTrack heartBeat1;
+	private final SequentialTrack heartBeat2;
+
+	public final static Instrument HARPSICHORD = new Instrument(
+			SynthFactory.pulse(.3f), AdrEnvelope.quadratic(.01f, .09f, .3f),
+			t -> 1f - (t / 250)
+	);
 
 	public ScratchPadSong() {
-		super("Cosmic Waltz", 0.75f);
-		float mainVolume = 0.2f;
-		float bassVolume = 0.15f;
-		float drumVolume = 0.10f;
+		super("Heart Beat", 1f);
+		float mainVolume = 0.1f;
+		float noiseVolume = 0.01f;
+		float drumVolume = 0.2f;
 
-		Synth mainSynth = SynthFactory.rationalFrequencyModulator(new Fraction(1, 2), 1.25f);
-		Envelope mainEnvelope = AdsrEnvelope.quadratic(0.05f, 0.1f, 0.5f, 0.15f);
-		mainTrack = new SequentialTrack(getSongName(), "main", new Instrument(mainSynth, mainEnvelope), mainVolume);
-		addTrack(mainTrack);
-		mainTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
-		mainTrack.addMusicalEffect(new OvertoneEffect(p -> Map.of(p, 1f, p.octaveUp(), 0.25f, p.octaveDown(), 0.5f)));
+//		Synth synth = SynthFactory.multiplicativeSynthesis(SynthFactory.sine(), SynthFactory.triangle(), SynthFactory.saw());
 
-		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1f);
-		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(bassSynth, ArEnvelope.quadratic(.01f, 0.49f)), bassVolume);
-		addTrack(bassTrack);
-		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
+		mainTrack = new SequentialTrack(getSongName(), "main", HARPSICHORD, mainVolume);
+//		addTrack(mainTrack);
 
-		kickDrum = new SequentialTrack(getSongName(), "kick drum", Instrument.kickDrum(0.25f), drumVolume);
-		addTrack(kickDrum);
+		mainTrack.addMusicalEffect(OvertoneEffect.tritoneDown());
 
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
-		kickDrum.addNote(QUARTER_DOT, G2);
+		RandomExtended randomExtended = new RandomExtended(0);
+		Set<Pitch> pitches = new LinkedHashSet<>(List.of(Pitch.B3, Pitch.D4, Pitch.F4, Pitch.B4, Pitch.D5, Pitch.F5));
+		Pitch lastPitch = Pitch.NONE;
 
-		kickDrum.setRepetitionPoint();
+		for (int i = 0; i <= 32; i++) {
+			Set<Pitch> nonRepeatedPitches = new LinkedHashSet<>(pitches);
+			nonRepeatedPitches.remove(lastPitch);
+			NoteDuration noteDuration = new NoteDuration(randomExtended.nextInt(8, 16));
+			Pitch pitch = randomExtended.getRandomElement(nonRepeatedPitches);
+			lastPitch = pitch;
 
-		kickDrum.addNote(EIGHTH, G2);
-		kickDrum.addNote(EIGHTH, G2);
+			mainTrack.addNote(noteDuration, pitch);
+		}
+//		mainTrack.addMusicalEffect(new SynthChanger(synth));
 
-		kickDrum.addNote(EIGHTH, G2);
-		kickDrum.addNote(EIGHTH, G2);
+		//
+//		Synth bassSynth = SynthFactory.rationalFrequencyModulator(new Fraction(2, 1), 1f);
+//		bassTrack = new SequentialTrack(getSongName(), "bass", new Instrument(bassSynth, ArEnvelope.quadratic(.01f, 0.49f)), bassVolume);
+//		addTrack(bassTrack);
+//		bassTrack.addMusicalEffect(new TransposeEffect(Pitch::octaveDown));
+//
+		heartBeat1 = new SequentialTrack(getSongName(), "kick drum 1", Instrument.kickDrum(0.3f), drumVolume);
+		heartBeat2 = new SequentialTrack(getSongName(), "kick drum 2", Instrument.kickDrum(0.2f), drumVolume);
+//		addTrack(heartBeat1);
+//		addTrack(heartBeat2);
+		heartBeat2.addSilence(NoteDuration.SIXTEENTH);
+		heartBeat2.setRepetitionPoint();
 
-		kickDrum.addNote(EIGHTH, G2);
-		kickDrum.addNote(EIGHTH, G2);
+		heartBeat1.addNote(NoteDuration.EIGHTH_DOT, Pitch.A2);
+		heartBeat1.addNote(NoteDuration.EIGHTH_DOT, Pitch.A2);
+		heartBeat1.addNote(NoteDuration.EIGHTH_DOT, Pitch.A2);
+		heartBeat1.addNote(NoteDuration.EIGHTH_DOT, Pitch.A2);
 
-		// Intro
-		mainTrack.addNote(QUARTER_DOT, D4);
-		mainTrack.addNote(QUARTER_DOT, F4);
-		mainTrack.addNote(QUARTER_DOT, A4);
-		mainTrack.addNote(QUARTER_DOT, F4);
+		heartBeat2.addNote(NoteDuration.EIGHTH_DOT, Pitch.F2);
+		heartBeat2.addNote(NoteDuration.EIGHTH_DOT, Pitch.F2);
+		heartBeat2.addNote(NoteDuration.EIGHTH_DOT, Pitch.F2);
+		heartBeat2.addNote(NoteDuration.EIGHTH_DOT, Pitch.F2);
 
-		mainTrack.addNote(QUARTER_DOT, D4);
-		mainTrack.addNote(QUARTER_DOT, D4, F4);
-		mainTrack.addNote(QUARTER_DOT, F4, A4);
-		mainTrack.addNote(QUARTER_DOT, D4, A4);
+		wubNoise = new SequentialTrack(getSongName(), "wub", wubDrum(4f), 0.3f);
+		wubNoise.addMusicalEffect(new EnvelopeReverser());
+		addTrack(wubNoise);
+		Set<Pitch> wubPitches = new LinkedHashSet<>(List.of(Pitch.G2, Pitch.A2, Pitch.B2, Pitch.C3, Pitch.D3, Pitch.E3, Pitch.F3));
+		Pitch lastWubPitch = Pitch.NONE;
+		for (int i = 0; i <= 32; i++) {
+			Set<Pitch> nonRepeatedPitches = new LinkedHashSet<>(wubPitches);
+			nonRepeatedPitches.remove(lastWubPitch);
+			NoteDuration noteDuration = new NoteDuration(randomExtended.nextInt(1, 5));
+			Pitch pitch = randomExtended.getRandomElement(nonRepeatedPitches);
+			lastWubPitch = pitch;
 
-		mainTrack.setRepetitionPoint();
-		bassTrack.padWithSilence(mainTrack.lengthInBeats());
-		bassTrack.setRepetitionPoint();
+			wubNoise.addNote(noteDuration, pitch);
+		}
 
-		// Part 1a
-		standardBassSegment();
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER_DOT, E4);
-
-		mainTrack.addNote(EIGHTH_DOT, F4);
-		mainTrack.addNote(SIXTEENTH, F4);
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER_DOT, G4);
-
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER, A4);
-
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER, G4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER_DOT, E4);
-
-		// Part 2b
-		standardBassSegment();
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER_DOT, E4, G4);
-
-		mainTrack.addNote(EIGHTH_DOT, F4);
-		mainTrack.addNote(SIXTEENTH, F4);
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER_DOT, G4, B4);
-
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER, A4, D5);
-
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER, A4, C5);
-		mainTrack.addNote(EIGHTH, G4);
-		mainTrack.addNote(QUARTER_DOT, E4, B4);
-
-		// part 2a
-		standardBassSegment();
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER_DOT, E4);
-
-		mainTrack.addNote(EIGHTH_DOT, F4);
-		mainTrack.addNote(SIXTEENTH, F4);
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER_DOT, B4);
-
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER, A4);
-
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER, A4);
-		mainTrack.addNote(EIGHTH, C5);
-		mainTrack.addNote(QUARTER_DOT, B4);
-
-		// part 2b
-		standardBassSegment();
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER_DOT, E4, A4);
-
-		mainTrack.addNote(EIGHTH_DOT, F4);
-		mainTrack.addNote(SIXTEENTH, F4);
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER_DOT, B4, D4);
-
-		mainTrack.addNote(EIGHTH_DOT, D4);
-		mainTrack.addNote(SIXTEENTH, D4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER, A4, F4);
-
-		mainTrack.addNote(EIGHTH, A4);
-		mainTrack.addNote(QUARTER, A4, F4);
-		mainTrack.addNote(EIGHTH, C5);
-		mainTrack.addNote(QUARTER_DOT, D4, B4);
-
-		// bridge 1
-		bassTrack.addSilence(HALF);
-		bassTrack.addNote(EIGHTH, D5);
-		bassTrack.addNote(EIGHTH, C5);
-		mainTrack.addNote(QUARTER, D5);
-		mainTrack.addNote(EIGHTH, C5);
-		mainTrack.addNote(QUARTER_DOT, A4);
-
-		bassTrack.addSilence(HALF);
-		bassTrack.addNote(EIGHTH, C5);
-		bassTrack.addNote(EIGHTH, B4);
-		mainTrack.addNote(QUARTER, C5);
-		mainTrack.addNote(EIGHTH, B4);
-		mainTrack.addNote(QUARTER_DOT, G4);
-
-		bassTrack.addSilence(QUARTER);
-		bassTrack.addNote(EIGHTH, C5);
-		bassTrack.addSilence(QUARTER);
-		bassTrack.addNote(EIGHTH, B4);
-		mainTrack.addNote(QUARTER_DOT, A4);
-		mainTrack.addNote(QUARTER_DOT, G4);
-
-		bassTrack.addSilence(HALF);
-		bassTrack.addNote(EIGHTH, E5);
-		bassTrack.addNote(EIGHTH, D5);
-		mainTrack.addNote(QUARTER, F4);
-		mainTrack.addNote(EIGHTH, G4);
-		mainTrack.addNote(QUARTER_DOT, E4);
-
-		// bridge2
-		bassTrack.addSilence(HALF);
-		bassTrack.addNote(EIGHTH, D5, F5);
-		bassTrack.addNote(EIGHTH, F5, A5);
-		mainTrack.addNote(QUARTER, D5);
-		mainTrack.addNote(EIGHTH, E5);
-		mainTrack.addNote(QUARTER_DOT, F5);
-
-		bassTrack.addSilence(HALF);
-		bassTrack.addNote(EIGHTH, C5, E5);
-		bassTrack.addNote(EIGHTH, E5, G5);
-		mainTrack.addNote(QUARTER, C5);
-		mainTrack.addNote(EIGHTH, D5);
-		mainTrack.addNote(QUARTER_DOT, E5);
-
-		bassTrack.addSilence(QUARTER);
-		bassTrack.addNote(EIGHTH, F5, A5);
-		bassTrack.addSilence(QUARTER);
-		bassTrack.addNote(EIGHTH, E5, G5);
-		mainTrack.addNote(QUARTER_DOT, D5);
-		mainTrack.addNote(QUARTER_DOT, C5);
-
-		bassTrack.addSilence(HALF);
-		bassTrack.addSilence(QUARTER);
-		mainTrack.addNote(QUARTER, A4);
-		mainTrack.addNote(EIGHTH, F4);
-		mainTrack.addNote(QUARTER_DOT, D4, D5);
-	}
-
-	private void standardBassSegment() {
-		bassTrack.addNote(EIGHTH, D3);
-		bassTrack.addNote(EIGHTH, F3);
-		bassTrack.addNote(EIGHTH, F3);
-		bassTrack.addNote(QUARTER_DOT, D3);
-
-		bassTrack.addNote(EIGHTH, D3);
-		bassTrack.addNote(EIGHTH, A3);
-		bassTrack.addNote(EIGHTH, A3);
-		bassTrack.addNote(QUARTER_DOT, G3);
-
-		bassTrack.addNote(EIGHTH, D3);
-		bassTrack.addNote(EIGHTH, F3);
-		bassTrack.addNote(EIGHTH, F3);
-		bassTrack.addNote(QUARTER_DOT, A3);
-
-		bassTrack.addNote(EIGHTH, G3);
-		bassTrack.addNote(QUARTER, G3);
-		bassTrack.addNote(EIGHTH, F3);
-		bassTrack.addNote(QUARTER, E3);
+		Envelope noiseEnvelope = AsrEnvelope.linear(0.1f, 0.1f);
+		brownNoise = new SequentialTrack(getSongName(), "noise", new Instrument(SynthFactory.brownianNoise(0.9f), noiseEnvelope), noiseVolume);
+//		addTrack(brownNoise);
+		brownNoise.addNote(NoteDuration.DOUBLE_WHOLE, Pitch.NONE);
 	}
 
 	public static AlbumExportingInformation scratchAlbum() {
@@ -260,6 +114,19 @@ public class ScratchPadSong extends Song {
 		};
 		albumExportingInformation.addSong(new ScratchPadSong(), orchestrator);
 		return albumExportingInformation;
+	}
+
+	public static Instrument wubDrum(float duration) {
+		float samplingDuration = duration * 2;
+		Envelope envelope = TriangleEnvelope.quadratic(0.01f);
+		Synth synth = SynthFactory.sine();
+		UnaryOperator<Float> frequencyModulator = decayingFrequencyModulator(samplingDuration);
+		return new Instrument(synth, envelope, frequencyModulator);
+
+	}
+
+	private static UnaryOperator<Float> decayingFrequencyModulator(float duration) {
+		return t -> 1f - (t / duration);
 	}
 
 }
