@@ -8,19 +8,22 @@ import com.darzalgames.zalaudiolibrary.composing.tracks.CompositeTrack;
 import com.darzalgames.zalaudiolibrary.composing.tracks.SequentialTrack;
 import com.darzalgames.zalaudiolibrary.effects.tracking.EnvelopeReverser;
 import com.darzalgames.zalaudiolibrary.effects.tracking.OvertoneEffect;
+import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
+import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 import com.darzalgames.zalaudiolibrary.synth.complex.BellComplexSynth;
 
 public class SpookySong extends Song {
 
-	private static final float MAIN_VOLUME = 0.1f;
-	private static final float BELL_VOLUME = 0.2f;
-	private static final float HEART_VOLUME = 0.3f;
-	private final static Instrument EERIE_HARPSICHORD = new Instrument(
+	private static final float MAIN_VOLUME = 0.15f;
+	private static final float BELL_VOLUME = 0.3f;
+	private static final float HEART_VOLUME = 0.45f;
+
+	private static final Instrument EERIE_HARPSICHORD = new Instrument(
 			SynthFactory.pulse(.3f), AdrEnvelope.quadratic(.01f, .09f, .3f),
 			t -> 1f - (t / 250)
 	);
-	private final static Instrument HARPSICHORD = new Instrument(
+	private static final Instrument HARPSICHORD = new Instrument(
 			SynthFactory.pulse(.3f), AdsrEnvelope.quadratic(.01f, .09f, .3f, 1f),
 			t -> 1f - (t / 250)
 	);
@@ -31,7 +34,7 @@ public class SpookySong extends Song {
 	private final CompositeTrack bell;
 
 	public SpookySong() {
-		super("spooky", 1f);
+		super("Spooky Dread", 1f);
 
 		mainTrack = new SequentialTrack(getSongName(), "main", EERIE_HARPSICHORD, MAIN_VOLUME);
 		addTrack(mainTrack);
@@ -163,6 +166,20 @@ public class SpookySong extends Song {
 			heartBeat2.addNote(NoteDuration.QUARTER, Pitch.F2);
 		});
 
+	}
+
+	public static AlbumExportingInformation spookyAlbum() {
+		AlbumExportingInformation albumExportingInformation = new AlbumExportingInformation("Spooky Dread Single", 2026);
+		SongOrchestrator orchestrator = new SongOrchestrator(4) {
+			@Override
+			public void orchestrateSong() {
+				processMeasures(17); // intro
+				processMeasures(10); // body
+				processMeasures(10); // body
+			}
+		};
+		albumExportingInformation.addSong(new SpookySong(), orchestrator);
+		return albumExportingInformation;
 	}
 
 }

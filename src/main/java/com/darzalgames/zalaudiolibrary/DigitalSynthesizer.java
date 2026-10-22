@@ -42,7 +42,8 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 //		playSong(new ManagersVacationSong());
 //		playSong(new ScratchPadSong());
 
-		playSong(new SpookySong());
+//		playSong(new SpookySong());
+		exportAlbum(SpookySong.spookyAlbum());
 
 //
 //		playSong(new SpringSong());
