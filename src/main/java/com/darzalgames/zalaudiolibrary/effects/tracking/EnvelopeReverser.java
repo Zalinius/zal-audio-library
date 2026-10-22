@@ -12,10 +12,10 @@ public class EnvelopeReverser extends SimpleMusicalEffect {
 	private boolean isEnabled;
 
 	/**
-	 * Creates a new disabled EnvelopeReverser
+	 * Creates a new enabled EnvelopeReverser
 	 */
 	public EnvelopeReverser() {
-		isEnabled = false;
+		isEnabled = true;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.other.ScratchPadSong;
+import com.darzalgames.zalaudiolibrary.demosongs.other.SpookySong;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -40,7 +40,10 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 //		playSong(new TrumpetSong());
 //		playSong(new A_ThemeSong());
 //		playSong(new ManagersVacationSong());
-		playSong(new ScratchPadSong());
+//		playSong(new ScratchPadSong());
+
+		playSong(new SpookySong());
+
 //
 //		playSong(new SpringSong());
 //		playSong(new SummerSong());

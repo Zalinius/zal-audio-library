@@ -5,4 +5,8 @@ import java.util.function.Function;
 
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 
-public interface MusicalEffect extends Function<MusicalInstant, List<MusicalInstant>> {}
+public interface MusicalEffect extends Function<MusicalInstant, List<MusicalInstant>> {
+
+	MusicalEffect NULL_EFFECT = List::of;
+
+}

@@ -25,7 +25,7 @@ public class SequentialTrack implements Track {
 	private final NavigableMap<Fraction, List<MusicalInstant>> trackMelody;
 	private final String songName;
 	private final String trackName;
-	private final Instrument instrument;
+	private Instrument instrument;
 	private final float amplitude;
 	private final List<MusicalEffect> trackEffects;
 
@@ -45,11 +45,22 @@ public class SequentialTrack implements Track {
 		addNote(instrument.synth(), instrument.envelope(), instrument.frequencyModulator(), duration, pitch, chord);
 	}
 
+	/**
+	 * Adds a note with a musical effect. The musical effect only applies to this note
+	 */
+	public void addNote(NoteDuration duration, MusicalEffect musicalEffect, Pitch pitch, Pitch... chord) {
+		addNote(instrument.synth(), instrument.envelope(), instrument.frequencyModulator(), duration, musicalEffect, pitch, chord);
+	}
+
 	public void addSilence(NoteDuration duration) {
 		addNote(SynthFactory.zero(), ConstantEnvelope.zeroEnvelope(), Instrument.noFrequencyModulation(), duration, Pitch.NONE);
 	}
 
 	private void addNote(Synth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator, NoteDuration duration, Pitch pitch, Pitch... chord) {
+		addNote(synth, envelope, frequencyModulator, duration, List::of, pitch, chord);
+	}
+
+	private void addNote(Synth synth, Envelope envelope, UnaryOperator<Float> frequencyModulator, NoteDuration duration, MusicalEffect musicalEffect, Pitch pitch, Pitch... chord) {
 		List<MusicalInstant> chordedInstants = new ArrayList<>();
 
 		IntFunction<Float> chordAmplitudeFunction = n -> (1f / (float) Math.sqrt(n));
@@ -66,11 +77,17 @@ public class SequentialTrack implements Track {
 			chordedInstants.add(chordInstant);
 		}
 
+		chordedInstants = chordedInstants.stream().flatMap(ci -> musicalEffect.apply(ci).stream()).toList();
+
 		trackMelody.put(newInstantStartBeat, chordedInstants);
 	}
 
 	public void setRepetitionPoint() {
 		repetitionPoint = lengthInBeats();
+	}
+
+	public void changeInstrument(Instrument newInstrument) {
+		instrument = newInstrument;
 	}
 
 	@Override
