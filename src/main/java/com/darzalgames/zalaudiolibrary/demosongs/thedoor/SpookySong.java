@@ -1,4 +1,4 @@
-package com.darzalgames.zalaudiolibrary.demosongs.other;
+package com.darzalgames.zalaudiolibrary.demosongs.thedoor;
 
 import com.darzalgames.darzalcommon.functional.Do;
 import com.darzalgames.zalaudiolibrary.amplitude.sustained.AdrEnvelope;
@@ -13,7 +13,7 @@ import com.darzalgames.zalaudiolibrary.exporting.SongOrchestrator;
 import com.darzalgames.zalaudiolibrary.synth.SynthFactory;
 import com.darzalgames.zalaudiolibrary.synth.complex.BellComplexSynth;
 
-public class SpookySong extends Song {
+public abstract class SpookySong extends Song {
 
 	private static final float MAIN_VOLUME = 0.15f;
 	private static final float BELL_VOLUME = 0.3f;
@@ -33,8 +33,8 @@ public class SpookySong extends Song {
 	private final SequentialTrack heartBeat2;
 	private final CompositeTrack bell;
 
-	public SpookySong() {
-		super("Spooky Dread", 1f);
+	public SpookySong(String songName) {
+		super(songName, 1f);
 
 		mainTrack = new SequentialTrack(getSongName(), "main", EERIE_HARPSICHORD, MAIN_VOLUME);
 		addTrack(mainTrack);
@@ -51,16 +51,9 @@ public class SpookySong extends Song {
 		bell.addMusicalEffect(envelopeReverser);
 		addTrack(bell);
 
-		writeIntro();
-		mainTrack.setRepetitionPoint();
-		bell.setRepetitionPoint();
-		heartBeat1.setRepetitionPoint();
-		heartBeat2.setRepetitionPoint();
-
-		writeBody();
 	}
 
-	private void writeIntro() {
+	protected void writeIntro() {
 		mainTrack.addNote(NoteDuration.DOUBLE_WHOLE, Pitch.D5);
 		mainTrack.addNote(NoteDuration.DOUBLE_WHOLE, Pitch.F4);
 		mainTrack.addNote(NoteDuration.DOUBLE_WHOLE, Pitch.F5);
@@ -104,7 +97,7 @@ public class SpookySong extends Song {
 		bell.addSilence(NoteDuration.HALF_DOT);
 	}
 
-	private void writeBody() {
+	protected void writeBody() {
 		mainTrack.changeInstrument(HARPSICHORD);
 		mainTrack.addNote(NoteDuration.HALF, Pitch.B3, Pitch.D4);
 		mainTrack.addNote(NoteDuration.HALF, Pitch.B3, Pitch.F4);
@@ -169,16 +162,21 @@ public class SpookySong extends Song {
 	}
 
 	public static AlbumExportingInformation spookyAlbum() {
-		AlbumExportingInformation albumExportingInformation = new AlbumExportingInformation("Spooky Dread Single", 2026);
-		SongOrchestrator orchestrator = new SongOrchestrator(4) {
+		AlbumExportingInformation albumExportingInformation = new AlbumExportingInformation("Spooky Dread", 2026);
+		SongOrchestrator introOrchestrator = new SongOrchestrator(4) {
 			@Override
 			public void orchestrateSong() {
 				processMeasures(17); // intro
-				processMeasures(10); // body
+			}
+		};
+		SongOrchestrator loopOrchestrator = new SongOrchestrator(4) {
+			@Override
+			public void orchestrateSong() {
 				processMeasures(10); // body
 			}
 		};
-		albumExportingInformation.addSong(new SpookySong(), orchestrator);
+		albumExportingInformation.addSong(new SpookySongIntro(), introOrchestrator);
+		albumExportingInformation.addSong(new SpookySongLoop(), loopOrchestrator);
 		return albumExportingInformation;
 	}
 

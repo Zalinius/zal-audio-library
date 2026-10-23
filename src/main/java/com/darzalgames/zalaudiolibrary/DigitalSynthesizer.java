@@ -14,7 +14,7 @@ import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.other.SpookySong;
+import com.darzalgames.zalaudiolibrary.demosongs.thedoor.SpookySong;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
