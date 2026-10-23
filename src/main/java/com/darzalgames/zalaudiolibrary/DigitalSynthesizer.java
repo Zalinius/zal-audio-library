@@ -14,9 +14,10 @@ import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.thedoor.SpookySong;
+import com.darzalgames.zalaudiolibrary.demosongs.thedoor.SpookySoundEffects;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
+import com.darzalgames.zalaudiolibrary.exporting.SoundEffectExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipelineAPI;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
@@ -43,8 +44,9 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 //		playSong(new ScratchPadSong());
 
 //		playSong(new SpookySong());
-		exportAlbum(SpookySong.spookyAlbum());
-
+//		exportAlbum(SpookySong.spookyAlbum());
+		playSoundEffects(SpookySoundEffects.soundEffects());
+		SoundEffectExporter.exportSounds(SpookySoundEffects.soundEffects(), "Spooky SFX");
 //
 //		playSong(new SpringSong());
 //		playSong(new SummerSong());
@@ -54,7 +56,7 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 //		exportAlbum(new RainbowSeedAlbum());
 //		playSoundEffects(RainbowSoundEffects.soundEffects());
 
-//		SoundEffectExporter.exportSounds(RainbowSoundEffects.soundEffects(), "Rainbow Seed Sounds");
+//		SoundEffectExporter.exportSounds(RainbowSoundEffects.soundEffects(), "Rainbow Seed Sounds");?
 
 //		exportAlbum(ScratchPadSong.scratchAlbum());
 	}

@@ -19,11 +19,11 @@ public abstract class SpookySong extends Song {
 	private static final float BELL_VOLUME = 0.3f;
 	private static final float HEART_VOLUME = 0.45f;
 
-	private static final Instrument EERIE_HARPSICHORD = new Instrument(
+	public static final Instrument EERIE_HARPSICHORD = new Instrument(
 			SynthFactory.pulse(.3f), AdrEnvelope.quadratic(.01f, .09f, .3f),
 			t -> 1f - (t / 250)
 	);
-	private static final Instrument HARPSICHORD = new Instrument(
+	public static final Instrument HARPSICHORD = new Instrument(
 			SynthFactory.pulse(.3f), AdsrEnvelope.quadratic(.01f, .09f, .3f, 1f),
 			t -> 1f - (t / 250)
 	);
