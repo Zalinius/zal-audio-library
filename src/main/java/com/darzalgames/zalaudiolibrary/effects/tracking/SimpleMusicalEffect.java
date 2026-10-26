@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 
-public abstract class SimpleMusicalEffect implements MusicalEffect {
+public abstract class SimpleMusicalEffect extends MusicalEffect {
 
 	@Override
-	public final List<MusicalInstant> apply(MusicalInstant musicalInstant) {
+	public final List<MusicalInstant> effect(MusicalInstant musicalInstant) {
 		return List.of(applySimpleEffect(musicalInstant));
 	}
 

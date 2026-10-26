@@ -7,10 +7,9 @@ import java.util.stream.Collectors;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 
-public class OvertoneEffect implements MusicalEffect {
+public class OvertoneEffect extends MusicalEffect {
 
 	private final Function<Pitch, Map<Pitch, Float>> chordFunction;
-	private transient boolean enabled;
 
 	public OvertoneEffect(Function<Pitch, Map<Pitch, Float>> chordFunction) {
 		this.chordFunction = p -> {
@@ -20,7 +19,6 @@ public class OvertoneEffect implements MusicalEffect {
 				return chordFunction.apply(p);
 			}
 		};
-		enabled = true;
 	}
 
 	public static OvertoneEffect evenOvertoneEffect(Function<Pitch, Set<Pitch>> chord) {
@@ -41,14 +39,9 @@ public class OvertoneEffect implements MusicalEffect {
 	}
 
 	@Override
-	public List<MusicalInstant> apply(MusicalInstant original) {
+	public List<MusicalInstant> effect(MusicalInstant original) {
 		Pitch originalPitch = original.pitch();
-		Map<Pitch, Float> pitchAmplitudes;
-		if (isEnabled()) {
-			pitchAmplitudes = chordFunction.apply(originalPitch);
-		} else {
-			pitchAmplitudes = Map.of(originalPitch, 1f);
-		}
+		Map<Pitch, Float> pitchAmplitudes = chordFunction.apply(originalPitch);
 		SortedSet<Pitch> sortedPitches = new TreeSet<>(pitchAmplitudes.keySet());
 		List<MusicalInstant> modifiedMusicalInstants = new ArrayList<>();
 
@@ -68,18 +61,6 @@ public class OvertoneEffect implements MusicalEffect {
 
 	public static OvertoneEffect octaveChord() {
 		return evenOvertoneEffect(p -> Set.of(p, p.octaveUp()));
-	}
-
-	public void enable() {
-		enabled = true;
-	}
-
-	public void disable() {
-		enabled = false;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
 	}
 
 }
