@@ -54,6 +54,11 @@ public abstract class MusicalEffect implements Function<MusicalInstant, List<Mus
 		}
 	}
 
+	/**
+	 * The function to be implemented by subclasses
+	 * @param musicalInstant the musical instant to be modified
+	 * @return A list of one or more modified musical instants
+	 */
 	public abstract List<MusicalInstant> effect(MusicalInstant musicalInstant);
 
 }
