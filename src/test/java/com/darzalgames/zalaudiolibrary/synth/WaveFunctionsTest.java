@@ -42,7 +42,7 @@ class WaveFunctionsTest {
 		UnaryOperator<Float> sinWave = WaveFunctions.getSinWaveFunction();
 
 		assertEquals(0f, sinWave.apply(0f), 0.001);
-		assertEquals((float)Math.sqrt(2)/2, sinWave.apply(0.125f), 0.001);
+		assertEquals((float) Math.sqrt(2) / 2, sinWave.apply(0.125f), 0.001);
 		assertEquals(1f, sinWave.apply(0.25f), 0.001);
 		assertEquals(0f, sinWave.apply(0.5f), 0.001);
 		assertEquals(-1f, sinWave.apply(0.75f), 0.001);
@@ -109,10 +109,10 @@ class WaveFunctionsTest {
 	void whiteNoise_isBounded() {
 		UnaryOperator<Float> whiteNoise = WaveFunctions.getWhiteNoiseFunction();
 		for (int i = 0; i < 100; i++) {
-			float x = i/100f;
+			float x = i / 100f;
 			float result = whiteNoise.apply(x);
 			assertTrue(result >= -1f);
-			assertTrue(result <=  1f);
+			assertTrue(result <= 1f);
 		}
 	}
 
@@ -120,10 +120,10 @@ class WaveFunctionsTest {
 	void brownianNoise_isBounded() {
 		UnaryOperator<Float> brownianNoise = WaveFunctions.getBrownianNoiseFunction(0.5f);
 		for (int i = 0; i < 100; i++) {
-			float x = i/100f;
+			float x = i / 100f;
 			float result = brownianNoise.apply(x);
 			assertTrue(result >= -1f);
-			assertTrue(result <=  1f);
+			assertTrue(result <= 1f);
 		}
 	}
 
@@ -132,10 +132,10 @@ class WaveFunctionsTest {
 		UnaryOperator<Float> brownianNoise = WaveFunctions.getBrownianNoiseFunction(0.5f);
 		float lastResult = brownianNoise.apply(0f);
 		for (int i = 0; i < 100; i++) {
-			float x = i/100f;
+			float x = i / 100f;
 			float result = brownianNoise.apply(x);
 
-			assertTrue(Math.abs(result - lastResult) <= 2*0.5f);
+			assertTrue(Math.abs(result - lastResult) <= 2 * 0.5f);
 
 			lastResult = result;
 		}

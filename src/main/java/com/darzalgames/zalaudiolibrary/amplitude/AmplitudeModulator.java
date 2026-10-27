@@ -15,7 +15,7 @@ public class AmplitudeModulator implements UnaryOperator<Float> {
 	 * @param modulationFrequency The frequency at which the amplitude modulates
 	 */
 	public AmplitudeModulator(float modulationAmplitude, float modulationFrequency) {
-		if(modulationAmplitude < 0 || modulationAmplitude > 1) {
+		if (modulationAmplitude < 0 || modulationAmplitude > 1) {
 			throw new IllegalArgumentException("Modulation Amplitude must be within [0,1]: " + modulationAmplitude);
 		}
 		this.modulationAmplitude = modulationAmplitude;
@@ -25,8 +25,8 @@ public class AmplitudeModulator implements UnaryOperator<Float> {
 	@Override
 	public Float apply(Float t) {
 		float modulationPhase = (t * modulationFrequency);
-		float modulationComponent = (float) Math.sin(Math.PI *2 * modulationPhase);
-		return (modulationComponent * modulationAmplitude) + (1-modulationAmplitude);
+		float modulationComponent = (float) Math.sin(Math.PI * 2 * modulationPhase);
+		return (modulationComponent * modulationAmplitude) + (1 - modulationAmplitude);
 	}
 
 	public Envelope modulateEnvelope(Envelope envelope) {

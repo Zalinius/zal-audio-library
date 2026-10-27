@@ -5,7 +5,7 @@ public class SampleClipper implements SampleEffect {
 	private final float clipAmplitude;
 
 	public SampleClipper(float clipAmplitude) {
-		if(clipAmplitude < 0) {
+		if (clipAmplitude < 0) {
 			throw new IllegalArgumentException("clip amplitude must be non-negative: " + clipAmplitude);
 		}
 		this.clipAmplitude = clipAmplitude;
@@ -13,10 +13,9 @@ public class SampleClipper implements SampleEffect {
 
 	@Override
 	public Float apply(Float sample) {
-		if(sample < -clipAmplitude) {
+		if (sample < -clipAmplitude) {
 			sample = -clipAmplitude;
-		}
-		else if(sample > clipAmplitude) {
+		} else if (sample > clipAmplitude) {
 			sample = clipAmplitude;
 		}
 		return sample;

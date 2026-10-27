@@ -5,7 +5,7 @@ public class SampleOverflower implements SampleEffect {
 	private final float overflowAmplitude;
 
 	public SampleOverflower(float overflowAmplitude) {
-		if(overflowAmplitude < 0) {
+		if (overflowAmplitude < 0) {
 			throw new IllegalArgumentException("overflow amplitude must be non-negative: " + overflowAmplitude);
 		}
 		this.overflowAmplitude = overflowAmplitude;
@@ -15,12 +15,12 @@ public class SampleOverflower implements SampleEffect {
 	public Float apply(Float sample) {
 		boolean originalIsPositive = sample >= 0;
 		sample = Math.abs(sample);
-		if(sample > overflowAmplitude) {
+		if (sample > overflowAmplitude) {
 			float overflow = sample - overflowAmplitude;
 			sample = -overflowAmplitude + overflow;
 		}
 
-		if(!originalIsPositive) {
+		if (!originalIsPositive) {
 			sample = -sample;
 		}
 

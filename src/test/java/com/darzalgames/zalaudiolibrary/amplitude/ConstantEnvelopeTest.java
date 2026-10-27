@@ -12,10 +12,10 @@ class ConstantEnvelopeTest {
 		float duration = 1f;
 
 		assertEquals(0, envelope.getEnvelope(duration, -0.1f));
-		assertEquals(0, envelope.getEnvelope(duration,  0.0f));
-		assertEquals(0, envelope.getEnvelope(duration,  0.5f));
-		assertEquals(0, envelope.getEnvelope(duration,  1.0f));
-		assertEquals(0, envelope.getEnvelope(duration,  1.1f));
+		assertEquals(0, envelope.getEnvelope(duration, 0.0f));
+		assertEquals(0, envelope.getEnvelope(duration, 0.5f));
+		assertEquals(0, envelope.getEnvelope(duration, 1.0f));
+		assertEquals(0, envelope.getEnvelope(duration, 1.1f));
 	}
 
 }

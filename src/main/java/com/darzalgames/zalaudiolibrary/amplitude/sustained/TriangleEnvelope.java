@@ -18,33 +18,32 @@ public class TriangleEnvelope implements Envelope {
 
 	/**
 	 * Constructs a Triangle envelope which increases for a certain fraction of time, then decrease during the rest
-	 * @param attackPercentage What percentage of the envelope is increasing
+	 * @param attackPercentage        What percentage of the envelope is increasing
 	 * @param increasingInterpolation the response curve for the the attack phase
 	 * @param decreasingInterpolation the response curve for the the release phase
 	 */
 	public TriangleEnvelope(float attackPercentage, UnaryOperator<Float> increasingInterpolation, UnaryOperator<Float> decreasingInterpolation) {
-		if(attackPercentage < 0 || attackPercentage > 1f) {
+		if (attackPercentage < 0 || attackPercentage > 1f) {
 			throw new IllegalArgumentException("attack percentage must be between 0 and 1: " + attackPercentage);
 		}
 		this.attackPercentage = attackPercentage;
-		releasePercentage = 1f- attackPercentage;
+		releasePercentage = 1f - attackPercentage;
 		this.increasingInterpolation = increasingInterpolation;
 		this.decreasingInterpolation = decreasingInterpolation;
 	}
 
 	@Override
 	public float getEnvelope(float envelopeDuration, float currentTime) {
-		if(currentTime < 0f || currentTime >= envelopeDuration) {
+		if (currentTime < 0f || currentTime >= envelopeDuration) {
 			return 0f;
 		}
 
 		float envelopeProgress = currentTime / envelopeDuration;
 
-		if(envelopeProgress < attackPercentage) {
+		if (envelopeProgress < attackPercentage) {
 			float interpolant = envelopeProgress / attackPercentage;
 			return increasingInterpolation.apply(interpolant);
-		}
-		else {
+		} else {
 			float interpolant = (envelopeProgress - attackPercentage) / releasePercentage;
 			return decreasingInterpolation.apply(interpolant);
 		}

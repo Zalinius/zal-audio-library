@@ -26,16 +26,15 @@ public class BpsController implements BPSAcceptor {
 	}
 
 	public synchronized float updateAndGetBPS(float delta) {
-		if(timeInTransition != transitionDuration) {
+		if (timeInTransition != transitionDuration) {
 
 			timeInTransition += delta;
-			if(timeInTransition > transitionDuration) {
+			if (timeInTransition > transitionDuration) {
 				timeInTransition = transitionDuration;
 			}
 			float interpolant = timeInTransition / transitionDuration;
 			return (targetBps - lastBps) * interpolant + lastBps;
-		}
-		else {
+		} else {
 			return targetBps;
 		}
 	}
@@ -47,6 +46,5 @@ public class BpsController implements BPSAcceptor {
 	public synchronized float getBPS() {
 		return updateAndGetBPS(0);
 	}
-
 
 }

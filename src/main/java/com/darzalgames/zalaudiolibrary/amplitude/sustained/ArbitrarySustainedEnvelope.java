@@ -29,35 +29,32 @@ public class ArbitrarySustainedEnvelope implements Envelope {
 	@Override
 	public float getEnvelope(float envelopeDuration, float currentTime) {
 		float sustainTime = envelopeDuration - preSustainDuration - postSustainDuration;
-		if(points.floorKey(currentTime) == null) {
+		if (points.floorKey(currentTime) == null) {
 			return 0f;
 		}
-		if((currentTime > preSustainDuration + sustainTime) && (points.ceilingKey(currentTime - sustainTime) == null)) {
+		if ((currentTime > preSustainDuration + sustainTime) && (points.ceilingKey(currentTime - sustainTime) == null)) {
 			return 0f;
 		}
 
-		if(currentTime >= preSustainDuration && currentTime <= preSustainDuration + sustainTime) {
+		if (currentTime >= preSustainDuration && currentTime <= preSustainDuration + sustainTime) {
 			return sustainLevel;
-		}
-		else if(currentTime < preSustainDuration || currentTime > preSustainDuration + sustainTime) {
-			if(currentTime > preSustainDuration + sustainTime && sustainTime >0) {
-				currentTime = currentTime-sustainTime;
+		} else if (currentTime < preSustainDuration || currentTime > preSustainDuration + sustainTime) {
+			if (currentTime > preSustainDuration + sustainTime && sustainTime > 0) {
+				currentTime = currentTime - sustainTime;
 			}
 			float intervalStart = points.floorKey(currentTime);
 			float startValue = points.get(intervalStart);
 			float intervalEnd = points.ceilingKey(currentTime);
 			float endValue = points.get(intervalEnd);
 
-			if(intervalStart == intervalEnd) {
+			if (intervalStart == intervalEnd) {
 				return startValue;
 			}
 
-
 			float intervalProgress = (currentTime - intervalStart) / (intervalEnd - intervalStart);
 
-			return startValue * (1-intervalProgress) + endValue * intervalProgress;
-		}
-		else {
+			return startValue * (1 - intervalProgress) + endValue * intervalProgress;
+		} else {
 			return sustainLevel;
 		}
 
