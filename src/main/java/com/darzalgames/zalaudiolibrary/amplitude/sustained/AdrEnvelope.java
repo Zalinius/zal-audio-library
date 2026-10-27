@@ -18,7 +18,7 @@ public class AdrEnvelope implements Envelope {
 	private final UnaryOperator<Float> decreasingInterpolation;
 
 	/**
-	 * Constructs an ADSR envelope
+	 * Constructs an ADR envelope with a sustained release phase
 	 * @param attackTime              the duration of the increasing phase of the envelope
 	 * @param decayTime               the duration of the decay phase of the envelope
 	 * @param releaseLevel            the level at which the decay ends and the sustained release begins
@@ -60,7 +60,7 @@ public class AdrEnvelope implements Envelope {
 	 * @param attackTime   the duration of the increasing phase of the envelope
 	 * @param decayTime    the duration of the decay phase of the envelope
 	 * @param releaseLevel the level at which the decay ends and the sustained release begins
-	 * @return A linear ADSR envelope
+	 * @return A linear ADR envelope
 	 */
 	public static final AdrEnvelope linear(float attackTime, float decayTime, float releaseLevel) {
 		return new AdrEnvelope(attackTime, decayTime, releaseLevel, Interpolation.INCREASING_LINEAR, Interpolation.DECREASING_LINEAR);
@@ -71,7 +71,7 @@ public class AdrEnvelope implements Envelope {
 	 * @param attackTime   the duration of the increasing phase of the envelope
 	 * @param decayTime    the duration of the decay phase of the envelope
 	 * @param releaseLevel the level at which the decay ends and the sustained release begins
-	 * @return A quadratic ADSR envelope
+	 * @return A quadratic ADR envelope
 	 */
 	public static final AdrEnvelope quadratic(float attackTime, float decayTime, float releaseLevel) {
 		return new AdrEnvelope(attackTime, decayTime, releaseLevel, Interpolation.INCREASING_NEGATIVE_QUADRATIC, Interpolation.DECREASING_POSITIVE_QUADRATIC);
