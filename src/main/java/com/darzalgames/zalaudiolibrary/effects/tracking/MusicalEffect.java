@@ -7,6 +7,13 @@ import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
 
 public abstract class MusicalEffect implements Function<MusicalInstant, List<MusicalInstant>> {
 
+	public static final MusicalEffect NONE = new MusicalEffect() {
+		@Override
+		public List<MusicalInstant> effect(MusicalInstant musicalInstant) {
+			return List.of(musicalInstant);
+		}
+	};
+
 	private boolean enabled; // TODO should this be transient?
 
 	public MusicalEffect() {
