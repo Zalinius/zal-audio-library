@@ -9,54 +9,10 @@ import com.darzalgames.zalaudiolibrary.pipeline.instants.MusicalInstant;
  */
 public class EnvelopeReverser extends SimpleMusicalEffect {
 
-	private boolean isEnabled;
-
-	/**
-	 * Creates a new disabled EnvelopeReverser
-	 */
-	public EnvelopeReverser() {
-		isEnabled = false;
-	}
-
 	@Override
 	public MusicalInstant applySimpleEffect(MusicalInstant instant) {
-		if (isEnabled) {
-			Envelope reversedEnvelope = reverseEnvelope(instant.envelope());
-			return new MusicalInstant(instant.synth(), instant.pitch(), instant.frequencyModulator(), instant.duration(), reversedEnvelope, instant.amplitude(), instant.id());
-		} else {
-			return instant;
-		}
-	}
-
-	/**
-	 * enables the envelope reverser
-	 */
-	public void enable() {
-		isEnabled = true;
-	}
-
-	/**
-	 * disables the envelope reverser
-	 */
-	public void disable() {
-		isEnabled = false;
-	}
-
-	/**
-	 * toggler the envelope reverser
-	 * @return the new state of the envelope reverser
-	 */
-	public boolean toggle() {
-		isEnabled = !isEnabled;
-		return isEnabled;
-	}
-
-	/**
-	 * whether or not the envelope reverser is active
-	 * @return True if the envelope reverser is enabled, false otherwise
-	 */
-	public boolean isEnabled() {
-		return isEnabled;
+		Envelope reversedEnvelope = reverseEnvelope(instant.envelope());
+		return new MusicalInstant(instant.synth(), instant.pitch(), instant.frequencyModulator(), instant.duration(), reversedEnvelope, instant.amplitude(), instant.id());
 	}
 
 	/**

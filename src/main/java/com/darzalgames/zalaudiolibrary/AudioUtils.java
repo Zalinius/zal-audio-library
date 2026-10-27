@@ -5,7 +5,7 @@ public class AudioUtils {
 	private AudioUtils() {}
 
 	public static float decibelToAmplitude(float decibel) {
-		return (float) Math.pow(10, decibel/20);
+		return (float) Math.pow(10, decibel / 20);
 	}
 
 }

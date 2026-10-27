@@ -26,7 +26,7 @@ class SampleExploderTest {
 		SampleEffect sampleEffect = new SampleExploder(0.5f);
 
 		assertEquals(0.5f, sampleEffect.apply(0.2f));
-		assertEquals(0.5f, sampleEffect.apply(  0f));
+		assertEquals(0.5f, sampleEffect.apply(0f));
 		assertEquals(-0.5f, sampleEffect.apply(-0.4f));
 	}
 

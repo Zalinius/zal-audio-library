@@ -7,7 +7,7 @@ public class SampleCompressor implements SampleEffect {
 	private final int bitDepth;
 
 	public SampleCompressor(int bitDepth) {
-		if(bitDepth < 1 || bitDepth > MAX_BIT_DEPTH) {
+		if (bitDepth < 1 || bitDepth > MAX_BIT_DEPTH) {
 			throw new IllegalArgumentException("Bit depth must be between 1 and " + MAX_BIT_DEPTH + ": " + bitDepth);
 		}
 		this.bitDepth = bitDepth;
@@ -15,8 +15,8 @@ public class SampleCompressor implements SampleEffect {
 
 	@Override
 	public Float apply(Float sample) {
-		int binarySample = (int)Math.round((sample * Math.pow(2, bitDepth)));
-		return (float)(binarySample / (Math.pow(2, bitDepth)));
+		int binarySample = (int) Math.round((sample * Math.pow(2, bitDepth)));
+		return (float) (binarySample / (Math.pow(2, bitDepth)));
 	}
 
 }

@@ -5,15 +5,19 @@ import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 public class SynthChanger extends SimpleMusicalEffect {
 
-	private final Synth newSynth;
+	private Synth synth;
 
-	public SynthChanger(Synth newSynth) {
-		this.newSynth = newSynth;
+	public SynthChanger(Synth initialSynth) {
+		synth = initialSynth;
+	}
+
+	public void setSynth(Synth newSynth) {
+		synth = newSynth;
 	}
 
 	@Override
-	public MusicalInstant applySimpleEffect(MusicalInstant original) {
-		return new MusicalInstant(newSynth, original.pitch(), original.frequencyModulator(), original.duration(), original.envelope(), original.amplitude(), original.id());
+	public MusicalInstant applySimpleEffect(MusicalInstant mi) {
+		return new MusicalInstant(synth, mi.pitch(), mi.frequencyModulator(), mi.duration(), mi.envelope(), mi.amplitude(), mi.id());
 	}
 
 }

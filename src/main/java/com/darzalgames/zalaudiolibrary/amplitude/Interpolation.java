@@ -17,15 +17,15 @@ public class Interpolation {
 	/**
 	 * An decreasing linear interpolation
 	 */
-	public static final UnaryOperator<Float> DECREASING_LINEAR = x -> 1-x;
+	public static final UnaryOperator<Float> DECREASING_LINEAR = x -> 1 - x;
 
 	/**
 	 * The increasing part of the downward facing quadratic
 	 */
-	public static final UnaryOperator<Float> INCREASING_NEGATIVE_QUADRATIC = x -> -1*(x-1)*(x-1) + 1;
+	public static final UnaryOperator<Float> INCREASING_NEGATIVE_QUADRATIC = x -> -1 * (x - 1) * (x - 1) + 1;
 	/**
 	 * The decreasing part of the upward facing quadratic
 	 */
-	public static final UnaryOperator<Float> DECREASING_POSITIVE_QUADRATIC = x -> (x-1)*(x-1);
+	public static final UnaryOperator<Float> DECREASING_POSITIVE_QUADRATIC = x -> (x - 1) * (x - 1);
 
 }
