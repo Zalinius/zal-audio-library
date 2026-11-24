@@ -1,9 +1,11 @@
 package com.darzalgames.zalaudiolibrary.synth;
 
-import java.util.Random;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
+import com.darzalgames.darzalcommon.functional.Do;
 import com.darzalgames.darzalcommon.math.Fraction;
+import com.darzalgames.darzalcommon.math.SimpleMath;
 
 /**
  * A bunch of cyclical wave functions that satisfy:
@@ -85,7 +87,7 @@ public class WaveFunctions {
 	 * @return A band-limited saw wave function, which starts at 0 and is increasing
 	 * @throws IllegalArgumentException if harmonics is not a positive integer
 	 */
-	public static UnaryOperator<Float> getBandLimitedSawtoothWaveFunction(int harmonics) {
+	public static UnaryOperator<Float> getLowPassBandLimitedSawtoothWaveFunction(int harmonics) {
 		if (harmonics < 1) {
 			throw new IllegalArgumentException("Harmonics must be at least 1: " + harmonics);
 		}
@@ -98,6 +100,86 @@ public class WaveFunctions {
 
 			return y * -2 / (float) Math.PI;
 		};
+	}
+
+	/**
+	 * Constructs a band limited saw wave, by removing arbitrary sine wave harmonics from a saw wave.<br>
+	 * @param addedHarmonics The integer-multiple harmonics to remove from the saw wave.<br>
+	 * @return A band-limited saw wave function, which starts at 0 and is increasing
+	 * @throws IllegalArgumentException if any harmonic is not a positive integer
+	 */
+	public static UnaryOperator<Float> getArbitraryBandAdditiveSawtoothWaveFunction(Set<Integer> addedHarmonics) {
+		return x -> {
+			float y = 0f;
+
+			for (Iterator<Integer> it = addedHarmonics.iterator(); it.hasNext();) {
+				int i = it.next();
+				y += (float) (Math.sin(i * 2 * Math.PI * (x - 0.5f)) / i);
+			}
+
+			return y * -2 / (float) Math.PI;
+		};
+	}
+
+	/**
+	 * Constructs a band limited saw wave, by removing the first n sine wave harmonics from a saw wave.<br>
+	 * @param harmonicsToRemove The first n sine harmonics to remove from the saw wave.<br>
+	 * @return A band-limited saw wave function, which starts at n and goet to infinity
+	 * @throws IllegalArgumentException if harmonicsToRemove is not a positive integer
+	 */
+	public static UnaryOperator<Float> getHighPassBandLimitedSawtoothWaveFunction(int harmonicsToRemove) {
+		if (harmonicsToRemove < 1) {
+			throw new IllegalArgumentException("Harmonics must be at least 1: " + harmonicsToRemove);
+		}
+		Set<Integer> removedHarmonics = new LinkedHashSet<>();
+		Do.xTimesWithI(harmonicsToRemove, i -> removedHarmonics.add(i + 1));
+		return getArbitraryBandSubtractiveSawtoothWaveFunction(removedHarmonics);
+	}
+
+	/**
+	 * Constructs a band limited saw wave, by removing arbitrary sine wave harmonics from a saw wave.<br>
+	 * @param removedHarmonics The integer-multiple harmonics to remove from the saw wave.<br>
+	 * @return A band-limited saw wave function, which starts at 0 and is increasing
+	 * @throws IllegalArgumentException if any harmonic is not a positive integer
+	 */
+	public static UnaryOperator<Float> getArbitraryBandSubtractiveSawtoothWaveFunction(Set<Integer> removedHarmonics) {
+		UnaryOperator<Float> baseWave = getSawtoothWaveFunction();
+		List<UnaryOperator<Float>> removedPartials = removedHarmonics.stream().map(WaveFunctions::getSawtoothSinePartial).toList();
+		return x -> {
+			float value = baseWave.apply(x);
+			for (Iterator<UnaryOperator<Float>> it = removedPartials.iterator(); it.hasNext();) {
+				UnaryOperator<Float> partial = it.next();
+				value -= partial.apply(x);
+			}
+			return value;
+		};
+	}
+
+	private static UnaryOperator<Float> getSawtoothSinePartial(int harmonic) {
+		if (harmonic < 1) {
+			throw new IllegalArgumentException("Harmonic must be at least 1: " + harmonic);
+		}
+
+		return x -> {
+			float sign = SimpleMath.isOdd(harmonic) ? 1f : -1f;
+			float frequency = harmonic * 2 * (float) Math.PI;
+			float amplitude = 2f / (float) Math.PI / harmonic;
+			return sign * amplitude * (float) Math.sin(frequency * x);
+		};
+	}
+
+	public static void main(String[] args) {
+		UnaryOperator<Float> sawBand = t -> {
+			float result = 0;
+			for (int i = 1; i <= 10000; i++) {
+				result += getSawtoothSinePartial(i).apply(t);
+			}
+			return result;
+		};
+
+		for (float t = 0; t <= 1f; t += 1f / 100f) {
+			System.out.println(t + ": " + sawBand.apply(t));
+		}
 	}
 
 	/**

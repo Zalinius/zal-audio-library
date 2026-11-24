@@ -2,9 +2,7 @@ package com.darzalgames.zalaudiolibrary;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -14,7 +12,7 @@ import com.darzalgames.darzalcommon.math.Fraction;
 import com.darzalgames.zalaudiolibrary.amplitude.percussive.ArEnvelope;
 import com.darzalgames.zalaudiolibrary.composing.Pitch;
 import com.darzalgames.zalaudiolibrary.composing.Song;
-import com.darzalgames.zalaudiolibrary.demosongs.thedoor.TheDoorSongLoop;
+import com.darzalgames.zalaudiolibrary.demosongs.SynthTesterSong;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
@@ -36,13 +34,27 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 	public static void main(String[] args) throws Exception {
 //		DigitalSynthesizer digitalSynthesizer = new DigitalSynthesizer();
 
+		playSong(
+				new SynthTesterSong(
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1)),
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2)),
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4)),
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8)),
+
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16)),
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32)),
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64)),
+						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64, 128))
+				)
+		);
+
 //		playSong(new BellSong());
 //		playSong(new TrumpetSong());
 //		playSong(new A_ThemeSong());
 //		playSong(new ManagersVacationSong());
 //		playSong(new ScratchPadSong());
 
-		playSong(new TheDoorSongLoop());
+//		playSong(new TheDoorSongLoop());
 //		playSong(new SpringSong());
 //		playSong(new SummerSong());
 //		playSong(new AutumnSong());

@@ -74,7 +74,7 @@ class WaveFunctionsTest {
 
 	@Test
 	void bandLimitedSawWave() {
-		UnaryOperator<Float> sawWave = WaveFunctions.getBandLimitedSawtoothWaveFunction(2);
+		UnaryOperator<Float> sawWave = WaveFunctions.getLowPassBandLimitedSawtoothWaveFunction(2);
 
 		assertEquals(0f, sawWave.apply(0f), 0.001);
 		assertEquals(0f, sawWave.apply(0.5f), 0.001);
@@ -83,7 +83,7 @@ class WaveFunctionsTest {
 
 	@Test
 	void bandLimitedSawWave_largeHarmonic_approximatesSawWave() {
-		UnaryOperator<Float> bandLimitedSawWave = WaveFunctions.getBandLimitedSawtoothWaveFunction(40000);
+		UnaryOperator<Float> bandLimitedSawWave = WaveFunctions.getLowPassBandLimitedSawtoothWaveFunction(40000);
 		UnaryOperator<Float> sawWave = WaveFunctions.getSawtoothWaveFunction();
 
 		assertEquals(sawWave.apply(0.0f), bandLimitedSawWave.apply(0.0f), 0.01f);
@@ -101,8 +101,8 @@ class WaveFunctionsTest {
 
 	@Test
 	void bandLimitedSawWave_throwsWhenHarmonicsAreNonPositive() {
-		assertThrows(IllegalArgumentException.class, () -> WaveFunctions.getBandLimitedSawtoothWaveFunction(0));
-		assertDoesNotThrow(() -> WaveFunctions.getBandLimitedSawtoothWaveFunction(1));
+		assertThrows(IllegalArgumentException.class, () -> WaveFunctions.getLowPassBandLimitedSawtoothWaveFunction(0));
+		assertDoesNotThrow(() -> WaveFunctions.getLowPassBandLimitedSawtoothWaveFunction(1));
 	}
 
 	@Test

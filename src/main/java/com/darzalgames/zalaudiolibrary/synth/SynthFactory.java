@@ -1,8 +1,6 @@
 package com.darzalgames.zalaudiolibrary.synth;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 import com.darzalgames.darzalcommon.math.Fraction;
@@ -44,12 +42,39 @@ public class SynthFactory {
 	}
 
 	/**
-	 * Constructs a band-limited sawtooth synth, made from a number of sine harmonics
+	 * Constructs a low pass band-limited sawtooth synth, made from a number of sine harmonics
 	 * @param harmonics the number of sine harmonics
 	 * @return a band-limited sawtooth wave
 	 */
-	public static Synth bandLimitedSawTooth(int harmonics) {
-		return new Synth(WaveFunctions.getBandLimitedSawtoothWaveFunction(harmonics));
+	public static Synth lowPassBandLimitedSawTooth(int harmonics) {
+		return new Synth(WaveFunctions.getLowPassBandLimitedSawtoothWaveFunction(harmonics));
+	}
+
+	/**
+	 * Constructs a high pass band-limited sawtooth synth, made by removing a number of sine harmonics from a saw wave
+	 * @param harmonics the number of sine harmonics to remove
+	 * @return a band-limited sawtooth wave
+	 */
+	public static Synth highPassBandLimitedSawTooth(int harmonics) {
+		return new Synth(WaveFunctions.getHighPassBandLimitedSawtoothWaveFunction(harmonics));
+	}
+
+	/**
+	 * Constructs a band-limited sawtooth synth, made by adding arbitrary sine harmonics
+	 * @param addedHarmonics the exact sine harmonics to add
+	 * @return a band-limited sawtooth wave
+	 */
+	public static Synth arbitraryBandAdditiveSawTooth(Set<Integer> addedHarmonics) {
+		return new Synth(WaveFunctions.getArbitraryBandAdditiveSawtoothWaveFunction(addedHarmonics));
+	}
+
+	/**
+	 * Constructs a band-limited sawtooth synth, made by removing arbitrary sine harmonics from a saw wave
+	 * @param removedHarmonics the exact sine harmonics to remove
+	 * @return a band-limited sawtooth wave
+	 */
+	public static Synth arbitraryBandSubtractiveSawTooth(Set<Integer> removedHarmonics) {
+		return new Synth(WaveFunctions.getArbitraryBandSubtractiveSawtoothWaveFunction(removedHarmonics));
 	}
 
 	/**
