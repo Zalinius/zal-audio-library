@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 import com.darzalgames.zalaudiolibrary.TestTools;
 import com.darzalgames.zalaudiolibrary.TestTools.AudioConsumerSpy;
 
-class MultiAudioConsumerTest {
+class CompositeAudioConsumerTest {
 
 	@Test
 	void writeSamples_writesSamplesToAllOutputStreams() throws Exception {
 		AudioConsumerSpy spy0 = new TestTools.AudioConsumerSpy();
 		AudioConsumerSpy spy1 = new TestTools.AudioConsumerSpy();
 		AudioConsumerSpy spy2 = new TestTools.AudioConsumerSpy();
-		MultiAudioConsumer multiOutputStream = new MultiAudioConsumer(spy0, spy1, spy2);
+		CompositeAudioConsumer multiOutputStream = new CompositeAudioConsumer(spy0, spy1, spy2);
 
 		multiOutputStream.writeSamples(new float[] { 1f, 0f, -1f, 0f });
 		multiOutputStream.close();
@@ -32,7 +32,7 @@ class MultiAudioConsumerTest {
 		AudioConsumerSpy spy0 = new TestTools.AudioConsumerSpy();
 		AudioConsumerSpy spy1 = new TestTools.AudioConsumerSpy();
 		AudioConsumerSpy spy2 = new TestTools.AudioConsumerSpy();
-		MultiAudioConsumer multiOutputStream = new MultiAudioConsumer(spy0, spy1, spy2);
+		CompositeAudioConsumer multiOutputStream = new CompositeAudioConsumer(spy0, spy1, spy2);
 
 		multiOutputStream.close();
 

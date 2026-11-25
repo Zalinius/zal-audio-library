@@ -7,9 +7,9 @@ import java.util.List;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 
 /**
- * An AudioConsumer that groups many AudioConsumers, and relays all functions calls to them
+ * An AudioConsumer that groups many AudioConsumers, and relays all function calls to them
  */
-public class MultiAudioConsumer implements AudioConsumer {
+public class CompositeAudioConsumer implements AudioConsumer {
 
 	private final List<AudioConsumer> outputs;
 
@@ -17,7 +17,7 @@ public class MultiAudioConsumer implements AudioConsumer {
 	 * Creates a MultiOutputStream from any number of AudioConsumers
 	 * @param audioConsumers the internal audio consumers of this AudioConsumer
 	 */
-	public MultiAudioConsumer(AudioConsumer... audioConsumers) {
+	public CompositeAudioConsumer(AudioConsumer... audioConsumers) {
 		outputs = Arrays.asList(audioConsumers);
 	}
 

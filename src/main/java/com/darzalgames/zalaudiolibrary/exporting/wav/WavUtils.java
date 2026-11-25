@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Some littles helpers for working with the Wav format
+ * Some little helpers for working with the Wav format
  */
 public class WavUtils {
+
+	private WavUtils() {}
 
 	/**
 	 * Creates the basic music wav metadata for a track
