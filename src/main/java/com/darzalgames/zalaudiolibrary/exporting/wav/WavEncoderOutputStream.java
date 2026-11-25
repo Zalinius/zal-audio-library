@@ -26,16 +26,23 @@ public class WavEncoderOutputStream implements AudioConsumer {
 	private final int currentOutputSize;
 	private final SampleClipper sampleClipper;
 
+	private boolean wroteOut;
+
 	public WavEncoderOutputStream(OutputStream outputStream, Map<String, String> metadata) {
 		sampleOutputBuffer = new ByteArrayOutputStream();
 		wavOutput = outputStream;
 		this.metadata = metadata;
 		currentOutputSize = 0;
 		sampleClipper = new SampleClipper(1f);
+
+		wroteOut = false;
 	}
 
 	@Override
 	public void close() throws Exception {
+		if (!wroteOut) {
+			writeWavToOutputStream();
+		}
 		sampleOutputBuffer.close();
 		wavOutput.close();
 	}
@@ -112,6 +119,8 @@ public class WavEncoderOutputStream implements AudioConsumer {
 		wavOutput.write(intToByteBuffer(0x64617461, ByteOrder.BIG_ENDIAN)); // The word DATA in ASCII
 		wavOutput.write(intToByteBuffer(dataByteSize, ByteOrder.LITTLE_ENDIAN)); // The size of everything in the sub-chunk after this in bytes, 16 for PCM
 		wavOutput.write(sampleBytes);
+
+		wroteOut = true;
 	}
 
 	private static byte[] intToByteBuffer(int integer, ByteOrder byteOrder) {

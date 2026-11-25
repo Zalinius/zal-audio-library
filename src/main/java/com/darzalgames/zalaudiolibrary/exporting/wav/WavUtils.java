@@ -17,4 +17,8 @@ public class WavUtils {
 		return metadata;
 	}
 
+	public static Map<String, String> makeBlankWavMetadata() {
+		return makeWavMetadata("", "", "", 0, 0, "");
+	}
+
 }
