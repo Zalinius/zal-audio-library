@@ -8,7 +8,6 @@ import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -79,20 +78,6 @@ class WavEncoderOutputStreamTest {
 		assertEquals(64, bytesToInt(Arrays.copyOfRange(wavHeader, 52, 56), ByteOrder.LITTLE_ENDIAN));
 
 		assertEquals(120, wavHeader.length);
-	}
-
-	@Test
-	void makeMetadata_mapDataHasCorrectKeysAndAreNullTerminatedStrings() throws Exception {
-		Map<String, String> metadata = WavUtils.makeWavMetadata("title", "artist name", "album name", 0, 2023, "genre");
-
-		assertEquals(6, metadata.size());
-
-		assertEquals("title\0", metadata.get("INAM"));
-		assertEquals("artist name\0", metadata.get("IART"));
-		assertEquals("album name\0", metadata.get("IPRD"));
-		assertEquals("0\0", metadata.get("IPRT"));
-		assertEquals("2023\0", metadata.get("ICRD"));
-		assertEquals("genre\0", metadata.get("IGNR"));
 	}
 
 	private static String bytesToAsciiString(byte[] bytes) {

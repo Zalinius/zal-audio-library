@@ -6,11 +6,18 @@ import java.util.List;
 
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 
-public class MultiOutputStream implements AudioConsumer {
+/**
+ * An AudioConsumer that groups many AudioConsumers, and relays all functions calls to them
+ */
+public class MultiAudioConsumer implements AudioConsumer {
 
 	private final List<AudioConsumer> outputs;
 
-	public MultiOutputStream(AudioConsumer... audioConsumers) {
+	/**
+	 * Creates a MultiOutputStream from any number of AudioConsumers
+	 * @param audioConsumers the internal audio consumers of this AudioConsumer
+	 */
+	public MultiAudioConsumer(AudioConsumer... audioConsumers) {
 		outputs = Arrays.asList(audioConsumers);
 	}
 

@@ -13,15 +13,21 @@ public class TestTools {
 	public static final Instrument TEST_INSTRUMENT = new Instrument(SynthFactory.zero(), ConstantEnvelope.zeroEnvelope());
 	public static final Instrument FULL_SINE = new Instrument(SynthFactory.sine(), new ConstantEnvelope(1f));
 
+	private TestTools() {}
+
 	public static class AudioConsumerSpy implements AudioConsumer {
 		private final List<Float> samplesList;
+		private boolean closeCalled;
 
 		public AudioConsumerSpy() {
 			samplesList = new ArrayList<>();
+			closeCalled = false;
 		}
 
 		@Override
-		public void close() throws Exception {}
+		public void close() throws Exception {
+			closeCalled = true;
+		}
 
 		@Override
 		public void writeSamples(float[] samples) {
@@ -36,6 +42,10 @@ public class TestTools {
 
 		public List<Float> getSamplesList() {
 			return samplesList;
+		}
+
+		public boolean wasCloseCalled() {
+			return closeCalled;
 		}
 	}
 
