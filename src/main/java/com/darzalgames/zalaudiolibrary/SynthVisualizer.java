@@ -25,6 +25,7 @@ public class SynthVisualizer extends Frame implements AudioActor {
 		setLocationRelativeTo(null);
 		bufferDimensions = getSize();
 		setBackground(Color.DARK_GRAY);
+		setUndecorated(true);
 
 		this.synthSupplier = synthSupplier;
 		activeSynth = synthSupplier.getActiveSynth(0);

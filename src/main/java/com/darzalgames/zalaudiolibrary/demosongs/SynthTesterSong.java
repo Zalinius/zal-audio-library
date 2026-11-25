@@ -34,7 +34,7 @@ public class SynthTesterSong extends Song {
 	}
 
 	public SynthTesterSong(List<Synth> synths) {
-		super("Synth Tester", 2f);
+		super("Synth Tester", 1f);
 		this.synths = synths;
 
 		Envelope percussive = ArEnvelope.quadratic(0.01f, 0.09f);
@@ -47,7 +47,7 @@ public class SynthTesterSong extends Song {
 		final Pitch baseNote = Pitch.C3;
 		Pitch currentNote = baseNote;
 
-		for (int i = 0; i != 16; i++) {
+		for (int i = 0; i != 2 * synths.size(); i++) {
 			Synth toUse = synths.get(i % synths.size());
 			if (i == 8) {
 				currentNote = baseNote.octaveUp();
@@ -57,7 +57,7 @@ public class SynthTesterSong extends Song {
 		}
 
 		currentNote = baseNote;
-		for (int i = 0; i != 16; i++) {
+		for (int i = 0; i != 2 * synths.size(); i++) {
 			Synth toUse = synths.get(i % synths.size());
 			if (i == 8) {
 				currentNote = baseNote.octaveUp();

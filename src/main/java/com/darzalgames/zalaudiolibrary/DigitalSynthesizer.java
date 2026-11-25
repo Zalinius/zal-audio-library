@@ -2,8 +2,10 @@ package com.darzalgames.zalaudiolibrary;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -37,15 +39,30 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 //		DigitalSynthesizer digitalSynthesizer = new DigitalSynthesizer();
 
 		SynthTesterSong synthTesterSong = new SynthTesterSong(
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1)),
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2)),
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4)),
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8)),
+			// SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1)),
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2)),
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4)),
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8)),
+//
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16)),
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32)),
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64)),
+//				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64, 128)),
+//
+//				SynthFactory.triangle(),
+//				SynthFactory.square(),
+//				SynthFactory.saw(),
 
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16)),
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32)),
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64)),
-				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64, 128))
+				SynthFactory.flatSine(2),
+				SynthFactory.flatSine(4),
+				SynthFactory.flatSine(8),
+				SynthFactory.flatSine(16),
+				SynthFactory.sine(),
+				SynthFactory.sinePower(2),
+				SynthFactory.sinePower(4),
+				SynthFactory.sinePower(8),
+				SynthFactory.sinePower(16)
+
 		);
 
 		SynthVisualizer visualizer = new SynthVisualizer(synthTesterSong);
