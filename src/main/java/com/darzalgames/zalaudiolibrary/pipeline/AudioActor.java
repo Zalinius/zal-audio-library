@@ -10,8 +10,14 @@ public interface AudioActor {
 
 	/**
 	 *
-	 * @param newBps
+	 * @param newBps the latest bps
 	 */
 	void updateBps(float newBps);
+
+	/**
+	 *
+	 * @param beatNumber the beat number that was just changed to
+	 */
+	void updateBeat(int beatNumber);
 
 }

@@ -3,6 +3,7 @@ package com.darzalgames.zalaudiolibrary;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -15,6 +16,7 @@ import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.demosongs.SynthTesterSong;
 import com.darzalgames.zalaudiolibrary.exporting.AlbumExportingInformation;
 import com.darzalgames.zalaudiolibrary.exporting.SongExporter;
+import com.darzalgames.zalaudiolibrary.pipeline.AudioActor;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipeline;
 import com.darzalgames.zalaudiolibrary.pipeline.AudioPipelineAPI;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSound;
@@ -34,19 +36,22 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 	public static void main(String[] args) throws Exception {
 //		DigitalSynthesizer digitalSynthesizer = new DigitalSynthesizer();
 
-		playSong(
-				new SynthTesterSong(
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1)),
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2)),
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4)),
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8)),
+		SynthTesterSong synthTesterSong = new SynthTesterSong(
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1)),
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2)),
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4)),
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8)),
 
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16)),
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32)),
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64)),
-						SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64, 128))
-				)
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16)),
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32)),
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64)),
+				SynthFactory.arbitraryBandAdditiveSawTooth(Set.of(1, 2, 4, 8, 16, 32, 64, 128))
 		);
+
+		SynthVisualizer visualizer = new SynthVisualizer(synthTesterSong);
+		playSong(synthTesterSong, List.of(visualizer));
+
+//		);
 
 //		playSong(new BellSong());
 //		playSong(new TrumpetSong());
@@ -154,8 +159,13 @@ public class DigitalSynthesizer extends JFrame implements KeyListener {
 	}
 
 	public static void playSong(Song song) throws Exception {
+		playSong(song, List.of());
+	}
+
+	public static void playSong(Song song, Collection<AudioActor> listeners) throws Exception {
 		TwoByteSampleAdapter audioConsumer = getJavaAudioConsumer();
 		AudioPipeline audioPipeline = new AudioPipeline(audioConsumer, 1f, 1f);
+		listeners.forEach(audioActor -> audioPipeline.addAudioActor(audioActor));
 		audioPipeline.requestChangeSong(song);
 
 		System.out.println("Playing \"" + song.getSongName() + "\"");

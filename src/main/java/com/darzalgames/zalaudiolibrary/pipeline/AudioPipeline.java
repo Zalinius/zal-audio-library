@@ -5,19 +5,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.darzalgames.darzalcommon.data.FixedSizeGrid;
 import com.darzalgames.darzalcommon.data.Tuple;
 import com.darzalgames.zalaudiolibrary.AudioConstants;
 import com.darzalgames.zalaudiolibrary.composing.Song;
 import com.darzalgames.zalaudiolibrary.composing.validation.CompositionError;
-import com.darzalgames.zalaudiolibrary.demosongs.SynthTesterSong;
 import com.darzalgames.zalaudiolibrary.pipeline.instants.TimedMusicalInstant;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.SimpleSoundMaker;
 import com.darzalgames.zalaudiolibrary.pipeline.sounds.TimedSimpleSound;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.AudioConsumer;
 import com.darzalgames.zalaudiolibrary.pipeline.zamples.SampleMaker;
 import com.darzalgames.zalaudiolibrary.sfx.SoundEffect;
-import com.darzalgames.zalaudiolibrary.synth.Synth;
 
 /**
  * An audio pipeline with multiple steps
@@ -126,37 +123,15 @@ public class AudioPipeline extends Thread implements AudioPipelineAPI {
 		checkChangeSong();
 
 		final float stepBPS = bpsController.updateAndGetBPS(AudioConstants.STEP_DURATION_IN_SECONDS);
-
 		final int beatNumber = (int) beatCounter;
-
-		{
-			int lastBeatNumber = (int) (beatCounter - AudioConstants.STEP_DURATION_IN_SECONDS * stepBPS);
-			if (beatNumber != lastBeatNumber) {
-				SynthTesterSong synthTesterSong = (SynthTesterSong) song;
-				Synth currentSynth = synthTesterSong.getActiveSynth(beatNumber);
-				int xResolusion = 40;
-				int yResolution = 20;
-				FixedSizeGrid<String> grid = new FixedSizeGrid<>(xResolusion, yResolution, " ");
-				for (float x = 0; x <= 1; x += 1f / xResolusion) {
-					float y = currentSynth.f(x);
-					grid.set((int) (x * xResolusion), (int) ((y + 1) * (yResolution / 2)), "-");
-				}
-				StringBuilder sb = new StringBuilder();
-				for (int j = 0; j < grid.height(); j++) {
-					for (int i = 0; i < grid.width(); i++) {
-						sb.append(grid.get(i, j));
-					}
-					sb.append("\n");
-				}
-				System.out.println(sb.toString());
-			}
-		}
-
 		final float beatIncrementDuringMusicStep = AudioConstants.STEP_DURATION_IN_SECONDS * stepBPS;
 		final float stepIntervalStartInBeats = beatCounter;
 
 		audioActors.forEach(actor -> actor.updateBps(stepBPS));
 		audioActors.forEach(actor -> actor.update(AudioConstants.STEP_DURATION_IN_SECONDS));
+		if (beatNumber != (int) (beatCounter - beatIncrementDuringMusicStep)) {
+			audioActors.forEach(actor -> actor.updateBeat(beatNumber));
+		}
 
 		List<TimedMusicalInstant> musicalInstantsActive = song.getMusicalInstantsActiveThisBeatInclusive(beatNumber);
 		List<TimedSimpleSound> simpleSoundsActive = simpleSoundMaker.makeSimpleSounds(musicalInstantsActive, stepBPS, stepIntervalStartInBeats, secondsCounter);
