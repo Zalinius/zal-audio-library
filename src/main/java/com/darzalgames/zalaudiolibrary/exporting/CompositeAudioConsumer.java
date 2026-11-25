@@ -15,7 +15,8 @@ public class CompositeAudioConsumer implements AudioConsumer {
 
 	/**
 	 * Creates a MultiOutputStream from any number of AudioConsumers
-	 * @param audioConsumers the internal audio consumers of this AudioConsumer
+	 * @param audioConsumers the internal audio consumers of this AudioConsumer.
+	 *                       The order they are passed in determines the order the relayed functions will be called in
 	 */
 	public CompositeAudioConsumer(AudioConsumer... audioConsumers) {
 		outputs = Arrays.asList(audioConsumers);

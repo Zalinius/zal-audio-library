@@ -28,6 +28,11 @@ public class WavEncoderOutputStream implements AudioConsumer {
 
 	private boolean wroteOut;
 
+	/**
+	 * Creates a WavEncoderOutputStream with metadata, which writes to the given OutputStream
+	 * @param outputStream The OutputStream to write the Wav encode data to
+	 * @param metadata     Wav metadata to include in the output
+	 */
 	public WavEncoderOutputStream(OutputStream outputStream, Map<String, String> metadata) {
 		sampleOutputBuffer = new ByteArrayOutputStream();
 		wavOutput = outputStream;
