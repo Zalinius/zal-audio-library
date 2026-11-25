@@ -80,6 +80,39 @@ class WavEncoderOutputStreamTest {
 		assertEquals(120, wavHeader.length);
 	}
 
+	@Test
+	void close_whenwriteWavToOutputStreamWasntCalled_stillOutputsFullStream() throws Exception {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		WavEncoderOutputStream wavEncoderOutputStream = new WavEncoderOutputStream(outputStream, new HashMap<>());
+		float[] floatSamples = new float[32];
+
+		wavEncoderOutputStream.writeSamples(floatSamples);
+		wavEncoderOutputStream.close();
+
+		byte[] wavHeader = outputStream.toByteArray();
+		assertEquals("RIFF", bytesToAsciiString(Arrays.copyOfRange(wavHeader, 0, 4)));
+		assertEquals(112, bytesToInt(Arrays.copyOfRange(wavHeader, 4, 8), ByteOrder.LITTLE_ENDIAN));
+		assertEquals("WAVE", bytesToAsciiString(Arrays.copyOfRange(wavHeader, 8, 12)));
+
+		assertEquals("fmt ", bytesToAsciiString(Arrays.copyOfRange(wavHeader, 12, 16)));
+		assertEquals(16, bytesToInt(Arrays.copyOfRange(wavHeader, 16, 20), ByteOrder.LITTLE_ENDIAN));
+		assertEquals((short) 1, bytesToShort(Arrays.copyOfRange(wavHeader, 20, 22), ByteOrder.LITTLE_ENDIAN));
+		assertEquals((short) 1, bytesToShort(Arrays.copyOfRange(wavHeader, 22, 24), ByteOrder.LITTLE_ENDIAN));
+		assertEquals(44100, bytesToInt(Arrays.copyOfRange(wavHeader, 24, 28), ByteOrder.LITTLE_ENDIAN));
+		assertEquals(88200, bytesToInt(Arrays.copyOfRange(wavHeader, 28, 32), ByteOrder.LITTLE_ENDIAN));
+		assertEquals((short) 2, bytesToShort(Arrays.copyOfRange(wavHeader, 32, 34), ByteOrder.LITTLE_ENDIAN));
+		assertEquals((short) 16, bytesToShort(Arrays.copyOfRange(wavHeader, 34, 36), ByteOrder.LITTLE_ENDIAN));
+
+		assertEquals("LIST", bytesToAsciiString(Arrays.copyOfRange(wavHeader, 36, 40)));
+		assertEquals(4, bytesToInt(Arrays.copyOfRange(wavHeader, 40, 44), ByteOrder.LITTLE_ENDIAN));
+		assertEquals("INFO", bytesToAsciiString(Arrays.copyOfRange(wavHeader, 44, 48)));
+
+		assertEquals("data", bytesToAsciiString(Arrays.copyOfRange(wavHeader, 48, 52)));
+		assertEquals(64, bytesToInt(Arrays.copyOfRange(wavHeader, 52, 56), ByteOrder.LITTLE_ENDIAN));
+
+		assertEquals(120, wavHeader.length);
+	}
+
 	private static String bytesToAsciiString(byte[] bytes) {
 		return new String(bytes, Charset.defaultCharset());
 	}
